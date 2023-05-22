@@ -1,106 +1,54 @@
 #include <iostream>
-#include<fstream>
-#include <string>
-#include<cstdlib>
-#include "Pokemon.h"
-#include "Pokedex.h"
+#include <fstream>
+#include <vector>
 
-struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
+#include "pokemon.h"
+#include "pokedex.h"
 
-    Pokedex pokemonCollection;
-    int xp;
-    int trainerLvl = 1;
-    int pokeBalls = 20;
-    int greatBalls = 10;
-    int ultraBalls = 5;
-    int manaPot = 5;
-    int healthPot = 5;
-};
+void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) {
 
-int getNumberOfRecords(char filename[]){//gets the number of records each region's pokemon has in each file
-
-    std::ifstream inFile;
-    inFile.open(filename);
-    char helper[1000];
+    std::ifstream f(filename);
     int counter = 0;
 
-        while(!inFile.eof()){
-            inFile.getline(helper, 1000);
-            counter++;
-        }
+    int n;
+    std::string w;
+    while (counter < size) {
 
-    return counter;
+        f >> w; vec[counter].Setname(w);
+        f >> n; vec[counter].SetevoStage(n);
+        f >> n; vec[counter].Sethp(n);
+        f >> w; vec[counter].Setbase_attack_name(w);
+        f >> n; vec[counter].Setbase_attack_dmg(n);
+        f >> w; vec[counter].Setheavy_attack_name(w);
+        f >> n; vec[counter].Setheavy_attack_dmg(n);
+        f >> n; vec[counter].SetType(n);
 
+        // vec[counter].print();
+        counter++;
     }
+}
 
-void readPokemonDataBase(char filename[], Pokemon*&arr){//reads all the info of pokemon in a region
+int getNumberOfLines(std::string filename) {
 
-        int N = getNumberOfRecords(filename);
-        int index = 0;
+    std::ifstream f(filename);
+    std::string line;
+    int count = 0;
 
-        int helper;
-
-        char nameHelper[100];
-        char base_attack_nameHelper[100];
-        char heavy_attack_helper[100];
-
-        std::ifstream inFile;
-        inFile.open(filename);
-
-        while(index < N - 1){
-
-            inFile.getline(nameHelper, 100);
-            arr[index].Setname(nameHelper);
-
-            inFile >> helper;
-            arr[index].SetevoStage(helper);
-
-            inFile >> helper;
-            arr[index].Sethp(helper);
-
-            inFile.getline(base_attack_nameHelper, 100);
-            arr[index].Setname(base_attack_nameHelper);
-
-            inFile >> helper;
-            arr[index].Setbase_attack_dmg(helper);
-
-            inFile.getline(heavy_attack_helper, 100);
-            arr[index].Setname(heavy_attack_helper);
-
-            inFile >> helper;
-            arr[index].Setheavy_attack_dmg(helper);
-
-            inFile >> helper;
-            arr[index].SetType(helper);
-
-
-            arr[index].print();
-
-            index++;
-
-        }
-    inFile.close();
+    while(getline(f, line)) {
+        count++;
     }
+    return count;
+}
 
+int main() {
 
+    std::string filename = "./honen_pokemon.txt";
+    // std::string filename = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
 
+    int size = getNumberOfLines(filename);
+    std::vector<Pokemon> vec(size);
 
-int main()
-{
-
-    char filename[] = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
-
-    int num = getNumberOfRecords(filename);
-
-    Pokemon * arr = new Pokemon [num];
-
-    readPokemonDataBase(filename, arr);
-
-
-
-
-
-
+    readPokemonData(filename, size, vec);
 
     return 0;
 }
