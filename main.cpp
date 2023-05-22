@@ -5,7 +5,19 @@
 #include "pokemon.h"
 #include "pokedex.h"
 
-void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) {
+struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
+
+    Pokedex pokemonCollection;
+    int xp;
+    int trainerLvl = 1;
+    int pokeBalls = 20;
+    int greatBalls = 10;
+    int ultraBalls = 5;
+    int manaPot = 5;
+    int healthPot = 5;
+};
+
+void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) {//reads all the info of pokemon in a region
 
     std::ifstream f(filename);
     int counter = 0;
@@ -28,7 +40,7 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
     }
 }
 
-int getNumberOfLines(std::string filename) {
+int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
 
     std::ifstream f(filename);
     std::string line;
@@ -42,8 +54,8 @@ int getNumberOfLines(std::string filename) {
 
 int main() {
 
-    std::string filename = "./honen_pokemon.txt";
-    // std::string filename = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
+    // std::string filename = "./honen_pokemon.txt"; // Linux file name
+    std::string filename = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
 
     int size = getNumberOfLines(filename);
     std::vector<Pokemon> vec(size);
