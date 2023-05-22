@@ -1,6 +1,8 @@
 #ifndef POKEDEX_H
 #define POKEDEX_H
 
+#include <iostream>
+
 #include "pokemon.h"
 
 struct node{
@@ -10,8 +12,7 @@ struct node{
     
 };
 
-class Pokedex
-{
+class Pokedex {
 public:
     //node consts
     node* head; // the first node of a linked list
@@ -33,10 +34,6 @@ public:
     //constructor and destructor
     Pokedex();
     ~Pokedex();
-    
-    
-    
-    
 };
 
 #endif // POKEDEX_H

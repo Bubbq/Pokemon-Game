@@ -1,7 +1,5 @@
-#include <iostream>
-
-#include "Pokedex.h"
-#include "Pokemon.h"
+#include "pokedex.h"
+#include "pokemon.h"
 
 void Pokedex::printCurrPokemon(){
     
@@ -12,7 +10,6 @@ void Pokedex::printCurrPokemon(){
         std::cout << tmp->pokemonInfo->Getname() << "\t" << tmp->pokemonInfo->Gethp() << std::endl;
         tmp = tmp->next;
     }
-    
 }
 
 void Pokedex::appendPokemon(Pokemon * data){
@@ -37,8 +34,6 @@ void Pokedex::appendPokemon(Pokemon * data){
         tmp->next = nn;
         nn->next = nullptr;
     }
-    
-    
 }
 
 bool Pokedex::removePokemonByName(char* name){
@@ -71,7 +66,6 @@ bool Pokedex::removePokemonByName(char* name){
     }
     
     return false;
-    
 }
 
 

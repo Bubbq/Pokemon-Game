@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "pokemon.h"
 
 Pokemon::Pokemon(){
