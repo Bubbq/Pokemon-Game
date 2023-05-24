@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS= -Wall -Wextra
 SRC = *.cpp
-# LIBS = -lSDL2
+# LIBS =
 
 all:
 	$(CC) $(SRC) $(CFLAGS) -o pokemon.o
