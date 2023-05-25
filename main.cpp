@@ -130,7 +130,7 @@ void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     switch(userPokemonChoice) {
     case 1: player.pokemonCollection.appendPokemon(findPokemon("Treeko", N, pokemonDB)); break;
     case 2: player.pokemonCollection.appendPokemon(findPokemon("Torchic", N, pokemonDB)); break;
-    case 3:player.pokemonCollection.appendPokemon(findPokemon("Mudkip", N, pokemonDB)); break;
+    case 3: player.pokemonCollection.appendPokemon(findPokemon("Mudkip", N, pokemonDB)); break;
     default: break;
     }
 }
