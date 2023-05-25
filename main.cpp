@@ -256,4 +256,7 @@ int main() {
     }
 
     return 0;
+    
+    menu(player);//player chooses what to do
+
 }
