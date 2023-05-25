@@ -72,7 +72,7 @@ void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     int userPokemonChoice;//user chooses out of these three pokemon
     std::cin >> userPokemonChoice;
     
-    while(userPokemonChoice!= 1 && userPokemonChoice!= 2 && userPokemonChoice!= 3){//error checking until the user has entered an approporate input
+    while(userPokemonChoice < 1 || userPokemonChoice > 3){//error checking until the user has entered an approporate input
         std::cout << "choice is invalid, please try again" << std::endl;
         std::cin >> userPokemonChoice;
     }
@@ -97,7 +97,7 @@ void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     int userPokemonChoice;//user chooses out of these three pokemon
     std::cin >> userPokemonChoice;
     
-    while(userPokemonChoice!= 1 && userPokemonChoice!= 2 && userPokemonChoice!= 3){//error checking until the user has entered an approporate input
+    while(userPokemonChoice < 1 || userPokemonChoice > 3){//error checking until the user has entered an approporate input
         std::cout << "choice is invalid, please try again" << std::endl;
         std::cin >> userPokemonChoice;
     }
@@ -122,7 +122,7 @@ void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     int userPokemonChoice;//user chooses out of these three pokemon
     std::cin >> userPokemonChoice;
     
-    while(userPokemonChoice!= 1 && userPokemonChoice!= 2 && userPokemonChoice!= 3){//error checking until the user has entered an approporate input
+    while(userPokemonChoice < 1 || userPokemonChoice > 3){//error checking until the user has entered an approporate input
         std::cout << "choice is invalid, please try again" << std::endl;
         std::cin >> userPokemonChoice;
     }
@@ -156,7 +156,7 @@ int main() {
     int userChoice;
     std::cin >> userChoice;//will either be 1 for Kanto, 2 for Johto, or 3 representing Honen
     
-    while(userChoice!= 1 && userChoice!= 2 && userChoice!= 3){//error checking until the user has entered an approporate input
+    while(userChoice < 1 || userChoice > 3){//error checking until the user has entered an approporate input
         std::cout << "choice is invalid, please try again" << std::endl;
         std::cin >> userChoice;
     }
