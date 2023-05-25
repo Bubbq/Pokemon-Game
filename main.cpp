@@ -1,23 +1,47 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include<ctime>
+#include <ctime>
 
 #include "pokemon.h"
 #include "pokedex.h"
+
+void clear() {//clear terminal based on OS
+#if defined _WIN32
+    system("cls");
+#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    system("clear");
+#elif defined(__APPLE__)
+    system("clear");
+#endif
+}
 
 struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
     
     Pokedex pokemonCollection;
     int xp = 0;
     int trainerLvl = 1;
-    int pokeBalls = 20;
-    int greatBalls = 10;
-    int ultraBalls = 5;
+    int pokeBalls = 10;
+    int greatBalls = 5;
+    int ultraBalls = 2;
     int manaPot = 5;
     int healthPot = 5;
     std::string currRegion;
 };
+
+void showStats(Trainer &player) {//show stats for debugging
+    
+    std::cout << "Level: " << player.trainerLvl << std::endl;
+    std::cout << "Current XP: " << player.xp << std::endl; 
+    std::cout << "Pokeballs: " << std::endl;
+    std::cout << "\t Normal: " << player.pokeBalls << std::endl;
+    std::cout << "\t Great: " << player.greatBalls << std::endl;
+    std::cout << "\t Ultra: " << player.ultraBalls << std::endl;
+    std::cout << "Recovery: " << std::endl;
+    std::cout << "\t Health Pots: " << player.healthPot << std::endl;
+    std::cout << "\t Mana Pots: " << player.manaPot << std::endl;
+    std::cout << std::endl;
+}
 
 int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
     
@@ -65,7 +89,7 @@ Pokemon * findPokemon(std::string name, int N, std::vector<Pokemon> &pokemonDB){
 
 void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     
-    std::cout << "\033[2J\033[1;1H";
+    clear();
     std::cout << "Based on the Kanto region you have access to the following starter pokemon:" << std::endl << std::endl;
     std::cout << "1) Charmander" << std::endl;
     std::cout << "2) Squirtle" << std::endl;
@@ -90,12 +114,13 @@ void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
 void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     
-    std::cout << "\033[2J\033[1;1H";
+    clear();
     std::cout << "Based on the Johto region, you have access to the following starter pokemon:" << std::endl << std::endl;
     std::cout << "1) Chikorita" << std::endl;
     std::cout << "2) Cyndaquil" << std::endl;
     std::cout << "3) Totodile" << std::endl;
     
+    std::cout << std::endl;
     int userPokemonChoice;//user chooses out of these three pokemon
     std::cin >> userPokemonChoice;
     
@@ -115,7 +140,7 @@ void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
 void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     
-    std::cout << "\033[2J\033[1;1H";
+    clear();
     std::cout << "Based on the Honen region, you have access to the following starter pokemon:" << std::endl << std::endl;
     std::cout << "1) Treeko" << std::endl;
     std::cout << "2) Torchic" << std::endl;
@@ -178,28 +203,31 @@ void forage(Trainer &player){//adds 3 to on of the quantitative items of trainer
 
 void menu(Trainer &player){//main hub of the game, where trainer either encounters pokemon, forages for new items, or fast travels to a new location.
     
-    std::cout << "\033[2J\033[1;1H"; // Initial clear
+    clear();
     int userChoice;
+
     while(userChoice != 0) {
         std::cout << "What would you like to do? (Enter number)" << std::endl << std::endl;
         std::cout << "1) Forage" << std::endl; 
         std::cout << "2) Explore" << std::endl;
         std::cout << "3) Fast Travel to another region" << std::endl;
+        std::cout << "4) View Stats" << std::endl;
         
         std::cout << std::endl << "0) QUIT" << std::endl;
-                     
+        
         std::cin >> userChoice;
-        std::cout << "\033[2J\033[1;1H"; // Clear after user input. Show result and menu on next screen
+        clear();
         
         switch(userChoice){
-        case 0: std::cout << "Exiting menu!" << std::endl; return;
+        case 0: std::cout << "Exiting menu!" << std::endl; break;
         case 1: forage(player); break;
         case 2: std::cout << "Explore function\n"; break; // EXPLORE FUNCTION GOES HERE
         case 3: // FAST TRAVEL FUNCTION GOES HERE
             if(player.trainerLvl < 5) std::cout << "(Unlocked at Lvl 5)" << std::endl;
             else std::cout << "Fast travel function\n";
             break;
-        default: std::cout << "Invalid input!" << std::endl; break;
+        case 4: showStats(player); break;
+        default: break;
         }
     }
 }
@@ -215,7 +243,7 @@ int main() {
     std::string johtoPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\johto_pokemon.txt";
     std::string honenPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
     
-    std::cout << "\033[2J\033[1;1H"; //hack to clear terminal before printing text
+    clear();
     std::cout << "Hello trainer! Welcome to world of Pokemon, to begin, which region would you like to start in?" << std::endl << std::endl;
     std::cout << "1) Kanto" << std::endl;
     std::cout << "2) Johto" << std::endl;
