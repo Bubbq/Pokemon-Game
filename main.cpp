@@ -188,7 +188,7 @@ void menu(Trainer &player){//main hub of the game, where trainer either encounte
         
         std::cout << std::endl << "0) QUIT" << std::endl;
                      
-                     std::cin >> userChoice;
+        std::cin >> userChoice;
         std::cout << "\033[2J\033[1;1H"; // Clear after user input. Show result and menu on next screen
         
         switch(userChoice){
