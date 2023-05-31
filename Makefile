@@ -4,6 +4,8 @@ SRC = *.cpp
 # LIBS =
 
 all:
-	$(CC) $(SRC) $(CFLAGS) -o pokemon.o
+	$(CC) $(SRC) $(CFLAGS) -o pokemon
 clean:
-	$(RM) *.o
+	$(RM) pokemon
+run: all
+	./pokemon
