@@ -20,8 +20,8 @@ struct Trainer{//this is the content of the current player, the linked list of p
 
     Pokedex pokemonCollection;
     int xp = 0;
-    int trainerLvl = 1;
-    // int trainerLvl = 5; //for testing features
+    // int trainerLvl = 1;
+    int trainerLvl = 5; //for testing features
     int pokeBalls = 10;
     int greatBalls = 5;
     int ultraBalls = 2;
@@ -34,6 +34,7 @@ struct Trainer{//this is the content of the current player, the linked list of p
 void showStats(Trainer &player) {//show stats for debugging
 
     std::cout << "Level: " << player.trainerLvl << std::endl;
+    std::cout << "Region: " << player.currRegion << std::endl;
 
     std::cout << "Pokeballs: " << std::endl;
     std::cout << "\t Normal: " << player.pokeBalls << std::endl;
@@ -45,7 +46,7 @@ void showStats(Trainer &player) {//show stats for debugging
     std::cout << "\t Mana Pots: " << player.manaPot << std::endl;
     std::cout << std::endl;
 
-    std::cout << "TEAM:" << std::endl;
+    // std::cout << "TEAM:" << std::endl;
 
     player.pokemonCollection.printCurrPokemon();
 }
