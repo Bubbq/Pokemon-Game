@@ -229,7 +229,7 @@ void fastTravel(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokem
     std::cin >> userChoice;//will either be 1 for Kanto, 2 for Johto, or 3 representing Honen
 
     while((userChoice < 1 || userChoice > 3 || player.currRegion == regions[userChoice - 1])){//error checking until the user has entered an approporate input
-        std::cout << "Region choice is invalid or you are allready at the location, please try again" << std::endl;
+        std::cout << "Region choice is invalid or you are already at the location, please try again" << std::endl;
         std::cin >> userChoice;
     }
 
@@ -294,22 +294,22 @@ void flee(Trainer &player){// lets the trainer run away, but not without punishm
 
 }
 
-void explore(Trainer &player, std::vector<Pokemon>&pokemonDB){
+void explore(Trainer &player){
 
     int min = 0;
-    int max = pokemonDB.size();
+    int max = player.currDB.size();
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     int randomNumber = min + (std::rand() % (max - min + 1));
 
-    std::cout << "After roaming for some time in the: " << player.currRegion << " Region, you've run into: " << pokemonDB[randomNumber].Getname() << "!" << '\n';
+    std::cout << "After roaming for some time in the: " << player.currRegion << " Region, you've run into: " << player.currDB[randomNumber].Getname() << "!" << '\n';
 
-    std::cout << "Here are some of "<< pokemonDB[randomNumber].Getname() << "'s Stats:" << '\n' << '\n';
+    std::cout << "Here are some of "<< player.currDB[randomNumber].Getname() << "'s Stats:" << '\n' << '\n';
 
-    std::cout << "Type:" << pokemonDB[randomNumber].GetTypeAsString(pokemonDB[randomNumber].GetType())
-              <<  "HP: " << pokemonDB[randomNumber].Gethp() << '\n' << '\n'
-              << "Base_Attack: " << pokemonDB[randomNumber].Getbase_attack_name() << ", " << pokemonDB[randomNumber].Getbase_attack_dmg() << " dmg\n"
-              << '\n' <<"Heavy_Attack: " << pokemonDB[randomNumber].Getheavy_attack_name() << ", " << pokemonDB[randomNumber].Getheavy_attack_dmg() << '\n';
+    std::cout << "Type:" << player.currDB[randomNumber].GetTypeAsString(player.currDB[randomNumber].GetType())
+              <<  "HP: " << player.currDB[randomNumber].Gethp() << '\n' << '\n'
+              << "Base_Attack: " << player.currDB[randomNumber].Getbase_attack_name() << ", " << player.currDB[randomNumber].Getbase_attack_dmg() << " dmg\n"
+              << '\n' <<"Heavy_Attack: " << player.currDB[randomNumber].Getheavy_attack_name() << ", " << player.currDB[randomNumber].Getheavy_attack_dmg() << '\n';
 
     int userChoice;
 
@@ -357,7 +357,7 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
 
             case 1: forage(player); break;
 
-            case 2: std::cout << "Explore function\n"; break; // EXPLORE FUNCTION GOES HERE
+            case 2: explore(player); break; // EXPLORE FUNCTION GOES HERE
 
             case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
 
