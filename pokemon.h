@@ -2,6 +2,7 @@
 #define POKEMON_H
 
 #include <iostream>
+#include<string>
 
 enum natureType {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
 
@@ -18,35 +19,36 @@ class Pokemon
     natureType type;
 
     public:
-    
+
     Pokemon();
     ~Pokemon();
-    
+
     std::string Getname();
     void Setname(std::string val);
-    
+
     natureType GetType();
     void SetType(int val);
-    
+    std::string GetTypeAsString(natureType val);
+
     int GetevoStage();
     void SetevoStage(int val);
-    
+
     int Gethp();
     void Sethp(int val);
-    
+
     std::string Getbase_attack_name();
     void Setbase_attack_name(std::string val);
-    
+
     int Getbase_attack_dmg();
     void Setbase_attack_dmg(int val);
-    
+
     std::string Getheavy_attack_name();
     void Setheavy_attack_name(std::string val);
-    
+
     int Getheavy_attack_dmg();
     void Setheavy_attack_dmg(int val);
-    
-    void print();
+
+    void printPokemon();
 };
 
 #endif // POKEMON_H
