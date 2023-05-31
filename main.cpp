@@ -256,6 +256,31 @@ void fastTravel(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokem
     }
 }
 
+void flee(Trainer &player) {
+
+    int arr[] = {player.pokeBalls, player.greatBalls, player.ultraBalls, player.healthPot, player.manaPot};
+
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    int randomNumber = 0 + (std::rand() % (4 - 0 + 1));
+
+    if (arr[randomNumber] != 0) {
+        int randomAmmount = 1 + (std::rand() % (5 - 1 + 1));
+        std::string item;
+        switch (randomNumber) {
+            case 0: player.pokeBalls -= randomAmmount; if (player.pokeBalls < 0) player.pokeBalls = 0; item = "Pokeball"; break;
+            case 1: player.greatBalls -= randomAmmount; if (player.greatBalls < 0) player.greatBalls = 0;item = "Great Ball"; break;
+            case 2: player.ultraBalls -= randomAmmount; if (player.ultraBalls < 0) player.ultraBalls = 0;item = "Ultra Ball"; break;
+            case 3: player.healthPot -= randomAmmount; if (player.healthPot < 0) player.healthPot = 0;item = "Health Pot"; break;
+            case 4: player.manaPot -= randomAmmount; if (player.manaPot < 0) player.manaPot = 0;item = "Mana Pot"; break;
+        }
+        std::cout << "You ran away, but while escaping you lost " << randomAmmount << " " << item << " !" << std::endl;
+    }
+    else {
+        std::cout << "You ran away, but while escaping you lost -50 XP!" << std::endl;
+        player.xp -= 50;
+    }
+}
+
 void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> johtoDB, std::vector<Pokemon> honenDB){//main hub of the game, where trainer either encounters pokemon, forages for new items, or fast travels to a new location.
 
     clear();
@@ -278,7 +303,8 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
 
             case 1: forage(player); break;
 
-            case 2: std::cout << "Explore function\n"; break; // EXPLORE FUNCTION GOES HERE
+            // case 2: flee(player); break; // EXPLORE FUNCTION GOES HERE
+            case 2: std::cout << "Explore function" << std::endl; break; // EXPLORE FUNCTION GOES HERE
 
             case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
 
