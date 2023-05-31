@@ -21,6 +21,7 @@ struct Trainer{//this is the content of the current player, the linked list of p
     Pokedex pokemonCollection;
     int xp = 0;
     int trainerLvl = 1;
+    // int trainerLvl = 5; //for testing features
     int pokeBalls = 10;
     int greatBalls = 5;
     int ultraBalls = 2;
@@ -28,7 +29,6 @@ struct Trainer{//this is the content of the current player, the linked list of p
     int healthPot = 5;
     std::string currRegion;
     std::vector<Pokemon> currDB;
-
 };
 
 void showStats(Trainer &player) {//show stats for debugging
@@ -112,10 +112,10 @@ void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
-    case 1: player.pokemonCollection.appendPokemon(findPokemon("Charmander", N, pokemonDB)); break;
-    case 2: player.pokemonCollection.appendPokemon(findPokemon("Squirtle", N, pokemonDB)); break;
-    case 3: player.pokemonCollection.appendPokemon(findPokemon("Bulbasuar", N, pokemonDB)); break;
-    default: break;
+        case 1: player.pokemonCollection.appendPokemon(findPokemon("Charmander", N, pokemonDB)); break;
+        case 2: player.pokemonCollection.appendPokemon(findPokemon("Squirtle", N, pokemonDB)); break;
+        case 3: player.pokemonCollection.appendPokemon(findPokemon("Bulbasuar", N, pokemonDB)); break;
+        default: break;
     }
 }
 
@@ -138,10 +138,10 @@ void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
-    case 1: player.pokemonCollection.appendPokemon(findPokemon("Chikorita", N, pokemonDB)); break;
-    case 2: player.pokemonCollection.appendPokemon(findPokemon("Cyndaquil", N, pokemonDB)); break;
-    case 3: player.pokemonCollection.appendPokemon(findPokemon("Totodile", N, pokemonDB)); break;
-    default: break;
+        case 1: player.pokemonCollection.appendPokemon(findPokemon("Chikorita", N, pokemonDB)); break;
+        case 2: player.pokemonCollection.appendPokemon(findPokemon("Cyndaquil", N, pokemonDB)); break;
+        case 3: player.pokemonCollection.appendPokemon(findPokemon("Totodile", N, pokemonDB)); break;
+        default: break;
     }
 }
 
@@ -162,10 +162,10 @@ void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     }
 
     switch(userPokemonChoice) {
-    case 1: player.pokemonCollection.appendPokemon(findPokemon("Treeko", N, pokemonDB)); break;
-    case 2: player.pokemonCollection.appendPokemon(findPokemon("Torchic", N, pokemonDB)); break;
-    case 3: player.pokemonCollection.appendPokemon(findPokemon("Mudkip", N, pokemonDB)); break;
-    default: break;
+        case 1: player.pokemonCollection.appendPokemon(findPokemon("Treeko", N, pokemonDB)); break;
+        case 2: player.pokemonCollection.appendPokemon(findPokemon("Torchic", N, pokemonDB)); break;
+        case 3: player.pokemonCollection.appendPokemon(findPokemon("Mudkip", N, pokemonDB)); break;
+        default: break;
     }
 }
 
@@ -210,68 +210,49 @@ void forage(Trainer &player){//adds 3 to on of the quantitative items of trainer
 
 void fastTravel(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> johtoDB, std::vector<Pokemon> honenDB){//allows the trainer to change his/her location as well as change the database of pokemon that are region locked in thier new location
 
- std::cout << "Which region would you like to Travel to?" << std::endl << std::endl;
-
-    int forbiddenNumber; //choice representing the region that the trainer is already in.
-
-
-    std::cout << "1) Kanto";
-        if(player.currRegion == "Kanto"){
-            std::cout << "(Already Here!)" << std::endl;
-            forbiddenNumber = 1;
-        }
-
-        else{
-           std::cout << std::endl;
-        }
-
-    std::cout << "2) Johto";
-         if(player.currRegion == "Johto"){
-            std::cout << "(Already Here!)" << std::endl;
-            forbiddenNumber = 2;
-        }
-
-        else{
-           std::cout << std::endl;
-        }
-
-
-    std::cout << "3) Honen";
-        if(player.currRegion == "Honen"){
-            std::cout << "(Already Here!)" << std::endl;
-            forbiddenNumber = 3;
-        }
-
-        else{
-           std::cout << std::endl;
-        }
-
+    clear();
     int userChoice;
+    std::string regions[] = {"Kanto", "Johto", "Honen"};
+
+    if (player.trainerLvl < 5) {//check player level before starting fast travel menu
+        std::cout << "(Fast Travel unlocked at Level 5)" << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << "CURRENT REGION: *" << player.currRegion << "*" << std::endl;
+    std::cout << "Which region would you like to Travel to?" << std::endl << std::endl;
+    std::cout << "1) Kanto" << std::endl;
+    std::cout << "2) Johto" << std::endl;
+    std::cout << "3) Honen" << std::endl;
+
     std::cin >> userChoice;//will either be 1 for Kanto, 2 for Johto, or 3 representing Honen
 
-    while((userChoice < 1 || userChoice > 3) || userChoice == forbiddenNumber){//error checking until the user has entered an approporate input
-        std::cout << " Region choice is invalid, please try again" << std::endl;
+    while((userChoice < 1 || userChoice > 3 || player.currRegion == regions[userChoice - 1])){//error checking until the user has entered an approporate input
+        std::cout << "Region choice is invalid or you are allready at the location, please try again" << std::endl;
         std::cin >> userChoice;
     }
 
-    switch (userChoice){
+    if (userChoice == 1) {
 
-        case 1: player.currRegion == "Kanto";
-            player.currDB = kantoDB;
-            std::cout << "You have successfully traveled to the Kanto Region, New adventures and Pokemon await!" << std::endl;
-            break;
-
-        case 2: player.currRegion == "Johto";
-            player.currDB = johtoDB;
-            std::cout << "You have successfully traveled to the Johto Region, New adventures and Pokemon await!" << std::endl;
-            break;
-
-        default: player.currRegion == "Honen";
-            player.currDB = honenDB;
-            std::cout << "You have successfully traveled to the Honen Region, New adventures and Pokemon await!" << std::endl;
-            break;
+        clear();
+        player.currRegion = "Kanto";
+        player.currDB = kantoDB;
+        std::cout << "You have successfully traveled to the Kanto Region, New adventures and Pokemon await!" << std::endl << std::endl;
     }
+    else if (userChoice == 2) {
 
+        clear();
+        player.currRegion = "Johto";
+        player.currDB = johtoDB;
+        std::cout << "You have successfully traveled to the Johto Region, New adventures and Pokemon await!" << std::endl << std::endl;
+    }
+    else {
+
+        clear();
+        player.currRegion= "Honen";
+        player.currDB = honenDB;
+        std::cout << "You have successfully traveled to the Honen Region, New adventures and Pokemon await!" << std::endl << std::endl;
+    }
 }
 
 void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> johtoDB, std::vector<Pokemon> honenDB){//main hub of the game, where trainer either encounters pokemon, forages for new items, or fast travels to a new location.
@@ -290,23 +271,19 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
         std::cin >> userChoice;
         clear();
 
-        switch(userChoice){
-        case 0: std::cout << "Exiting menu!" << std::endl; break;
+        switch(userChoice) {
 
-        case 1: forage(player); break;
+            case 0: std::cout << "Exiting menu!" << std::endl; break;
 
-        case 2: std::cout << "Explore function\n"; break; // EXPLORE FUNCTION GOES HERE
+            case 1: forage(player); break;
 
-        case 3: if(player.trainerLvl < 5){
-                    std::cout << "(Unlocked at Lvl 5)" << std::endl;
-                }
-                else {
-                       fastTravel(player, kantoDB, johtoDB, honenDB);
-                }
-                break;
+            case 2: std::cout << "Explore function\n"; break; // EXPLORE FUNCTION GOES HERE
 
-        case 4: showStats(player); break;
-        default: break;
+            case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
+
+            case 4: showStats(player); break;
+
+            default: std::cout << "Invalid input" << std::endl; break;
         }
     }
 }
@@ -349,22 +326,26 @@ int main() {
     readPokemonData(honenPokemonFile, honenNum, honenDataBase);
 
     switch(userChoice){//used to identify which starter the user will have acess to depending on their region of choice
-    case 1:
-        player.currRegion = "Kanto";
-        kantoStarter(player, kantoNum, kantoDataBase);
-        player.currDB = kantoDataBase;
-        break;
-    case 2:
-        player.currRegion = "Johto";
-        johtoStarter(player, johtoNum, johtoDataBase);
-        player.currDB = johtoDataBase;
-        break;
-    case 3:
-        player.currRegion = "Hoenn";
-        honenStarter(player, honenNum, honenDataBase);
-        player.currDB = honenDataBase;
-        break;
-    default: break;
+
+        case 1:
+            player.currRegion = "Kanto";
+            kantoStarter(player, kantoNum, kantoDataBase);
+            player.currDB = kantoDataBase;
+            break;
+
+        case 2:
+            player.currRegion = "Johto";
+            johtoStarter(player, johtoNum, johtoDataBase);
+            player.currDB = johtoDataBase;
+            break;
+
+        case 3:
+            player.currRegion = "Hoenn";
+            honenStarter(player, honenNum, honenDataBase);
+            player.currDB = honenDataBase;
+            break;
+
+        default: break;
     }
 
     menu(player, kantoDataBase, johtoDataBase, honenDataBase);//player chooses what to do
