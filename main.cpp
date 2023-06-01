@@ -79,10 +79,12 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         f >> w; vec[counter].Setheavy_attack_name(w);
         f >> n; vec[counter].Setheavy_attack_dmg(n);
         f >> n; vec[counter].SetType(n);
+        f >> n; vec[counter].setRarity(n);
 
         // vec[counter].print();
         counter++;
     }
+
 }
 
 Pokemon * findPokemon(std::string name, int N, std::vector<Pokemon> &pokemonDB){//finds and returns of a pokemon given its name, helpful annexing pokemon into the trainers collection
@@ -288,8 +290,164 @@ void flee(Trainer &player){// lets the trainer run away, but not without punishm
     }
 
     else {
-        std::cout << "You ran away, but while escaping you lost -50 XP!" << std::endl;
+        std::cout << "You begin to question your skills as a trainer, nonetheless, you successfully ran away" << std::endl;
         player.xp -= 50;
+    }
+
+}
+
+bool catchSim(bool caught, int userChoice, int successRate, Trainer &player, int randomPokemonIndex, int &catchAttempts){//simualtes the act of catching, bool values will tell the catchPokemon function if the pokemon has been caught or fled.
+
+    int randomNumber;
+    int min = 1;
+    int max = 100;
+
+  switch(userChoice){
+
+    case 1:
+            if(player.pokeBalls > 0){//if the player has the appropraite amount of a certain ball...
+                player.pokeBalls--;//lose a pokeball trying to catch the pokemon
+            }
+
+            else{
+                std::cout << "You dont have enough Pokeballs to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+            }
+
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        randomNumber = min + (std::rand() % (max - min + 1));
+
+            if(randomNumber <= successRate){//using a pokeball does not change the base success rate
+
+                std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
+                player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+                return true;
+
+                }
+
+            else{
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
+                catchAttempts++;//after 5, the pokemon runs away
+
+            }
+
+            if(catchAttempts == 5){//runs away after 5 tries
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
+                return true;
+
+            }
+
+        break;
+
+    case 2:
+            if(player.greatBalls > 0){//if the player has the appropraite amount of a certain ball...
+                player.greatBalls--;//lose a great ball trying to catch the pokemon
+            }
+
+            else{
+                std::cout << "You dont have enough Great balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+            }
+
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        randomNumber = min + (std::rand() % (max - min + 1));
+
+            if(randomNumber <= successRate + 10){//using a great ball adds 10% to the base sucess rate
+
+                std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
+                player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+                return true;
+
+                }
+
+            else{
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
+                catchAttempts++;//after 5, the pokemon runs away
+
+            }
+
+            if(catchAttempts == 5){//runs away after 5 tries
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
+                return true;
+
+            }
+
+        break;
+
+    case 3:
+            if(player.ultraBalls > 0){//if the player has the appropraite amount of a certain ball...
+                player.ultraBalls--;//lose an ultra ball trying to catch the pokemon
+            }
+
+            else{
+                std::cout << "You dont have enough Ultra balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+            }
+
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        randomNumber = min + (std::rand() % (max - min + 1));
+
+            if(randomNumber <= successRate + 15){//using an ultra ball adds 15% chance
+
+                std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname()  << "!" << std::endl;
+                player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+                return true;
+
+                }
+
+            else{
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
+                catchAttempts++;//after 5, the pokemon runs away
+
+            }
+
+            if(catchAttempts == 5){//runs away after 5 tries
+
+                std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
+                return true;
+
+            }
+
+        break;
+
+  }
+  return false;
+}
+
+void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simulates the catching of a pokemon, %  chance of catch is as follows: 50% common, 25% uncommon, 15% rare, and 10% legendary
+
+    bool caught = false;//variable to loop the menu screen
+    int catchAttempts = 0;//the amount of times the player tries to catch a certain pokemon
+
+        while (caught == false){
+
+            std::cout << "Which ball would you like to use?" << std::endl << std::endl;
+
+            std::cout << "1.)Pokeball" << std::endl;
+            std::cout << "2.)Great Ball" << std::endl;
+            std::cout << "3.)Ultra Ball" << std::endl;
+
+            int userChoice;
+            std::cin >> userChoice;
+
+        if(player.currDB[randomPokemonIndex].getRarity() == COMMON){//theres a 50% base catch rate
+            caught = catchSim(caught, userChoice, 50, player, randomPokemonIndex, catchAttempts);
+        }
+
+        else if(player.currDB[randomPokemonIndex].getRarity() == UNCOMMON){//theres a 25% base catch rate
+            caught = catchSim(caught, userChoice, 25, player, randomPokemonIndex, catchAttempts);
+        }
+
+        else if(player.currDB[randomPokemonIndex].getRarity() == RARE){//theres a 15% base catch rate
+            caught = catchSim(caught, userChoice, 15, player, randomPokemonIndex, catchAttempts);
+        }
+
+        else{//theres a 10% base catch rate for legendary pokemon
+            caught = catchSim(caught, userChoice, 10, player, randomPokemonIndex, catchAttempts);
+        }
+
     }
 
 }
@@ -323,7 +481,7 @@ void explore(Trainer &player){
 
         switch(userChoice) {
 
-            case 1: //working on
+            case 1: catchPokemon(player, randomNumber); break;
 
             case 2: //working on
 
@@ -357,7 +515,7 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
 
             case 1: forage(player); break;
 
-            case 2: explore(player); break; // EXPLORE FUNCTION GOES HERE
+            case 2: explore(player); break;
 
             case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
 
@@ -393,35 +551,31 @@ int main() {
         std::cin >> userChoice;
     }
 
-    int kantoNum = getNumberOfLines(kantoPokemonFile);//find how many records are in each available region
-    int johtoNum = getNumberOfLines(johtoPokemonFile);
-    int honenNum = getNumberOfLines(honenPokemonFile);
+    std::vector<Pokemon> kantoDataBase(20);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
+    std::vector<Pokemon> johtoDataBase(20);
+    std::vector<Pokemon> honenDataBase(20);
 
-    std::vector<Pokemon> kantoDataBase(kantoNum);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
-    std::vector<Pokemon> johtoDataBase(johtoNum);
-    std::vector<Pokemon> honenDataBase(honenNum);
-
-    readPokemonData(kantoPokemonFile, kantoNum, kantoDataBase);//reads the info to the corresponding vectors of region
-    readPokemonData(johtoPokemonFile, johtoNum, johtoDataBase);
-    readPokemonData(honenPokemonFile, honenNum, honenDataBase);
+    readPokemonData(kantoPokemonFile, 20, kantoDataBase);//reads the info to the corresponding vectors of region
+    readPokemonData(johtoPokemonFile, 20, johtoDataBase);
+    readPokemonData(honenPokemonFile, 20, honenDataBase);
 
     switch(userChoice){//used to identify which starter the user will have acess to depending on their region of choice
 
         case 1:
             player.currRegion = "Kanto";
-            kantoStarter(player, kantoNum, kantoDataBase);
+            kantoStarter(player, 20, kantoDataBase);
             player.currDB = kantoDataBase;
             break;
 
         case 2:
             player.currRegion = "Johto";
-            johtoStarter(player, johtoNum, johtoDataBase);
+            johtoStarter(player, 20, johtoDataBase);
             player.currDB = johtoDataBase;
             break;
 
         case 3:
             player.currRegion = "Hoenn";
-            honenStarter(player, honenNum, honenDataBase);
+            honenStarter(player, 20, honenDataBase);
             player.currDB = honenDataBase;
             break;
 
