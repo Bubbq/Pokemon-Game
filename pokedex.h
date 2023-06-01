@@ -1,39 +1,61 @@
-#ifndef POKEDEX_H
-#define POKEDEX_H
+#ifndef POKEMON_H
+#define POKEMON_H
 
 #include <iostream>
+#include<string>
 
-#include "pokemon.h"
+enum natureType {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
+enum RARITY {COMMON = 1, UNCOMMON = 2, RARE = 3, LEGENDARY = 4};
 
-struct node{
-    
-    Pokemon* pokemonInfo;
-    node* next;
-    
+class Pokemon
+{
+    private:
+    std::string name;
+    int evoStage;
+    int hp;
+    std::string base_attack_name;
+    int base_attack_dmg;
+    std::string heavy_attack_name;
+    int heavy_attack_dmg;
+    natureType type;
+    RARITY rarity;
+
+    public:
+
+    Pokemon();
+    ~Pokemon();
+
+
+    void setRarity(int val);
+    RARITY getRarity();
+
+
+    std::string Getname();
+    void Setname(std::string val);
+
+    natureType GetType();
+    void SetType(int val);
+    std::string GetTypeAsString(natureType val);
+
+    int GetevoStage();
+    void SetevoStage(int val);
+
+    int Gethp();
+    void Sethp(int val);
+
+    std::string Getbase_attack_name();
+    void Setbase_attack_name(std::string val);
+
+    int Getbase_attack_dmg();
+    void Setbase_attack_dmg(int val);
+
+    std::string Getheavy_attack_name();
+    void Setheavy_attack_name(std::string val);
+
+    int Getheavy_attack_dmg();
+    void Setheavy_attack_dmg(int val);
+
+    void printPokemon();
 };
 
-class Pokedex {
-public:
-    //node consts
-    node* head; // the first node of a linked list
-    node* tail; // the last element of a linked list.
-    
-    //method to print all the trainers  active pokemon
-    void printCurrPokemon();
-    
-    //method to add pokemon to the trainers pokedex
-    void appendPokemon(Pokemon * data);
-    
-    //method to remove pokemon by name (if the user chooses to)
-    bool removePokemonByName(char* name);
-    
-    //methods to read file info into array of pokemon and into the linked list
-    int getNumberOfRecords(char filename[]);
-    void readPokemonDataBase(char filename[], Pokemon*&arr);
-    
-    //constructor and destructor
-    Pokedex();
-    ~Pokedex();
-};
-
-#endif // POKEDEX_H
+#endif // POKEMON_H
