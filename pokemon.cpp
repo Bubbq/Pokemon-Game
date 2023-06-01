@@ -16,6 +16,9 @@ Pokemon::Pokemon(){
 
 Pokemon::~Pokemon(){}
 
+void Pokemon::setRarity(int val){rarity = (RARITY)val;}
+RARITY Pokemon::getRarity(){return rarity;}
+
 std::string Pokemon::Getname() { return name; }
 void Pokemon::Setname(std::string val) { name = val; }
 
