@@ -5,6 +5,7 @@
 #include<string>
 
 enum natureType {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
+enum RARITY {COMMON = 1, UNCOMMON = 2, RARE = 3, LEGENDARY = 4};
 
 class Pokemon
 {
@@ -17,11 +18,17 @@ class Pokemon
     std::string heavy_attack_name;
     int heavy_attack_dmg;
     natureType type;
+    RARITY rarity;
 
     public:
 
     Pokemon();
     ~Pokemon();
+
+
+    void setRarity(int val);
+    RARITY getRarity();
+
 
     std::string Getname();
     void Setname(std::string val);
