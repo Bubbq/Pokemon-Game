@@ -19,16 +19,22 @@ void clear() {//clear terminal based on OS
 struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
 
     Pokedex pokemonCollection;
-    int xp = 0;
-    // int trainerLvl = 1;
     int trainerLvl = 5; //for testing features
+    int xp = 0;
+    int mana = 100;
+    // int trainerLvl = 1;
+
     int pokeBalls = 10;
     int greatBalls = 5;
     int ultraBalls = 2;
+
     int manaPot = 5;
     int healthPot = 5;
+
     std::string currRegion;
     std::vector<Pokemon> currDB;
+    Pokemon * activePokemon;
+
 };
 
 void showStats(Trainer &player) {//show stats for debugging
@@ -48,7 +54,7 @@ void showStats(Trainer &player) {//show stats for debugging
 
     // std::cout << "TEAM:" << std::endl;
 
-    player.pokemonCollection.printCurrPokemon();
+    player.pokemonCollection.printPokemon();
 }
 
 int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
@@ -81,7 +87,6 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         f >> n; vec[counter].SetType(n);
         f >> n; vec[counter].setRarity(n);
 
-        // vec[counter].print();
         counter++;
     }
 
@@ -125,6 +130,7 @@ void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
     clear();
+
     std::cout << "Based on the Johto region, you have access to the following starter pokemon:" << std::endl << std::endl;
     std::cout << "1) Chikorita" << std::endl;
     std::cout << "2) Cyndaquil" << std::endl;
@@ -311,6 +317,7 @@ bool catchSim(bool caught, int userChoice, int successRate, Trainer &player, int
 
             else{
                 std::cout << "You dont have enough Pokeballs to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+                    return false;
             }
 
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -347,6 +354,7 @@ bool catchSim(bool caught, int userChoice, int successRate, Trainer &player, int
 
             else{
                 std::cout << "You dont have enough Great balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+                    return false;
             }
 
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -383,6 +391,7 @@ bool catchSim(bool caught, int userChoice, int successRate, Trainer &player, int
 
             else{
                 std::cout << "You dont have enough Ultra balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
+                    return false;
             }
 
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -452,6 +461,50 @@ void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simul
 
 }
 
+Pokemon * choosePokemon(Trainer &player, int choice){//input validation for the user's pokemon choice
+
+        while(choice > player.pokemonCollection.findNodeSize()){//if the number entered is larger than the trainers pokemon size, then the user's choice is invalid
+            std::cout << "Pokemon choice is invalid, please try again." << std::endl;
+            std::cin >> choice;
+        }
+
+    return player.pokemonCollection.findPokemonAtIndex(choice);//returns the info of the pokemon that the player has chosen
+}
+
+void fight(Trainer &player, int randomPokemonIndex){
+
+    bool attack = false;//either you defeat the pokemon, or you flee
+    Pokemon enemyPokemon = player.currDB[randomPokemonIndex];//makes the randomly encountered pokemon a single varibale
+
+        while(attack == false){
+
+            std::cout << "Before fighting " << player.currDB[randomPokemonIndex].Getname() << ", which pokemon would you like to bring to battle?" << std::endl << std::endl;
+
+            player.pokemonCollection.printCurrPokemon();// user will choose based on number output from this member function
+
+            int choice;
+            std::cin >> choice;
+
+            player.activePokemon = choosePokemon(player, choice);// sets the active pokemon of the trainer to the pokemon he/she picked
+
+            std::cout << "What will you attack " << enemyPokemon.Getname() << " with?" << std::endl << std::endl;
+
+            int userChoice;
+
+            std::cout << "1.)Base attack: " << player.activePokemon->Getbase_attack_name() << player.activePokemon->Getbase_attack_dmg() << " dmg (Mana cost: 5)" << std::endl;
+            std::cout << "1.)Heavy attack: " << player.activePokemon->Getheavy_attack_name() << player.activePokemon->Getheavy_attack_dmg() << " dmg (Mana cost: 20)" << std::endl;
+            std::cout << "Other:" << std::endl;
+
+            std::cout << "3.)Consume Mana Pot (+20 Mana)" << std::endl;
+            std::cout << "4.)Use Health Pot (+20 Health)" << std::endl;//heals a specific pokemon
+            std::cout << "5.)Switch Pokemon" << std::endl;//switches the active pokemon of the trainer
+
+            std::cin >> userChoice;
+
+        }
+
+}
+
 void explore(Trainer &player){
 
     int min = 0;
@@ -483,7 +536,7 @@ void explore(Trainer &player){
 
             case 1: catchPokemon(player, randomNumber); break;
 
-            case 2: //working on
+            case 2: fight(player, randomNumber);
 
             case 3: flee(player); break;
 
