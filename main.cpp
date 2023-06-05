@@ -56,6 +56,7 @@ void showStats(Trainer &player) {//show stats for debugging
     // std::cout << "TEAM:" << std::endl;
 
     player.pokemonCollection.printPokemon();
+    // player.pokemonCollection.printCurrPokemon();
 }
 
 int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
@@ -91,7 +92,6 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         vec[counter].printPokemon();
         counter++;
     }
-
 }
 
 Pokemon * findPokemon(std::string name, int N, std::vector<Pokemon> &pokemonDB){//finds and returns of a pokemon given its name, helpful annexing pokemon into the trainers collection
@@ -511,11 +511,14 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
     clear();
     int userChoice;
 
+    while(userChoice != 0) {
+
     //the node size is still zero, appending to list does not work
-    std::cout << "Pokemon collection printing: " << std::endl;
+    std::cout << "Number of pokemon in collection: " << std::endl;
     std::cout << player.pokemonCollection.findNodeSize() << std::endl;
 
-    while(userChoice != 0) {
+    // Pokemon *P = findPokemon("Charmander", 3, kantoDB);
+    // P.printPokemon();
         std::cout << "What would you like to do? (Enter number)" << std::endl << std::endl;
         std::cout << "1) Forage" << std::endl;//DONE
         std::cout << "2) Explore" << std::endl;
@@ -571,13 +574,15 @@ int main() {
     }
 
     //change this back to proper ammount of pokemon
-    std::vector<Pokemon> kantoDataBase(3);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
-    std::vector<Pokemon> johtoDataBase(3);
-    std::vector<Pokemon> honenDataBase(3);
+    int numOfPokemon = 3;
 
-    readPokemonData(kantoPokemonFile, 3, kantoDataBase);//reads the info to the corresponding vectors of region
-    readPokemonData(johtoPokemonFile, 3, johtoDataBase);
-    readPokemonData(honenPokemonFile, 3, honenDataBase);
+    std::vector<Pokemon> kantoDataBase(numOfPokemon);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
+    std::vector<Pokemon> johtoDataBase(numOfPokemon);
+    std::vector<Pokemon> honenDataBase(numOfPokemon);
+
+    readPokemonData(kantoPokemonFile, numOfPokemon, kantoDataBase);//reads the info to the corresponding vectors of region
+    readPokemonData(johtoPokemonFile, numOfPokemon, johtoDataBase);
+    readPokemonData(honenPokemonFile, numOfPokemon, honenDataBase);
 
     // std::cout << "Kanto: \n";
     // for (auto x : kantoDataBase) x.printPokemon();
@@ -591,17 +596,17 @@ int main() {
     switch(userChoice){//used to identify which starter the user will have acess to depending on their region of choice
         case 1:
             player.currRegion = "Kanto";
-            kantoStarter(player, 20, kantoDataBase);
+            kantoStarter(player, numOfPokemon, kantoDataBase);
             player.currDB = kantoDataBase;
             break;
         case 2:
             player.currRegion = "Johto";
-            johtoStarter(player, 20, johtoDataBase);
+            johtoStarter(player, numOfPokemon, johtoDataBase);
             player.currDB = johtoDataBase;
             break;
         case 3:
             player.currRegion = "Hoenn";
-            honenStarter(player, 20, honenDataBase);
+            honenStarter(player, numOfPokemon, honenDataBase);
             player.currDB = honenDataBase;
             break;
 

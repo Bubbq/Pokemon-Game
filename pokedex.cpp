@@ -22,7 +22,7 @@ void Pokedex::printPokemon(){
     node * tmp = new node();
     tmp = head;
     
-    while(tmp->next!=nullptr){
+    while(tmp->next != nullptr){
         
         std::cout <<  "General Stats: " << std::endl << std::endl;
         
