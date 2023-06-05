@@ -5,11 +5,38 @@
 
 void Pokedex::printCurrPokemon(){
 
+    int pokemonCount = 1;
     node * tmp = new node();
     tmp = head;
 
     while(tmp->next!=nullptr){
-        std::cout << tmp->pokemonInfo->Getname() << "\t" << tmp->pokemonInfo->Gethp() << std::endl;
+
+        std::cout  << pokemonCount << ".) " << tmp->pokemonInfo->Getname() << std::endl;
+        tmp = tmp->next;
+        pokemonCount++;
+
+    }
+
+}
+
+void Pokedex::printPokemon(){
+
+    node * tmp = new node();
+    tmp = head;
+
+        while(tmp->next!=nullptr){
+
+            std::cout <<  "General Stats: " << std::endl << std::endl;
+
+            std::cout << "Name: " << tmp->pokemonInfo->Getname() << std::endl;
+            std::cout << "Type: " << tmp->pokemonInfo->GetTypeAsString(tmp->pokemonInfo->GetType()) << std::endl << std::endl;
+
+            std::cout << "Attack Statistics: " << std::endl << std::endl;
+
+            std::cout << "Current Health: " << tmp->pokemonInfo->Gethp() << std::endl;
+            std::cout << "Base: " << tmp->pokemonInfo->Getbase_attack_name() << ", " << tmp->pokemonInfo->Getbase_attack_dmg() << "dmg" << std::endl;
+            std::cout << "Heavy: " << tmp->pokemonInfo->Getheavy_attack_name() << ", " << tmp->pokemonInfo->Getheavy_attack_dmg() << "dmg" << std::endl << std::endl;
+
         tmp = tmp->next;
     }
 }
@@ -27,7 +54,9 @@ void Pokedex::appendPokemon(Pokemon * data){
 
     // Traverse until the end of the list
     else {
-        node *tmp = head;
+        node *tmp = new node();
+        tmp = head;
+
         while (tmp->next != nullptr) {
             tmp = tmp->next;
         }
@@ -70,6 +99,33 @@ bool Pokedex::removePokemonByName(char* name){
     return false;
 }
 
+int Pokedex::findNodeSize() {
+	int c = 0;
+	node *tmp = new node();
+	tmp = head;
+
+	while (tmp->next!=nullptr) {//if were not at the end, increment
+		c++;
+		tmp = tmp->next;
+	}
+	return c;
+}
+
+Pokemon * Pokedex::findPokemonAtIndex(int val){
+
+    node * tmp = new node();
+    tmp = head;
+    int index = 0;
+
+            while(tmp->next!=nullptr){
+                index++;
+                tmp = tmp->next;
+                    if(index == val){
+                        return tmp->pokemonInfo;
+                    }
+
+            }
+}
 
 Pokedex::Pokedex(){
 
