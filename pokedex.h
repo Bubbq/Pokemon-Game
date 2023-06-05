@@ -31,7 +31,6 @@ public:
     //method to remove pokemon by name (if the user chooses to)
     bool removePokemonByName(char* name);
 
-
     Pokemon * findPokemonAtIndex(int val);
     //constructor and destructor
     Pokedex();

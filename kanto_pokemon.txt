@@ -1,1 +1,3 @@
-
+Charmander 1 100 slash 5 blueball 10 5 1
+Squirtle 2 100 slash 5 blueball 10 5 2
+Bulbasuar 3 100 slash 5 blueball 10 5 3
