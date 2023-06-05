@@ -21,6 +21,9 @@ public:
 
     //method to print all the trainers  active pokemon
     void printCurrPokemon();
+    void printPokemon();
+    //method to find how many pokemon a trainer has
+    int findNodeSize();
 
     //method to add pokemon to the trainers pokedex
     void appendPokemon(Pokemon * data);
@@ -28,10 +31,8 @@ public:
     //method to remove pokemon by name (if the user chooses to)
     bool removePokemonByName(char* name);
 
-    //methods to read file info into array of pokemon and into the linked list
-    int getNumberOfRecords(char filename[]);
-    void readPokemonDataBase(char filename[], Pokemon*&arr);
 
+    Pokemon * findPokemonAtIndex(int val);
     //constructor and destructor
     Pokedex();
     ~Pokedex();
