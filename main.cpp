@@ -21,8 +21,8 @@ struct Trainer{//this is the content of the current player, the linked list of p
 
     Pokedex pokemonCollection;
     int trainerLvl = 5; //for testing features
-    int xp = 0;
-    int mana = 100;
+    int xp = 0;//every 100 xp, the trainer gets a new level, max level is 10
+    int mana = 100;//energy used every time a trainers pokemon attacks
     // int trainerLvl = 1;
 
     int pokeBalls = 10;
@@ -267,18 +267,18 @@ void fastTravel(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokem
 }
 
 void flee(Trainer &player){// lets the trainer run away, but not without punishment, some items will be lost
-    
+
     int arr[] = {player.pokeBalls, player.greatBalls, player.ultraBalls, player.healthPot, player.manaPot};
-    
+
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomNumber = 0 + (std::rand() % (4 - 0 + 1));
-    
+
     if (arr[randomNumber] != 0) {
-        
+
         int randomAmmount = 1 + (std::rand() % (5 - 1 + 1));
-        
+
         std::string item;
-        
+
         switch (randomNumber) {
         case 0: player.pokeBalls -= randomAmmount; if (player.pokeBalls < 0) player.pokeBalls = 0; item = "Pokeball"; break;
         case 1: player.greatBalls -= randomAmmount; if (player.greatBalls < 0) player.greatBalls = 0;item = "Great Ball"; break;
@@ -286,7 +286,7 @@ void flee(Trainer &player){// lets the trainer run away, but not without punishm
         case 3: player.healthPot -= randomAmmount; if (player.healthPot < 0) player.healthPot = 0;item = "Health Pot"; break;
         case 4: player.manaPot -= randomAmmount; if (player.manaPot < 0) player.manaPot = 0;item = "Mana Pot"; break;
         }
-        
+
         clear();
         std::cout << "You ran away, but while escaping you lost " << randomAmmount << " " << item;
         if(randomAmmount > 1){
@@ -302,7 +302,7 @@ void flee(Trainer &player){// lets the trainer run away, but not without punishm
 }
 
 bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemonIndex, int &catchAttempts){//simualtes the act of catching, bool values will tell the catchPokemon function if the pokemon has been caught or fled.
-    
+
     int randomNumber;
     int min = 1;
     int max = 100;
@@ -317,10 +317,10 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << "You dont have enough Pokeballs to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
             return false;
         }
-        
+
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
         randomNumber = min + (std::rand() % (max - min + 1));
-        
+
         if(randomNumber <= successRate){//using a pokeball does not change the base success rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
@@ -330,13 +330,13 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
             catchAttempts++;//after 5, the pokemon runs away
         }
-        
+
         if(catchAttempts == 5){//runs away after 5 tries
             std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
             return true;
         }
         break;
-        
+
     case 2:
         if(player.greatBalls > 0){//if the player has the appropraite amount of a certain ball...
             player.greatBalls--;//lose a great ball trying to catch the pokemon
@@ -345,10 +345,10 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << "You dont have enough Great balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
             return false;
         }
-        
+
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
         randomNumber = min + (std::rand() % (max - min + 1));
-        
+
         if(randomNumber <= successRate + 10){//using a great ball adds 10% to the base sucess rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
@@ -358,13 +358,13 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
             catchAttempts++;//after 5, the pokemon runs away
         }
-        
+
         if(catchAttempts == 5){//runs away after 5 tries
             std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
             return true;
         }
         break;
-        
+
     case 3:
         if(player.ultraBalls > 0){//if the player has the appropraite amount of a certain ball...
             player.ultraBalls--;//lose an ultra ball trying to catch the pokemon
@@ -373,10 +373,10 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << "You dont have enough Ultra balls to catch " << player.currDB[randomPokemonIndex].Getname() << "!" << std::endl;
             return false;
         }
-        
+
         std::srand(static_cast<unsigned int>(std::time(nullptr)));
         randomNumber = min + (std::rand() % (max - min + 1));
-        
+
         if(randomNumber <= successRate + 15){//using an ultra ball adds 15% chance
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname()  << "!" << std::endl;
             player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
@@ -386,32 +386,32 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
             std::cout << player.currDB[randomPokemonIndex].Getname() << " broke free!" << std::endl;
             catchAttempts++;//after 5, the pokemon runs away
         }
-        
+
         if(catchAttempts == 5){//runs away after 5 tries
             std::cout << player.currDB[randomPokemonIndex].Getname() << " ran away! :(" << std::endl;
             return true;
         }
         break;
-        
+
     }
     return false;
 }
 
-void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simulates the catching of a pokemon, %  chance of catch is as follows: 50% common, 25% uncommon, 15% rare, and 10% legendary
-    
+void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simulates the catching of a pokemon
+
     bool caught = false;//variable to loop the menu screen
     int catchAttempts = 0;//the amount of times the player tries to catch a certain pokemon
-    
+
     std::cout << "Random Pokemon Index: " << randomPokemonIndex << std::endl;
     while (caught == false){
         std::cout << "Which ball would you like to use?" << std::endl << std::endl;
         std::cout << "1.)Pokeball" << std::endl;
         std::cout << "2.)Great Ball" << std::endl;
         std::cout << "3.)Ultra Ball" << std::endl;
-        
+
         int userChoice;
         std::cin >> userChoice;
-        
+
         if(player.currDB[randomPokemonIndex].getRarity() == COMMON){//theres a 50% base catch rate
             caught = catchSim(userChoice, 50, player, randomPokemonIndex, catchAttempts);
         }
@@ -427,83 +427,140 @@ void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simul
     }
 }
 
-Pokemon * choosePokemon(Trainer &player, int choice){//input validation for the user's pokemon choice
+void choosePokemon(Trainer &player, int switches, Pokemon enemyPokemon){//user's pokemon choice
+
+        if (switches > 0){
+            std::cout << "Which pokemon would you like to switch with?" << std::endl;
+        }
+        else{
+            std::cout << "Before fighting " << enemyPokemon.Getname() << ", which pokemon would you like to bring to battle?" << std::endl << std::endl;
+        }
+
+    player.pokemonCollection.printCurrPokemon();// user will choose based on number output from this member function
+
+    int choice;
+    std::cin >> choice;
 
         while(choice > player.pokemonCollection.findNodeSize()){//if the number entered is larger than the trainers pokemon size, then the user's choice is invalid
             std::cout << "Pokemon choice is invalid, please try again." << std::endl;
             std::cin >> choice;
         }
 
-    return player.pokemonCollection.findPokemonAtIndex(choice);//returns the info of the pokemon that the player has chosen
+     player.activePokemon = player.pokemonCollection.findPokemonAtIndex(choice);//returns the info of the pokemon that the player has chosen
+}
+
+void useManaPot(Trainer &player){ //act of using a mana pot
+
+        if(player.manaPot > 0){
+
+            player.mana += 20;//adds 20 to the player
+            player.manaPot--;
+
+            std::cout << "Using Mana Pot, you've gained 20 mana!" << std::endl;
+            std::cout << "You now have " << player.mana << " Mana and " << player.manaPot << " pots left" << std::endl;
+
+        }
+
+        else{
+            std::cout << "You don't have enough Mana pots !" << std::endl;
+        }
+
+}
+
+void useHealthPot(Trainer &player){//act of healing the trainers active pokemon
+
+        if(player.healthPot > 0){
+
+            player.activePokemon->Sethp(player.activePokemon->Gethp() + 20);//adds the health of the pokemon by 20
+
+            std::cout << "You've healed " << player.activePokemon->Getname() << " , " << player.activePokemon->Getname() << " now has " << player.activePokemon->Gethp() << " hp!" << std::endl;
+
+        }
+
+        else{
+            std::cout << "You don't have enough health pots to heal" << player.activePokemon->Getname() << "!" << std::endl;
+        }
+
 }
 
 void fight(Trainer &player, int randomPokemonIndex){
-    
-    bool attack = false;//either you defeat the pokemon, or you flee
+
+    bool defeatOrFlee = false;//either you defeat the pokemon, or you flee
+    int switches = 0;
     Pokemon enemyPokemon = player.currDB[randomPokemonIndex];//makes the randomly encountered pokemon a single varibale
-    
-    while(attack == false){
-        std::cout << "Before fighting " << player.currDB[randomPokemonIndex].Getname() << ", which pokemon would you like to bring to battle?" << std::endl << std::endl;
-        
-        player.pokemonCollection.printCurrPokemon();// user will choose based on number output from this member function
-        
-        int choice;
-        std::cin >> choice;
-        player.activePokemon = choosePokemon(player, choice);// sets the active pokemon of the trainer to the pokemon he/she picked
-        
+
+    while(defeatOrFlee == false){
+
+        choosePokemon(player, switches, enemyPokemon); // user will choose based on number output from this member function
+
+        switches++;
+
         std::cout << "What will you attack " << enemyPokemon.Getname() << " with?" << std::endl << std::endl;
-        
+
         int userChoice;
-        
-        std::cout << "1)Base attack: " << player.activePokemon->Getbase_attack_name() << player.activePokemon->Getbase_attack_dmg() << " dmg (Mana cost: 5)" << std::endl;
-        std::cout << "2)Heavy attack: " << player.activePokemon->Getheavy_attack_name() << player.activePokemon->Getheavy_attack_dmg() << " dmg (Mana cost: 20)" << std::endl;
+
+        std::cout << "1)Base attack: " << player.activePokemon->Getbase_attack_name() << "   " << player.activePokemon->Getbase_attack_dmg() << " dmg (Mana cost: 5)" << std::endl;
+        std::cout << "2)Heavy attack: " << player.activePokemon->Getheavy_attack_name() << "   " << player.activePokemon->Getheavy_attack_dmg() << " dmg (Mana cost: 20)" << std::endl;
         std::cout << "Other:" << std::endl;
-        
+
         std::cout << "3)Consume Mana Pot (+20 Mana)" << std::endl;
-        std::cout << "4)Use Health Pot (+20 Health)" << std::endl;//heals a specific pokemon
+        std::cout << "4)Heal Pokemon (+20 Health)" << std::endl;//heals a specific pokemon
         std::cout << "5)Switch Pokemon" << std::endl;//switches the active pokemon of the trainer
-        
+        std::cout << "6) Flee!" << std::endl;
+
         std::cin >> userChoice;
-        
+
+            switch(userChoice){
+
+                case 1: break;
+                case 2: break;
+                case 3: useManaPot(player); break;
+                case 4: useHealthPot(player); break;
+                case 5: choosePokemon(player, switches, enemyPokemon); break;
+                case 6: flee(player); defeatOrFlee = true; break;
+                default: std::cout << "Invalid input" << std::endl; break;
+
+            }
+
     }
 }
 
 void explore(Trainer &player){
-    
+
     std::cout << "Starting explore function\n";
     int min = 0;
     int max = player.currDB.size() - 1;
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    
+
     int randomNumber = min + (std::rand() % (max - min + 1));
-    
+
     clear();
     std::cout << "Random number calcuated : " << randomNumber << std::endl;
     std::cout << "After roaming for some time in the " << player.currRegion << " Region, you've run into " << player.currDB[randomNumber].Getname() << "!" << std::endl;
     // std::cout << "Here are some of "<< player.currDB[randomNumber].Getname() << "'s Stats:" << std::endl << std::endl;
-    
+
     std::cout << "Name: " << player.currDB[randomNumber].Getname() << std::endl
               << "Type: " << player.currDB[randomNumber].GetTypeAsString(player.currDB[randomNumber].GetType()) << std::endl
               << "HP: " << player.currDB[randomNumber].Gethp() << std::endl << std::endl
-              << "Base_Attack: " << player.currDB[randomNumber].Getbase_attack_name() << ", " << player.currDB[randomNumber].Getbase_attack_dmg() << " dmg" << std::endl 
+              << "Base_Attack: " << player.currDB[randomNumber].Getbase_attack_name() << ", " << player.currDB[randomNumber].Getbase_attack_dmg() << " dmg" << std::endl
               << "Heavy_Attack: " << player.currDB[randomNumber].Getheavy_attack_name() << ", " << player.currDB[randomNumber].Getheavy_attack_dmg() << std::endl << std::endl;
-    
+
     int userChoice;
-   
+
     std::cout << "What would you like to do? (Enter number)" << std::endl;
     std::cout << "1) Catch it" << std::endl;
     std::cout << "2) Fight it" << std::endl;
     std::cout << "3) Flee!" << std::endl;
-    
+
     std::cin >> userChoice;
-    
+
     switch(userChoice) {
     case 1: catchPokemon(player, randomNumber); break;
     case 2: fight(player, randomNumber); break;
     case 3: flee(player); break;
     default: std::cout << "Invalid input" << std::endl; break; //error checking
     }
-    
+
 }
 
 void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> johtoDB, std::vector<Pokemon> honenDB){//main hub of the game, where trainer either encounters pokemon, forages for new items, or fast travels to a new location.
