@@ -40,20 +40,20 @@ class Pokemon
     int GetevoStage();
     void SetevoStage(int val);
 
-    int Gethp();
-    void Sethp(int val);
+    double Gethp();
+    void Sethp(double val);
 
     std::string Getbase_attack_name();
     void Setbase_attack_name(std::string val);
 
-    int Getbase_attack_dmg();
-    void Setbase_attack_dmg(int val);
+    double Getbase_attack_dmg();
+    void Setbase_attack_dmg(double val);
 
     std::string Getheavy_attack_name();
     void Setheavy_attack_name(std::string val);
 
-    int Getheavy_attack_dmg();
-    void Setheavy_attack_dmg(int val);
+    double Getheavy_attack_dmg();
+    void Setheavy_attack_dmg(double val);
 
     void printPokemon();
 };
