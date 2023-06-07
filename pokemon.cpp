@@ -60,12 +60,13 @@ void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
 
 void Pokemon::printPokemon(){
     std::cout <<
-        "Name: " << name << std::endl <<
-        "Evol: " << evoStage << std::endl <<
-        "HP: " << hp << std::endl <<
-        "Base_Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl <<
-        "Heavy_Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl <<
-        "Type: " << GetTypeAsString(type) << std::endl <<
-        "Rarity: " << rarity << std::endl <<
+        "\t" << name << std::endl <<
+        // "\t\tEvol: " << evoStage << std::endl <<
+        "\tHP: " << hp << std::endl <<
+        "\tType: " << GetTypeAsString(type) << std::endl <<
+        "\tRarity: " << rarity << std::endl <<
+        std::endl << 
+        "\tNormal Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl <<
+        "\tHeavy Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl <<
         std::endl;
 }

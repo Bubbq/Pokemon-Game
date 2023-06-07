@@ -2,7 +2,7 @@
 #define POKEMON_H
 
 #include <iostream>
-#include<string>
+#include <string>
 
 enum natureType {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
 enum RARITY {COMMON = 1, UNCOMMON = 2, RARE = 3, LEGENDARY = 4};

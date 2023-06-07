@@ -17,9 +17,14 @@ void clear() {//clear terminal based on OS
 #endif
 }
 
+void printPokemon(std::vector<Pokemon> vec) {
+    for (auto x:vec) x.printPokemon();
+    std::cout << std::endl;
+}
+
 struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
 
-    Pokedex pokemonCollection;
+    std::vector<Pokemon> pokemonCollection;
     int trainerLvl = 5; //for testing features
     int xp = 0;//every 100 xp, the trainer gets a new level, max level is 10
     int mana = 100;//energy used every time a trainers pokemon attacks
@@ -54,8 +59,8 @@ void showStats(Trainer &player) {//show stats for debugging
     std::cout << std::endl;
 
     // std::cout << "TEAM:" << std::endl;
-
-    player.pokemonCollection.printPokemon();
+    std::cout << "Pokemon: " << std::endl;
+    printPokemon(player.pokemonCollection);
     // player.pokemonCollection.printCurrPokemon();
 }
 
@@ -89,7 +94,7 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         f >> n; vec[counter].SetType(n);
         f >> n; vec[counter].setRarity(n);
 
-        vec[counter].printPokemon();
+        // vec[counter].printPokemon();
         counter++;
     }
 }
@@ -104,7 +109,7 @@ Pokemon * findPokemon(std::string name, int N, std::vector<Pokemon> &pokemonDB){
     return nullptr;
 }
 
-void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
+void kantoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
 
     clear();
     std::cout << "Based on the Kanto region you have access to the following starter pokemon:" << std::endl << std::endl;
@@ -122,17 +127,16 @@ void kantoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
-        case 1: player.pokemonCollection.appendPokemon(findPokemon("Charmander", N, pokemonDB)); break;
-        case 2: player.pokemonCollection.appendPokemon(findPokemon("Squirtle", N, pokemonDB)); break;
-        case 3: player.pokemonCollection.appendPokemon(findPokemon("Bulbasuar", N, pokemonDB)); break;
-        default: break;
+    case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    default: break;
     }
 }
 
-void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
+void johtoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
 
     clear();
-
     std::cout << "Based on the Johto region, you have access to the following starter pokemon:" << std::endl << std::endl;
     std::cout << "1) Chikorita" << std::endl;
     std::cout << "2) Cyndaquil" << std::endl;
@@ -149,14 +153,14 @@ void johtoStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
 
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
-        case 1: player.pokemonCollection.appendPokemon(findPokemon("Chikorita", N, pokemonDB)); break;
-        case 2: player.pokemonCollection.appendPokemon(findPokemon("Cyndaquil", N, pokemonDB)); break;
-        case 3: player.pokemonCollection.appendPokemon(findPokemon("Totodile", N, pokemonDB)); break;
-        default: break;
+    case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    default: break;
     }
 }
 
-void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
+void honenStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
 
     clear();
     std::cout << "Based on the Honen region, you have access to the following starter pokemon:" << std::endl << std::endl;
@@ -173,10 +177,10 @@ void honenStarter(Trainer &player, int N, std::vector<Pokemon>&pokemonDB){
     }
 
     switch(userPokemonChoice) {
-        case 1: player.pokemonCollection.appendPokemon(findPokemon("Treeko", N, pokemonDB)); break;
-        case 2: player.pokemonCollection.appendPokemon(findPokemon("Torchic", N, pokemonDB)); break;
-        case 3: player.pokemonCollection.appendPokemon(findPokemon("Mudkip", N, pokemonDB)); break;
-        default: break;
+    case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    default: break;
     }
 }
 
@@ -323,7 +327,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
 
         if(randomNumber <= successRate){//using a pokeball does not change the base success rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
-            player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+            player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
             return true;
         }
         else{
@@ -351,7 +355,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
 
         if(randomNumber <= successRate + 10){//using a great ball adds 10% to the base sucess rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
-            player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+            player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
             return true;
         }
         else{
@@ -379,7 +383,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
 
         if(randomNumber <= successRate + 15){//using an ultra ball adds 15% chance
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname()  << "!" << std::endl;
-            player.pokemonCollection.appendPokemon(&player.currDB[randomPokemonIndex]);
+            player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
             return true;
         }
         else{
@@ -428,25 +432,25 @@ void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simul
 }
 
 void choosePokemon(Trainer &player, int switches, Pokemon enemyPokemon){//user's pokemon choice when orginially choosing or switching their pokemon
+    
+    if (switches > 0){
+        std::cout << "Which pokemon would you like to switch with?" << std::endl;
+    }
+    else {
+        std::cout << "Before fighting " << enemyPokemon.Getname() << ", which pokemon would you like to bring to battle?" << std::endl << std::endl;
+    }
 
-        if (switches > 0){
-            std::cout << "Which pokemon would you like to switch with?" << std::endl;
-        }
-        else{
-            std::cout << "Before fighting " << enemyPokemon.Getname() << ", which pokemon would you like to bring to battle?" << std::endl << std::endl;
-        }
-
-    player.pokemonCollection.printCurrPokemon();// user will choose based on number output from this member function
+    printPokemon(player.pokemonCollection);
 
     int choice;
     std::cin >> choice;
 
-        while(choice > player.pokemonCollection.findNodeSize()){//if the number entered is larger than the trainers pokemon size, then the user's choice is invalid
+    while(choice > (int)player.pokemonCollection.size()){//if the number entered is larger than the trainers pokemon size, then the user's choice is invalid
             std::cout << "Pokemon choice is invalid, please try again." << std::endl;
             std::cin >> choice;
         }
 
-     player.activePokemon = player.pokemonCollection.findPokemonAtIndex(choice);//returns the info of the pokemon that the player has chosen
+     player.activePokemon = &player.pokemonCollection[choice];//returns the info of the pokemon that the player has chosen
 }
 
 void useManaPot(Trainer &player){ //act of using a mana pot
@@ -747,36 +751,36 @@ void explore(Trainer &player){
     int min = 0;
     int max = player.currDB.size() - 1;
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
+    
     int randomNumber = min + (std::rand() % (max - min + 1));
-
+    
     clear();
     std::cout << "Random number calcuated : " << randomNumber << std::endl;
-    std::cout << "After roaming for some time in the " << player.currRegion << " Region, you've run into " << player.currDB[randomNumber].Getname() << "!" << std::endl;
+    std::cout << "After roaming for some time in the " << player.currRegion << " Region, you've run into " << player.currDB[randomNumber].Getname() << "!" << std::endl << std::endl;
     // std::cout << "Here are some of "<< player.currDB[randomNumber].Getname() << "'s Stats:" << std::endl << std::endl;
-
-    std::cout << "Name: " << player.currDB[randomNumber].Getname() << std::endl
-              << "Type: " << player.currDB[randomNumber].GetTypeAsString(player.currDB[randomNumber].GetType()) << std::endl
-              << "HP: " << player.currDB[randomNumber].Gethp() << std::endl << std::endl
-              << "Base_Attack: " << player.currDB[randomNumber].Getbase_attack_name() << ", " << player.currDB[randomNumber].Getbase_attack_dmg() << " dmg" << std::endl
-              << "Heavy_Attack: " << player.currDB[randomNumber].Getheavy_attack_name() << ", " << player.currDB[randomNumber].Getheavy_attack_dmg() << std::endl << std::endl;
-
+    
+    player.currDB[randomNumber].printPokemon();
+    // std::cout << "Name: " << player.currDB[randomNumber].Getname() << std::endl
+    //           << "Type: " << player.currDB[randomNumber].GetTypeAsString(player.currDB[randomNumber].GetType()) << std::endl
+    //           << "HP: " << player.currDB[randomNumber].Gethp() << std::endl << std::endl
+    //           << "Base_Attack: " << player.currDB[randomNumber].Getbase_attack_name() << ", " << player.currDB[randomNumber].Getbase_attack_dmg() << " dmg" << std::endl
+    //           << "Heavy_Attack: " << player.currDB[randomNumber].Getheavy_attack_name() << ", " << player.currDB[randomNumber].Getheavy_attack_dmg() << std::endl << std::endl;
+    
     int userChoice;
-
+    
     std::cout << "What would you like to do? (Enter number)" << std::endl;
     std::cout << "1) Catch it" << std::endl;
     std::cout << "2) Fight it" << std::endl;
     std::cout << "3) Flee!" << std::endl;
-
+    
     std::cin >> userChoice;
-
+    
     switch(userChoice) {
     case 1: catchPokemon(player, randomNumber); break;
     case 2: fight(player, randomNumber); break;
     case 3: flee(player); break;
     default: std::cout << "Invalid input" << std::endl; break; //error checking
     }
-
 }
 
 void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> johtoDB, std::vector<Pokemon> honenDB){//main hub of the game, where trainer either encounters pokemon, forages for new items, or fast travels to a new location.
@@ -786,37 +790,27 @@ void menu(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokemon> jo
 
     while(userChoice != 0) {
 
-    //the node size is still zero, appending to list does not work
-    std::cout << "Number of pokemon in collection: " << std::endl;
-    std::cout << player.pokemonCollection.findNodeSize() << std::endl;
-
-    // Pokemon *P = findPokemon("Charmander", 3, kantoDB);
-    // P.printPokemon();
+        //the node size is still zero, appending to list does not work
+        std::cout << "Number of pokemon in collection: " << std::endl;
+        std::cout << player.pokemonCollection.size() << std::endl;
+        
         std::cout << "What would you like to do? (Enter number)" << std::endl << std::endl;
         std::cout << "1) Forage" << std::endl;//DONE
         std::cout << "2) Explore" << std::endl;
-
         std::cout << "3) Fast Travel to another region" << std::endl;//DONE
         std::cout << "4) View Stats" << std::endl;//DONE
         std::cout << std::endl << "0) QUIT" << std::endl;//DONE
-
-        // std::cout << "Kanto: \n";
-        // for (auto x : kantoDB) x.printPokemon();
-        // std::cout << "Johto: \n";
-        // for (auto x : johtoDB) x.printPokemon();
-        // std::cout << "Honen: \n";
-        // for (auto x : honenDB) x.printPokemon();
-
+        
         std::cin >> userChoice;
         clear();
-
+        
         switch(userChoice) {
-            case 0: std::cout << "Exiting menu!" << std::endl; break;
-            case 1: forage(player); break;
-            case 2: explore(player); break;
-            case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
-            case 4: showStats(player); break;
-            default: std::cout << "Invalid input" << std::endl; break;
+        case 0: std::cout << "Exiting menu!" << std::endl; break;
+        case 1: forage(player); break;
+        case 2: explore(player); break;
+        case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
+        case 4: showStats(player); break;
+        default: std::cout << "Invalid input" << std::endl; break;
         }
     }
 }
@@ -857,29 +851,20 @@ int main() {
     readPokemonData(johtoPokemonFile, numOfPokemon, johtoDataBase);
     readPokemonData(honenPokemonFile, numOfPokemon, honenDataBase);
 
-    // std::cout << "Kanto: \n";
-    // for (auto x : kantoDataBase) x.printPokemon();
-    // std::cout << "Johto: \n";
-    // for (auto x : johtoDataBase) x.printPokemon();
-    // std::cout << "Honen: \n";
-    // for (auto x : honenDataBase) x.printPokemon();
-
-    player.pokemonCollection.appendPokemon(nullptr);
-
     switch(userChoice){//used to identify which starter the user will have acess to depending on their region of choice
         case 1:
             player.currRegion = "Kanto";
-            kantoStarter(player, numOfPokemon, kantoDataBase);
+            kantoStarter(player, kantoDataBase);
             player.currDB = kantoDataBase;
             break;
         case 2:
             player.currRegion = "Johto";
-            johtoStarter(player, numOfPokemon, johtoDataBase);
+            johtoStarter(player, johtoDataBase);
             player.currDB = johtoDataBase;
             break;
         case 3:
             player.currRegion = "Hoenn";
-            honenStarter(player, numOfPokemon, honenDataBase);
+            honenStarter(player, honenDataBase);
             player.currDB = honenDataBase;
             break;
 
