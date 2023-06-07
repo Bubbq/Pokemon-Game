@@ -427,7 +427,7 @@ void catchPokemon(Trainer &player, int randomPokemonIndex){//function that simul
     }
 }
 
-void choosePokemon(Trainer &player, int switches, Pokemon enemyPokemon){//user's pokemon choice
+void choosePokemon(Trainer &player, int switches, Pokemon enemyPokemon){//user's pokemon choice when orginially choosing or switching their pokemon
 
         if (switches > 0){
             std::cout << "Which pokemon would you like to switch with?" << std::endl;
@@ -483,6 +483,222 @@ void useHealthPot(Trainer &player){//act of healing the trainers active pokemon
 
 }
 
+void heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player){
+
+    if(player.mana >= 20){//error checking to see if the player has enough mana to preform the heavy attack
+
+        if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
+
+           victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
+
+        }
+
+        if(attacker.GetType() == FIRE){//strong against grass, weak to water
+
+            if(victim.GetType() == GRASS){ //trainers fire type pokemon will do 2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers fire type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or grass
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == GRASS){//strong against water, weak to fire
+
+            if(victim.GetType() == FIRE){ //trainers grass type pokemon will do 1/2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers grass type pokemon will do 2x dmg to a water type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or fire
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
+
+            if(victim.GetType() == GRASS){ //trainers water type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == ELECTRIC){ //trainers water type pokemon will do 1/2x dmg to a electric type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == FIRE){ //trainers water type pokemon will do 2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither fire, grass, or electric
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == ELECTRIC){//strong against water
+
+            if(victim.GetType() == WATER){ //trainers electric type pokemon will do 2x dmg to a water type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is not water
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+            }
+
+        }
+
+        }
+
+    else{//if the trainer does not have enough mana to preform the action
+
+        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " << attacker.Getheavy_attack_name() << "!" << std::endl;
+
+    }
+
+
+}
+
+void baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player){
+
+    if(player.mana >= 5){
+
+        if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
+
+           victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
+
+        }
+
+        if(attacker.GetType() == FIRE){//strong against grass, weak to water
+
+            if(victim.GetType() == GRASS){ //trainers fire type pokemon will do 2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers fire type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or grass
+
+                victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == GRASS){//strong against water, weak to fire
+
+            if(victim.GetType() == FIRE){ //trainers grass type pokemon will do 1/2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers grass type pokemon will do 2x dmg to a water type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or fire
+
+                victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
+
+            if(victim.GetType() == GRASS){ //trainers water type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == ELECTRIC){ //trainers water type pokemon will do 1/2x dmg to a electric type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
+
+            }
+
+            else if(victim.GetType() == FIRE){ //trainers water type pokemon will do 2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither fire, grass, or electric
+
+                victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
+
+            }
+
+        }
+
+        if(attacker.GetType() == ELECTRIC){//strong against water
+
+            if(victim.GetType() == WATER){ //trainers electric type pokemon will do 2x dmg to a water type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
+
+            }
+
+            else{//do normal dmg if enemy pokemon is not water
+
+                victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
+
+            }
+
+        }
+
+        }
+    else{//if the trainer does not have enough mana to preform the action
+
+        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " << attacker.Getbase_attack_name() << "!" << std::endl;
+
+    }
+
+}
+
 void fight(Trainer &player, int randomPokemonIndex){
 
     bool defeatOrFlee = false;//either you defeat the pokemon, or you flee
@@ -512,8 +728,8 @@ void fight(Trainer &player, int randomPokemonIndex){
 
             switch(userChoice){
 
-                case 1: break;
-                case 2: break;
+                case 1: baseAttack(*player.activePokemon, enemyPokemon, player); break;//TODO: add fainted pokemon if's and for the CPU to fight after this function will be executed
+                case 2: heavyAttack(*player.activePokemon, enemyPokemon, player); break;
                 case 3: useManaPot(player); break;
                 case 4: useHealthPot(player); break;
                 case 5: choosePokemon(player, switches, enemyPokemon); break;
