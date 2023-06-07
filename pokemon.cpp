@@ -25,7 +25,7 @@ void Pokemon::Setname(std::string val) { name = val; }
 natureType Pokemon::GetType(){return type;}
 void Pokemon::SetType(int val){type = (natureType)val;}
 std::string Pokemon::GetTypeAsString(natureType val){
-    
+
     switch(val){
     case 1: return "Normal";
         break;
@@ -43,29 +43,29 @@ std::string Pokemon::GetTypeAsString(natureType val){
 int Pokemon::GetevoStage() { return evoStage; }
 void Pokemon::SetevoStage(int val) { evoStage = val; }
 
-int Pokemon::Gethp() { return hp; }
-void Pokemon::Sethp(int val) { hp = val; }
+double Pokemon::Gethp() { return hp; }
+void Pokemon::Sethp(double val) { hp = val; }
 
 std::string Pokemon::Getbase_attack_name() { return base_attack_name; }
 void Pokemon::Setbase_attack_name(std::string val) { base_attack_name = val; }
 
-int Pokemon::Getbase_attack_dmg() { return base_attack_dmg; }
-void Pokemon::Setbase_attack_dmg(int val) { base_attack_dmg = val; }
+double Pokemon::Getbase_attack_dmg() { return base_attack_dmg; }
+void Pokemon::Setbase_attack_dmg(double val) { base_attack_dmg = val; }
 
 std::string Pokemon::Getheavy_attack_name() { return heavy_attack_name; }
 void Pokemon::Setheavy_attack_name(std::string val) { heavy_attack_name = val; }
 
-int Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
-void Pokemon::Setheavy_attack_dmg(int val) { heavy_attack_dmg = val; }
+double Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
+void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
 
 void Pokemon::printPokemon(){
     std::cout <<
         "Name: " << name << std::endl <<
         "Evol: " << evoStage << std::endl <<
         "HP: " << hp << std::endl <<
-        "Base_Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl << 
-        "Heavy_Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl << 
+        "Base_Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl <<
+        "Heavy_Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl <<
         "Type: " << GetTypeAsString(type) << std::endl <<
-        "Rarity: " << rarity << std::endl << 
+        "Rarity: " << rarity << std::endl <<
         std::endl;
 }
