@@ -65,6 +65,26 @@ void showStats(Trainer &player) {//show stats for debugging
     // player.pokemonCollection.printCurrPokemon();
 }
 
+void giveXP(Trainer &player, Pokemon &caughtOrKilled){//rewards xp to the trainer based on the rarity of pokemon that they've defeated in battle or caught
+
+    switch (caughtOrKilled.getRarity()){
+
+        case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; break;
+        case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; break;
+        case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; break;
+        case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; break;
+
+    }
+
+    if((player.xp % 100) == 0){//checks if the player has lvled up!
+
+        std::cout << "Congrats! You've leveled up!" << std::endl;
+        std::cout << "You are now level " << ++player.trainerLvl << std::endl;
+
+    }
+    
+}
+
 int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
 
     std::ifstream f(filename);
@@ -313,7 +333,9 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
     int max = 100;
 
     std::cout << "random pokemomn index: " << randomPokemonIndex << std::endl;
-    switch(userChoice){
+
+        switch(userChoice){
+
     case 1:
         if(player.pokeBalls > 0){//if the player has the appropraite amount of a certain ball...
             player.pokeBalls--;//lose a pokeball trying to catch the pokemon
@@ -329,6 +351,8 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate){//using a pokeball does not change the base success rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex]);
+
             return true;
         }
         else{
@@ -357,6 +381,8 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate + 10){//using a great ball adds 10% to the base sucess rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex]);
+
             return true;
         }
         else{
@@ -385,6 +411,8 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate + 15){//using an ultra ball adds 15% chance
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname()  << "!" << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex]);
+
             return true;
         }
         else{
@@ -454,7 +482,7 @@ void choosePokemon(Trainer &player, int switches, Pokemon enemyPokemon){//user's
      player.activePokemon = &player.pokemonCollection[--choice];//returns the info of the pokemon that the player has chosen
 }
 
-void choosePokemonToHeal(Trainer &player, int switches, Pokemon enemyPokemon){
+void choosePokemonToHeal(Trainer &player){
 
     std::cout << "Which pokemon would you like to heal?" << std ::endl;
     printPokemon(player.pokemonCollection);//lists options for the user to choose
@@ -502,11 +530,11 @@ void useManaPot(Trainer &player){ //act of using a mana pot
 
 }
 
-bool findMaxHealth(Pokemon &active, Trainer &player){
+bool findMaxHealth(Trainer &player){
 
     for(int i =0; i < 20; i++){
-        if(active.Getname() == player.currDB[i].Getname()){//if the pokemon mathced has the same health as the pokemon you chose, then your pokemon is at max health, and cannot be healed any futher
-            if(active.Gethp() == player.currDB[i].Gethp()){
+        if(player.activePokemon->Getname() == player.currDB[i].Getname()){//if the pokemon mathced has the same health as the pokemon you chose, then your pokemon is at max health, and cannot be healed any futher
+            if(player.activePokemon->Gethp() == player.currDB[i].Gethp()){
                 return true;
             }
         }
@@ -516,13 +544,13 @@ bool findMaxHealth(Pokemon &active, Trainer &player){
 
 }
 
-void useHealthPot(Trainer &player, int &switches, Pokemon &enemyPokemon){//act of healing the trainers active pokemon
+void useHealthPot(Trainer &player){//act of healing the trainers active pokemon
 
         if(player.healthPot > 0){
 
-            choosePokemonToHeal(player, switches, enemyPokemon); //choose pokemon to heal
+            choosePokemonToHeal(player); //choose pokemon to heal
 
-            if(findMaxHealth(*player.activePokemon, player)){//check to see if the pokemon has max health, dont want player to overheal their pokemon
+            if(findMaxHealth(player) == true){//check to see if the pokemon has max health, dont want player to overheal their pokemon
 
                 std::cout << "Your " << player.activePokemon->Getname() << " is at max health and cannot be healed any futher!" << std::endl;
                 return;
@@ -549,14 +577,7 @@ void victoryOrDefeat(Pokemon victimPokemon, Trainer &player, int &turns){//victo
     if(turns % 2 != 0){//when you defeat a pokemon
         std::cout << victimPokemon.Getname() << " has been defeated!" << std::endl;
 
-            switch (victimPokemon.getRarity()){
-
-                case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; break;
-                case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; break;
-                case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; break;
-                case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; break;
-
-            }
+        giveXP(player, victimPokemon);//rewarding the trainer exp
     }
 
     else{//when your pokemon has been defeated
@@ -629,6 +650,7 @@ bool checkIfDead(Pokemon &victim, Trainer &player, int &turns){//bool that retur
 
     if(victim.Gethp() <=0){
 
+        victim.Sethp(0);
         std::cout << "no health left!" << std::endl;
         victoryOrDefeat(victim, player, turns);
         return true; //returns true so the while loop of the attack menu ends
@@ -642,7 +664,34 @@ bool checkIfDead(Pokemon &victim, Trainer &player, int &turns){//bool that retur
 
 }
 
+void attackWhenNoHp(Pokemon & attacker, Trainer &player, int &turns, Pokemon &victim){//checks if the user is trying to fight with a fainted pokemon
+
+    if(attacker.Gethp() == 0){
+
+        int choice;
+
+        std::cout << attacker.Getname() << " does not have any health!" << std::endl;
+
+        std::cout << "would you like to heal or switch " << attacker.Getname() << "?" << std::endl << std::endl;
+
+        std::cout << "1.)Heal" << std::endl;
+        std::cout << "2.)Switch" << std::endl;
+
+        std::cin >> choice;
+
+            switch(choice){
+
+                case 1: useHealthPot(player);break;
+                case 2: choosePokemon(player, turns, victim); break;
+
+            }
+    }
+
+}
+
 bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the heavy attack sim for a pokemon
+
+    attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
 
     if(player.mana >= 20){//error checking to see if the player has enough mana to preform the heavy attack
 
@@ -797,6 +846,8 @@ bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns
 }
 
 bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the base attack sim for a pokemon
+
+    attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
 
     if(player.mana >= 5){
 
@@ -1013,7 +1064,7 @@ void fight(Trainer &player, int randomPokemonIndex){
                 break;
 
                 case 3: useManaPot(player); break;
-                case 4: useHealthPot(player, switches, enemyPokemon); break;
+                case 4: useHealthPot(player); break;
                 case 5: choosePokemon(player, ++switches, enemyPokemon); break;
                 case 6: flee(player); defeatOrFlee = true; break;
                 default: std::cout << "Invalid input" << std::endl; break;
