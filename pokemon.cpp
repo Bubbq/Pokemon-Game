@@ -6,7 +6,8 @@ Pokemon::Pokemon(){
     base_attack_name = "";
     heavy_attack_name = "";
 
-    evoStage = 0;
+    evoStage = 1;
+    pokemonXp = 0;
     hp = 0;
     base_attack_dmg = 0;
     heavy_attack_dmg = 0;
@@ -40,8 +41,11 @@ std::string Pokemon::GetTypeAsString(natureType val){
     }
 }
 
-int Pokemon::GetevoStage() { return evoStage; }
-void Pokemon::SetevoStage(int val) { evoStage = val; }
+int Pokemon::GetevoStage(){return evoStage;}
+void Pokemon::SetevoStage(int val){evoStage = val;}
+
+int Pokemon::GetPokemonXp() { return pokemonXp; }
+void Pokemon::SetPokemonXp(int val) { pokemonXp = val; }
 
 double Pokemon::Gethp() { return hp; }
 void Pokemon::Sethp(double val) { hp = val; }
@@ -59,9 +63,9 @@ double Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
 void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
 
 void Pokemon::printPokemon(){
-    int pokemonNumber = 0;
 
-    std::cout << ++pokemonNumber <<".)" <<name;
+
+    std::cout <<name;
 
             if(hp <=0){
                 std::cout << "(*FAINTED*)" << std::endl;
