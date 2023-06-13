@@ -12,6 +12,7 @@ class Pokemon
     private:
     std::string name;
     int evoStage;
+    int pokemonXp;
     int hp;
     std::string base_attack_name;
     int base_attack_dmg;
@@ -39,6 +40,9 @@ class Pokemon
 
     int GetevoStage();
     void SetevoStage(int val);
+
+    int GetPokemonXp();
+    void SetPokemonXp(int val);
 
     double Gethp();
     void Sethp(double val);
