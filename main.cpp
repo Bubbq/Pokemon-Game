@@ -19,8 +19,16 @@ void clear() {//clear terminal based on OS
 }
 
 void printPokemon(std::vector<Pokemon> vec) {
-    for (auto x:vec) x.printPokemon();
-    std::cout << std::endl;
+
+    int pokemonNumber = 0;
+
+        for (auto x:vec){
+
+            std::cout << ++pokemonNumber <<".)";
+            x.printPokemon();
+            std::cout << std::endl;
+
+    }
 }
 
 struct Trainer{//this is the content of the current player, the linked list of pokemon (his/her pokemonCollection), their lvl, and some forageable items (pokeBalls, health and mana pots).
@@ -40,6 +48,9 @@ struct Trainer{//this is the content of the current player, the linked list of p
 
     std::string currRegion;
     std::vector<Pokemon> currDB;
+    std::vector<Pokemon> kantoDB;
+    std::vector<Pokemon> johtoDB;
+    std::vector<Pokemon> honenDB;
     Pokemon * activePokemon;
 
 };
@@ -65,24 +76,94 @@ void showStats(Trainer &player) {//show stats for debugging
     // player.pokemonCollection.printCurrPokemon();
 }
 
-void giveXP(Trainer &player, Pokemon &caughtOrKilled){//rewards xp to the trainer based on the rarity of pokemon that they've defeated in battle or caught
+bool findPokemonDB(Trainer &player, std::vector<Pokemon>DB){//finds the database the evolved pokemon is in
 
-    switch (caughtOrKilled.getRarity()){
+    for(int i = 0; i < DB.size(); i++){
+        if(player.activePokemon->Getname() == player.currDB[i].Getname()){//if the name of the pokemon mathces, return true
+            return true;
+        }
+    }
+    return false;
+}
 
-        case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; break;
-        case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; break;
-        case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; break;
-        case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; break;
+int findPokemonByIndex(Trainer &player, std::vector<Pokemon>DB){
+
+    for(int i = 0; i < DB.size(); i++){
+        if(player.activePokemon->Getname() == DB[i].Getname()){
+            return i;
+        }
+    }
+
+}
+
+void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp to the trainer based on the rarity of pokemon that they've defeated in battle or caught
+
+    if(choice == 1){//you caught a pokemon, so only the player gets xp
+
+        switch (caughtOrKilled.getRarity()){
+
+            case 1: std::cout << "You Earned 10XP" << std::endl; player.xp += 10; break;
+            case 2: std::cout << "You Earned 20XP" << std::endl; player.xp += 20; break;
+            case 3: std::cout << "You Earned 30XP" << std::endl; player.xp += 30; break;
+            case 4: std::cout << "You Earned 40XP" << std::endl; player.xp += 40; break;
 
     }
+
+}
+    if(choice == 2){
+
+         switch (caughtOrKilled.getRarity()){//you defeated a pokemon, so you and the pokemon you fought with get xp
+
+            case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; std::cout << player.activePokemon->Getname() << " earned 5XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 5); break;
+            case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; std::cout << player.activePokemon->Getname() << " earned 10XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 10); break;
+            case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; std::cout << player.activePokemon->Getname() << " earned 15XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 15); break;
+            case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; std::cout << player.activePokemon->Getname() << " earned 20XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 20); break;
+
+        }
+
+    }
+
 
     if((player.xp % 100) == 0){//checks if the player has lvled up!
 
         std::cout << "Congrats! You've leveled up!" << std::endl;
-        std::cout << "You are now level " << ++player.trainerLvl << std::endl;
+        player.trainerLvl += 1;
+        std::cout << "You are now level " << player.trainerLvl << std::endl;
 
     }
-    
+
+    if((player.activePokemon->GetPokemonXp() % 100 == 0) && player.activePokemon->GetevoStage() < 3){//checks if the pokemon levled up
+
+        std::cout << player.activePokemon->Getname() << " has evolved ";
+
+            if(findPokemonDB(player, player.kantoDB) == true){
+
+                std::cout << "into " << player.kantoDB[findPokemonByIndex(player, player.kantoDB) + 1].Getname() << "!" << std::endl;
+                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
+                player.activePokemon = &player.kantoDB[findPokemonByIndex(player, player.kantoDB) + 1];//sets the active pokemon to the next pokemon in the database
+
+            }
+
+             if(findPokemonDB(player, player.johtoDB) == true){
+
+                std::cout << "into " << player.johtoDB[findPokemonByIndex(player, player.johtoDB) + 1].Getname() << "!" << std::endl;
+                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
+                player.activePokemon = &player.johtoDB[findPokemonByIndex(player, player.johtoDB) + 1];//sets the active pokemon to the next pokemon in the database
+
+
+            }
+
+             if(findPokemonDB(player, player.honenDB) == true){
+
+                std::cout << "into " << player.honenDB[findPokemonByIndex(player, player.honenDB) + 1].Getname() << "!" << std::endl;
+                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
+                player.activePokemon = &player.honenDB[findPokemonByIndex(player, player.honenDB) + 1];//sets the active pokemon to the next pokemon in the database
+
+            }
+
+    }
+
+
 }
 
 int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
@@ -107,6 +188,7 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
     while (counter < size) {
         f >> w; vec[counter].Setname(w);
         f >> n; vec[counter].SetevoStage(n);
+        f >> n; vec[counter].SetPokemonXp(n);
         f >> n; vec[counter].Sethp(n);
         f >> w; vec[counter].Setbase_attack_name(w);
         f >> n; vec[counter].Setbase_attack_dmg(n);
@@ -118,16 +200,6 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         // vec[counter].printPokemon();
         counter++;
     }
-}
-
-Pokemon * findPokemon(std::string name, int N, std::vector<Pokemon> &pokemonDB){//finds and returns of a pokemon given its name, helpful annexing pokemon into the trainers collection
-
-    for(int i = 0; i < N; i++){
-        if(pokemonDB[i].Getname() == name){
-            return &pokemonDB[i];
-        }
-    }
-    return nullptr;
 }
 
 void kantoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
@@ -351,7 +423,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate){//using a pokeball does not change the base success rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
-            giveXP(player, player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex], 1);
 
             return true;
         }
@@ -381,7 +453,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate + 10){//using a great ball adds 10% to the base sucess rate
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname() << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
-            giveXP(player, player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex], 1);
 
             return true;
         }
@@ -411,7 +483,7 @@ bool catchSim(int userChoice, int successRate, Trainer &player, int randomPokemo
         if(randomNumber <= successRate + 15){//using an ultra ball adds 15% chance
             std::cout << "Wow! You've caught " << player.currDB[randomPokemonIndex].Getname()  << "!" << std::endl;
             player.pokemonCollection.push_back(player.currDB[randomPokemonIndex]);
-            giveXP(player, player.currDB[randomPokemonIndex]);
+            giveXP(player, player.currDB[randomPokemonIndex], 1);
 
             return true;
         }
@@ -577,7 +649,7 @@ void victoryOrDefeat(Pokemon victimPokemon, Trainer &player, int &turns){//victo
     if(turns % 2 != 0){//when you defeat a pokemon
         std::cout << victimPokemon.Getname() << " has been defeated!" << std::endl;
 
-        giveXP(player, victimPokemon);//rewarding the trainer exp
+        giveXP(player, victimPokemon, 2);//rewarding the trainer exp
     }
 
     else{//when your pokemon has been defeated
@@ -1179,6 +1251,10 @@ int main() {
     readPokemonData(kantoPokemonFile, numOfPokemon, kantoDataBase);//reads the info to the corresponding vectors of region
     readPokemonData(johtoPokemonFile, numOfPokemon, johtoDataBase);
     readPokemonData(honenPokemonFile, numOfPokemon, honenDataBase);
+
+    player.kantoDB = kantoDataBase;
+    player.johtoDB = johtoDataBase;
+    player.honenDB = honenDataBase;
 
     switch(userChoice){//used to identify which starter the user will have acess to depending on their region of choice
         case 1:
