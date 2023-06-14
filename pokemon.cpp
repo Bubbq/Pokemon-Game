@@ -1,6 +1,6 @@
 #include "pokemon.h"
 
-Pokemon::Pokemon() {
+Pokemon::Pokemon(){
 
     name = "";
     base_attack_name = "";
@@ -11,6 +11,7 @@ Pokemon::Pokemon() {
     hp = 0;
     base_attack_dmg = 0;
     heavy_attack_dmg = 0;
+
     type = NORMAL;
 }
 
@@ -62,7 +63,16 @@ double Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
 void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
 
 void Pokemon::printPokemon(){
-    std::cout << "Name: " << name << 
+
+
+    std::cout <<name;
+
+            if(hp <=0){
+                std::cout << "(*FAINTED*)" << std::endl;
+            }
+
+            else{
+                 std::cout << std::endl <<
         // "\t\tEvol: " << evoStage << std::endl <<
         "\tHP: " << hp << std::endl <<
         "\tType: " << GetTypeAsString(type) << std::endl <<
@@ -71,4 +81,6 @@ void Pokemon::printPokemon(){
         "\tNormal Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl <<
         "\tHeavy Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl <<
         std::endl;
+            }
+
 }
