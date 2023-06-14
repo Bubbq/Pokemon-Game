@@ -86,13 +86,16 @@ bool findPokemonDB(Trainer &player, std::vector<Pokemon>DB){//finds the database
     return false;
 }
 
-int findPokemonByIndex(Trainer &player, std::vector<Pokemon>DB){
+int findPokemonIndex(Trainer &player, std::vector<Pokemon>DB){ //finds pokemon in its region locked database
 
     for(int i = 0; i < DB.size(); i++){
-        if(player.activePokemon->Getname() == DB[i].Getname()){
+
+        if(player.activePokemon->Getname() == DB[i].Getname()){//if your active pokemon matches with the same pokemon thats in your collection, return that index
+
             return i;
+
+            }
         }
-    }
 
 }
 
@@ -132,32 +135,36 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
 
     }
 
-    if((player.activePokemon->GetPokemonXp() % 100 == 0) && player.activePokemon->GetevoStage() < 3){//checks if the pokemon levled up
+    if((player.activePokemon->GetPokemonXp() % 100 == 0) && player.activePokemon->GetevoStage() < 3){//checks if the pokemon evolved, cant evolve if its already a tier 3 pokemon (ex charizard)
 
         std::cout << player.activePokemon->Getname() << " has evolved ";
 
+
             if(findPokemonDB(player, player.kantoDB) == true){
 
-                std::cout << "into " << player.kantoDB[findPokemonByIndex(player, player.kantoDB) + 1].Getname() << "!" << std::endl;
-                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
-                player.activePokemon = &player.kantoDB[findPokemonByIndex(player, player.kantoDB) + 1];//sets the active pokemon to the next pokemon in the database
+                std::cout << "into " << player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1].Getname() << "!" << std::endl;
+
+                player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
+                player.activePokemon = &player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1];//sets active pokemon to the new evolved pokemon aswell
 
             }
 
              if(findPokemonDB(player, player.johtoDB) == true){
 
-                std::cout << "into " << player.johtoDB[findPokemonByIndex(player, player.johtoDB) + 1].Getname() << "!" << std::endl;
-                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
-                player.activePokemon = &player.johtoDB[findPokemonByIndex(player, player.johtoDB) + 1];//sets the active pokemon to the next pokemon in the database
+                std::cout << "into " << player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1].Getname() << "!" << std::endl;
+
+                player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
+                player.activePokemon = &player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1];//sets active pokemon to the new evolved pokemon aswell
 
 
             }
 
              if(findPokemonDB(player, player.honenDB) == true){
 
-                std::cout << "into " << player.honenDB[findPokemonByIndex(player, player.honenDB) + 1].Getname() << "!" << std::endl;
-                player.activePokemon->SetevoStage(player.activePokemon->GetevoStage() + 1);
-                player.activePokemon = &player.honenDB[findPokemonByIndex(player, player.honenDB) + 1];//sets the active pokemon to the next pokemon in the database
+                std::cout << "into " << player.honenDB[findPokemonIndex(player, player.honenDB) + 1].Getname() << "!" << std::endl;
+
+                player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.honenDB[findPokemonIndex(player, player.honenDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
+                player.activePokemon = &player.honenDB[findPokemonIndex(player, player.honenDB) + 1];//sets active pokemon to the new evolved pokemon aswell
 
             }
 
@@ -755,6 +762,7 @@ void attackWhenNoHp(Pokemon & attacker, Trainer &player, int &turns, Pokemon &vi
 
                 case 1: useHealthPot(player);break;
                 case 2: choosePokemon(player, turns, victim); break;
+                default: std::cout << "invalid choice, please try again" << std::endl;
 
             }
     }
@@ -767,6 +775,9 @@ bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns
 
     if(player.mana >= 20){//error checking to see if the player has enough mana to preform the heavy attack
 
+    if(turns % 2 != 0){//if the player is attacking is when  we care about mana, enemy pokemon have unlimited mana
+        player.mana -= 20;//lose 20 mana when doing a heavy attack
+    }
         if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
 
            victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
@@ -909,7 +920,7 @@ bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns
         }
     else{//if the trainer does not have enough mana to preform the action
 
-        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " << attacker.Getbase_attack_name() << "!" << std::endl;
+        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " <<attacker.Getheavy_attack_name() << "!" << std::endl;
 
     }
     return false;//returns false to continue the while loop, this means the pokemon is not dead yet
@@ -922,6 +933,10 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
     attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
 
     if(player.mana >= 5){
+
+        if(turns % 2 != 0){//if the player is attacking is when  we care about mana, enemy pokemon have unlimited mana
+            player.mana -= 5;//lose 5 mana when doing a base attack
+        }
 
         if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
 
