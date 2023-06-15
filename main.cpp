@@ -776,7 +776,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
             attackNormalEffective(attacker, victim, 1);
 
-            checkIfDead(victim, player, turns);
+            return checkIfDead(victim, player, turns);
         }
 
     if(attacker.GetType() == FIRE){//strong against grass, weak to water
@@ -787,7 +787,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackSuperEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
 
             }
 
@@ -797,7 +797,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNotEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else{//do normal dmg if enemy pokemon is neither water or grass
@@ -806,7 +806,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNormalEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
         }
@@ -819,7 +819,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNotEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else if(victim.GetType() == WATER){ //trainers grass type pokemon will do 2x dmg to a water type
@@ -828,7 +828,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackSuperEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else{//do normal dmg if enemy pokemon is neither water or fire
@@ -837,7 +837,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNormalEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
         }
@@ -850,7 +850,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNotEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else if(victim.GetType() == ELECTRIC){ //trainers water type pokemon will do 1/2x dmg to a electric type
@@ -859,7 +859,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNotEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else if(victim.GetType() == FIRE){ //trainers water type pokemon will do 2x dmg to a fire type
@@ -868,7 +868,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackSuperEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else{//do normal dmg if enemy pokemon is neither fire, grass, or electric
@@ -877,7 +877,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackNormalEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
         }
@@ -890,7 +890,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 attackSuperEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
             else{//do normal dmg if enemy pokemon is not water
