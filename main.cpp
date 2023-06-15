@@ -102,10 +102,10 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
 
         switch (caughtOrKilled.getRarity()){
 
-        case 1: std::cout << "You Earned 10XP" << std::endl; player.xp += 10; break;
-        case 2: std::cout << "You Earned 20XP" << std::endl; player.xp += 20; break;
-        case 3: std::cout << "You Earned 30XP" << std::endl; player.xp += 30; break;
-        case 4: std::cout << "You Earned 40XP" << std::endl; player.xp += 40; break;
+        case 1: std::cout << "You Earned 10XP" << std::endl << std::endl; player.xp += 10; break;
+        case 2: std::cout << "You Earned 20XP" << std::endl << std::endl; player.xp += 20; break;
+        case 3: std::cout << "You Earned 30XP" << std::endl << std::endl; player.xp += 30; break;
+        case 4: std::cout << "You Earned 40XP" << std::endl << std::endl; player.xp += 40; break;
 
         }
 
@@ -114,10 +114,10 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
 
         switch (caughtOrKilled.getRarity()){//you defeated a pokemon, so you and the pokemon you fought with get xp
 
-        case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; std::cout << player.activePokemon->Getname() << " earned 5XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 5); break;
-        case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; std::cout << player.activePokemon->Getname() << " earned 10XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 10); break;
-        case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; std::cout << player.activePokemon->Getname() << " earned 15XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 15); break;
-        case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; std::cout << player.activePokemon->Getname() << " earned 20XP" << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 20); break;
+        case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; std::cout << player.activePokemon->Getname() << " earned 5XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 5); break;
+        case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; std::cout << player.activePokemon->Getname() << " earned 10XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 10); break;
+        case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; std::cout << player.activePokemon->Getname() << " earned 15XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 15); break;
+        case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; std::cout << player.activePokemon->Getname() << " earned 20XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 20); break;
 
         }
 
@@ -647,16 +647,18 @@ void useHealthPot(Trainer &player){//act of healing the trainers active pokemon
 
 }
 
-void victoryOrDefeat(Pokemon victimPokemon, Trainer &player, int &turns){//victory dialouge for the player after beating said pokemon, exp earned is based off of the rarity of the pokemon
+bool victoryOrDefeat(Pokemon victimPokemon, Trainer &player, int &turns){//victory dialouge for the player after beating said pokemon, exp earned is based off of the rarity of the pokemon
 
     if(turns % 2 != 0){//when you defeat a pokemon
         std::cout << victimPokemon.Getname() << " has been defeated!" << std::endl;
 
         giveXP(player, victimPokemon, 2);//rewarding the trainer exp
+        return true;
     }
 
     else{//when your pokemon has been defeated
         std::cout << "Your " << victimPokemon.Getname() << " has been defeated!" << std::endl;
+        return false;//gives the player a chance to switch their pokemon out, dont want to close them out after just losing one of their pokemon
     }
 
 }
@@ -727,8 +729,8 @@ bool checkIfDead(Pokemon &victim, Trainer &player, int &turns){//bool that retur
 
         victim.Sethp(0);
         std::cout << "no health left!" << std::endl;
-        victoryOrDefeat(victim, player, turns);
-        return true; //returns true so the while loop of the attack menu ends
+       return victoryOrDefeat(victim, player, turns); //returns true so the while loop of the attack menu ends
+
 
     }
 
@@ -740,6 +742,7 @@ bool checkIfDead(Pokemon &victim, Trainer &player, int &turns){//bool that retur
 }
 
 void attackWhenNoHp(Pokemon & attacker, Trainer &player, int &turns, Pokemon &victim){//checks if the user is trying to fight with a fainted pokemon
+
 
     if(attacker.Gethp() == 0){
 
@@ -765,176 +768,9 @@ void attackWhenNoHp(Pokemon & attacker, Trainer &player, int &turns, Pokemon &vi
 
 }
 
-bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the heavy attack sim for a pokemon
+bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the base attack sim for a pokemon
 
-    attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
-
-    if(player.mana >= 20){//error checking to see if the player has enough mana to preform the heavy attack
-
-        if(turns % 2 != 0){//if the player is attacking is when  we care about mana, enemy pokemon have unlimited mana
-            player.mana -= 20;//lose 20 mana when doing a heavy attack
-        }
-        if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
-
-            victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
-
-            attackNormalEffective(attacker, victim, 2);
-
-            checkIfDead(victim, player, turns);
-        }
-
-        if(attacker.GetType() == FIRE){//strong against grass, weak to water
-
-            if(victim.GetType() == GRASS){ //trainers fire type pokemon will do 2x dmg to a grass type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
-
-                attackSuperEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-            else if(victim.GetType() == WATER){ //trainers fire type pokemon will do 1/2x dmg to a grass type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
-
-                attackNotEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-            else{//do normal dmg if enemy pokemon is neither water or grass
-
-                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
-
-                attackNormalEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-        }
-
-        if(attacker.GetType() == GRASS){//strong against water, weak to fire
-
-            if(victim.GetType() == FIRE){ //trainers grass type pokemon will do 1/2x dmg to a fire type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
-
-                attackNotEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-            else if(victim.GetType() == WATER){ //trainers grass type pokemon will do 2x dmg to a water type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
-
-                attackSuperEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-            else{//do normal dmg if enemy pokemon is neither water or fire
-
-                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
-
-                attackNormalEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-        }
-
-        if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
-
-            if(victim.GetType() == GRASS){ //trainers water type pokemon will do 1/2x dmg to a grass type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
-
-                attackNotEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-            else if(victim.GetType() == ELECTRIC){ //trainers water type pokemon will do 1/2x dmg to a electric type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
-
-                attackNotEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-            else if(victim.GetType() == FIRE){ //trainers water type pokemon will do 2x dmg to a fire type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
-
-                attackSuperEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-            else{//do normal dmg if enemy pokemon is neither fire, grass, or electric
-
-                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
-
-                attackNormalEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-
-            }
-
-        }
-
-        if(attacker.GetType() == ELECTRIC){//strong against water
-
-            if(victim.GetType() == WATER){ //trainers electric type pokemon will do 2x dmg to a water type
-
-                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
-
-                attackSuperEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-            else{//do normal dmg if enemy pokemon is not water
-
-                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
-
-                attackNormalEffective(attacker, victim, 2);
-
-                checkIfDead(victim, player, turns);
-            }
-
-        }
-
-    }
-    else{//if the trainer does not have enough mana to preform the action
-
-        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " <<attacker.Getheavy_attack_name() << "!" << std::endl;
-
-    }
-    return false;//returns false to continue the while loop, this means the pokemon is not dead yet
-
-
-}
-
-bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the base attack sim for a pokemon
-
-    attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
-
-    if(player.mana >= 5){
-
-        if(turns % 2 != 0){//if the player is attacking is when  we care about mana, enemy pokemon have unlimited mana
-            player.mana -= 5;//lose 5 mana when doing a base attack
-        }
-
-        if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
+    if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
 
             victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
 
@@ -943,7 +779,7 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
             checkIfDead(victim, player, turns);
         }
 
-        if(attacker.GetType() == FIRE){//strong against grass, weak to water
+    if(attacker.GetType() == FIRE){//strong against grass, weak to water
 
             if(victim.GetType() == GRASS){ //trainers fire type pokemon will do 2x dmg to a grass type
 
@@ -975,7 +811,7 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
 
         }
 
-        if(attacker.GetType() == GRASS){//strong against water, weak to fire
+    if(attacker.GetType() == GRASS){//strong against water, weak to fire
 
             if(victim.GetType() == FIRE){ //trainers grass type pokemon will do 1/2x dmg to a fire type
 
@@ -1006,7 +842,7 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
 
         }
 
-        if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
+    if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
 
             if(victim.GetType() == GRASS){ //trainers water type pokemon will do 1/2x dmg to a grass type
 
@@ -1046,7 +882,7 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
 
         }
 
-        if(attacker.GetType() == ELECTRIC){//strong against water
+    if(attacker.GetType() == ELECTRIC){//strong against water
 
             if(victim.GetType() == WATER){ //trainers electric type pokemon will do 2x dmg to a water type
 
@@ -1063,18 +899,221 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
 
                 attackNormalEffective(attacker, victim, 1);
 
-                checkIfDead(victim, player, turns);
+                return checkIfDead(victim, player, turns);
             }
 
         }
 
-    }
-    else{//if the trainer does not have enough mana to preform the action
+}
 
-        std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " << attacker.Getbase_attack_name() << "!" << std::endl;
+bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the heavy attack sim for a pokemon
+
+    if(attacker.GetType() == NORMAL){//strong against nothing, weak to fighting (not included)
+
+            victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
+
+            attackNormalEffective(attacker, victim, 2);
+
+            return checkIfDead(victim, player, turns);
+
+        }
+
+    if(attacker.GetType() == FIRE){//strong against grass, weak to water
+
+            if(victim.GetType() == GRASS){ //trainers fire type pokemon will do 2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+                attackSuperEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers fire type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+                attackNotEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or grass
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+                attackNormalEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+        }
+
+    if(attacker.GetType() == GRASS){//strong against water, weak to fire
+
+            if(victim.GetType() == FIRE){ //trainers grass type pokemon will do 1/2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+                attackNotEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+            else if(victim.GetType() == WATER){ //trainers grass type pokemon will do 2x dmg to a water type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+                attackSuperEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+            }
+
+            else{//do normal dmg if enemy pokemon is neither water or fire
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+                attackNormalEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+        }
+
+    if(attacker.GetType() == WATER){//strong against fire, weak to grass and eletric
+
+            if(victim.GetType() == GRASS){ //trainers water type pokemon will do 1/2x dmg to a grass type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+                attackNotEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+            }
+
+            else if(victim.GetType() == ELECTRIC){ //trainers water type pokemon will do 1/2x dmg to a electric type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
+
+                attackNotEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+            }
+
+            else if(victim.GetType() == FIRE){ //trainers water type pokemon will do 2x dmg to a fire type
+
+                victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+                attackSuperEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+            }
+
+            else{//do normal dmg if enemy pokemon is neither fire, grass, or electric
+
+                victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+                attackNormalEffective(attacker, victim, 2);
+
+                 return checkIfDead(victim, player, turns);
+
+            }
+
+        }
+
+    if(attacker.GetType() == ELECTRIC){//strong against water
+
+        if(victim.GetType() == WATER){ //trainers electric type pokemon will do 2x dmg to a water type
+
+            victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
+
+            attackSuperEffective(attacker, victim, 1);
+
+             return checkIfDead(victim, player, turns);
+        }
+
+        else{//do normal dmg if enemy pokemon is not water
+
+            victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
+
+            attackNormalEffective(attacker, victim, 1);
+
+            return checkIfDead(victim, player, turns);
+        }
+    }
+
+}
+
+bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//function used to error check the players mana, and pokemon health before commiting an attack
+
+    if(attacker.Gethp() <= 0){
+
+        attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
 
     }
-    return false;//returns false to continue the while loop, this means the pokemon is not dead yet
+
+    if(turns % 2 != 0){//if player is attacking (bc they attack first)
+
+        if(player.mana >=10){//and the player has enough mana to do the attack
+
+            player.mana -= 10;
+            return heavyAttackSim(attacker, victim, player, turns);//returns false if neither pokemon is dead, to continue the while loop
+        }
+
+        else{//if the trainer does not have enough mana...
+
+            std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " <<attacker.Getheavy_attack_name() << "!" << std::endl;
+
+        }
+
+        return false;//returns false to continue the while loop, this means niether pokemon is not dead yet
+    }
+
+    if(turns % 2 == 0){//if the CPU is attacking
+
+            return heavyAttackSim(attacker, victim, player, turns);//commit the action, CPU pokemon does not worry about mana
+
+    }
+
+
+}
+
+bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//function used to error check the players mana, and pokemon health before commiting an attack
+
+   if(attacker.Gethp() <= 0){
+
+        attackWhenNoHp(attacker ,player, turns, victim);//checks if the trainer is trying to attack the pokemon when theirs is fainted!
+
+    }
+
+   if(turns % 2 != 0){//if player is attacking (bc they attack first)
+
+        if(player.mana >=10){//and the player has enough mana to do the attack
+
+            player.mana -= 10;
+            return baseAttackSim(attacker, victim, player, turns);//returns false if neither pokemon is dead, to continue the while loop
+        }
+
+        else{//if the trainer does not have enough mana...
+
+            std::cout << "You dont have enough mana for " << attacker.Getname() << " to use " <<attacker.Getbase_attack_name() << "!" << std::endl;
+
+        }
+
+        return false;//returns false to continue the while loop, this means niether pokemon is not dead yet
+    }
+
+     if(turns % 2 == 0){//if the CPU is attacking
+
+            return baseAttackSim(attacker, victim, player, turns);//commit the action, CPU pokemon does not worry about mana
+
+    }
+
 }
 
 bool attack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns, int choice){
@@ -1135,13 +1174,15 @@ void fight(Trainer &player, int randomPokemonIndex){
         switch(userChoice){
 
         case 1: defeatOrFlee = attack(*player.activePokemon, enemyPokemon, player, ++turns, 1);
-            std::cout << enemyPokemon.Getname() << "'s turn!" << std::endl << std::endl;
-            attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
-            break;
+                std::cout << enemyPokemon.Getname() << "'s turn!" << std::endl << std::endl;
+                defeatOrFlee = attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
+                break;
 
         case 2: defeatOrFlee = attack(*player.activePokemon, enemyPokemon, player, ++turns, 2);
-            std::cout << enemyPokemon.Getname() << "'s turn!" << std::endl << std::endl;
-            attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice);//the CPU attacking yo
+           if(defeatOrFlee == false){
+               std::cout << enemyPokemon.Getname() << "'s turn!" << std::endl << std::endl;
+                defeatOrFlee = attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
+            }
             break;
 
         case 3: useManaPot(player); break;
@@ -1167,7 +1208,7 @@ void explore(Trainer &player){
     clear();
     std::cout << "Random number calcuated : " << randomNumber << std::endl;
     std::cout << "After roaming for some time in the " << player.currRegion << " Region, you've run into " << player.currDB[randomNumber].Getname() << "!" << std::endl << std::endl;
-    // std::cout << "Here are some of "<< player.currDB[randomNumber].Getname() << "'s Stats:" << std::endl << std::endl;
+    std::cout << "Here are some of "<< player.currDB[randomNumber].Getname() << "'s Stats:" << std::endl << std::endl;
 
     player.currDB[randomNumber].printPokemon();
     // std::cout << "Name: " << player.currDB[randomNumber].Getname() << std::endl
