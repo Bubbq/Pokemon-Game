@@ -63,16 +63,12 @@ double Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
 void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
 
 void Pokemon::printPokemon(){
-
-
     std::cout <<name;
-
-            if(hp <=0){
-                std::cout << "(*FAINTED*)" << std::endl;
-            }
-
-            else{
-                 std::cout << std::endl <<
+    if(hp <=0){
+        std::cout << "(*FAINTED*)" << std::endl;
+    }
+    else{
+        std::cout << std::endl <<
         // "\t\tEvol: " << evoStage << std::endl <<
         "\tHP: " << hp << std::endl <<
         "\tType: " << GetTypeAsString(type) << std::endl <<

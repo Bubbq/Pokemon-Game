@@ -1,3 +1,3 @@
-Chikorita 1 100 slash 5 blueball 10 5 1
-Cyndaquil 1 100 slash 5 blueball 10 5 1
-Totodile 1 100 slash 5 blueball 10 5 1
+Chikorita 1 0 100 slash 5 blueball 10 5 1
+Cyndaquil 1 0 100 slash 5 blueball 10 5 1
+Totodile 1 0 100 slash 5 blueball 10 5 1
