@@ -125,26 +125,31 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
     }
 
 
-    if((player.xp % 100) == 0){//checks if the player has lvled up!
+    if(player.xp > 100){//checks if the player has lvled up!
 
+        player.xp = 0;//sets xp back for trainer to earn again
         std::cout << "Congrats! You've leveled up!" << std::endl;
         player.trainerLvl += 1;
         std::cout << "You are now level " << player.trainerLvl << std::endl;
 
     }
 
-    if((player.activePokemon->GetPokemonXp() % 100 == 0) && player.activePokemon->GetevoStage() < 3){//checks if the pokemon evolved, cant evolve if its already a tier 3 pokemon (ex charizard)
+    if(player.activePokemon->GetPokemonXp() > 10 && player.activePokemon->GetevoStage() < 3){//checks if the pokemon evolved, cant evolve if its already a tier 3 pokemon (ex charizard)
 
         std::cout << player.activePokemon->Getname() << " has evolved ";
-
+        player.activePokemon->SetPokemonXp(0);//sets active pokemon and matching pokemon in trainers collection back to 0, until they earn it to evolve further
+        player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)].SetPokemonXp(0);
 
         if(findPokemonDB(player, player.kantoDB) == true){
 
             std::cout << "into " << player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1].Getname() << "!" << std::endl;
 
             player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
-            player.activePokemon = &player.kantoDB[findPokemonIndex(player, player.kantoDB) + 1];//sets active pokemon to the new evolved pokemon aswell
+            player.activePokemon = &player.kantoDB[findPokemonIndex(player, player.kantoDB)];//sets active pokemon to the new evolved pokemon aswell
+            std::cout << "Here are some of " << player.activePokemon->Getname() << "'s stats:" << std::endl << std::endl;
+            player.activePokemon->printPokemon();
 
+            return;
         }
 
         if(findPokemonDB(player, player.johtoDB) == true){
@@ -152,9 +157,11 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
             std::cout << "into " << player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1].Getname() << "!" << std::endl;
 
             player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
-            player.activePokemon = &player.johtoDB[findPokemonIndex(player, player.johtoDB) + 1];//sets active pokemon to the new evolved pokemon aswell
+            player.activePokemon = &player.johtoDB[findPokemonIndex(player, player.johtoDB)];//sets active pokemon to the new evolved pokemon aswell
+            std::cout << "Here are some of " << player.activePokemon->Getname() << "'s stats:" << std::endl << std::endl;
+            player.activePokemon->printPokemon();
 
-
+            return;
         }
 
         if(findPokemonDB(player, player.honenDB) == true){
@@ -162,8 +169,11 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
             std::cout << "into " << player.honenDB[findPokemonIndex(player, player.honenDB) + 1].Getname() << "!" << std::endl;
 
             player.pokemonCollection[findPokemonIndex(player, player.pokemonCollection)] = player.honenDB[findPokemonIndex(player, player.honenDB) + 1];//sets the pokemon in the users collection to the pokemon under it (in terms of file positioning)
-            player.activePokemon = &player.honenDB[findPokemonIndex(player, player.honenDB) + 1];//sets active pokemon to the new evolved pokemon aswell
+            player.activePokemon = &player.honenDB[findPokemonIndex(player, player.honenDB)];//sets active pokemon to the new evolved pokemon aswell
+            std::cout << "Here are some of " << player.activePokemon->Getname() << "'s stats:" << std::endl << std::endl;
+            player.activePokemon->printPokemon();
 
+            return;
         }
 
     }
@@ -398,8 +408,9 @@ void flee(Trainer &player){// lets the trainer run away, but not without punishm
     }
     else {
         clear();
-        std::cout << "You begin to question your skills as a trainer, nonetheless, you successfully ran away" << std::endl << std::endl;
-        player.xp -= 50;
+        std::cout << "You begin to question your skills as a trainer, nonetheless, you successfully ran away" << std::endl;
+        std::cout << "Lost 10 XP" << std::endl << std::endl;
+        player.xp -= 10;
     }
 }
 
@@ -677,18 +688,34 @@ bool victoryOrDefeat(Pokemon victimPokemon, Trainer &player, int &turns){//victo
 
 }
 
-void attackNotEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy){//the dialouge for a base/heavy attack that is not very effective
+void attackNotEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, int &turns){//the dialouge for a base/heavy attack that is not very effective
 
     switch(baseOrHeavy){
 
     case 1:
-        std::cout << "Your " << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
+
+            if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
+        std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
         std::cout << "Its not very effective..." << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getbase_attack_dmg() * 0.5) << " dmg and has ";
         break;
 
     case 2:
-        std::cout << "Your " << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
+
+         if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
+        std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
         std::cout << "Its not very effective..." << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getbase_attack_dmg() * 0.5) << " dmg and has ";
         break;
@@ -697,17 +724,33 @@ void attackNotEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy){//t
 
 }
 
-void attackNormalEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy){//the dialouge for a base/heavy attack that is normal effective
+void attackNormalEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, int &turns){//the dialouge for a base/heavy attack that is normal effective
 
 
     switch(baseOrHeavy){
 
     case 1:
+
+         if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
         std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getbase_attack_dmg()) << " dmg and has ";
         break;
 
     case 2:
+
+         if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
         std::cout << attacker.Getname() << " used " << attacker.Getheavy_attack_name() << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getheavy_attack_dmg()) << " dmg and has ";
         break;
@@ -717,18 +760,34 @@ void attackNormalEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy){
 
 }
 
-void attackSuperEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy){//the dialouge for a base/heavy attack that is super effective
+void attackSuperEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, int &turns){//the dialouge for a base/heavy attack that is super effective
 
     switch(baseOrHeavy){
 
     case 1:
-        std::cout << "Your " << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
+
+         if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
+        std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
         std::cout << "Its super effective!" << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getbase_attack_dmg() * 2) << " dmg and has ";
         break;
 
     case 2:
-        std::cout << "Your " << attacker.Getname() << " used " << attacker.Getheavy_attack_name() << std::endl << std::endl;
+
+         if(turns % 2 != 0){//the players action
+                std::cout << "Your ";
+            }
+            else{//the enemy's action
+                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+            }
+
+        std::cout << attacker.Getname() << " used " << attacker.Getheavy_attack_name() << std::endl << std::endl;
         std::cout << "Its super effective!" << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getheavy_attack_dmg() * 2) << " dmg and has ";
         break;
@@ -788,7 +847,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
             victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
 
-            attackNormalEffective(attacker, victim, 1);
+            attackNormalEffective(attacker, victim, 1, turns);
 
             return checkIfDead(victim, player, turns);
         }
@@ -799,7 +858,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 1);
+                attackSuperEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
 
@@ -809,7 +868,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 1);
+                attackNotEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -818,7 +877,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 1);
+                attackNormalEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -831,7 +890,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 1);
+                attackNotEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -840,7 +899,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 1);
+                attackSuperEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -849,7 +908,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 1);
+                attackNormalEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -862,7 +921,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 1);
+                attackNotEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -871,7 +930,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 1);
+                attackNotEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -880,7 +939,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 1);
+                attackSuperEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -889,7 +948,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 1);
+                attackNormalEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -902,7 +961,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - (attacker.Getbase_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 1);
+                attackSuperEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -911,7 +970,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
 
                 victim.Sethp(victim.Gethp() - attacker.Getbase_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 1);
+                attackNormalEffective(attacker, victim, 1, turns);
 
                 return checkIfDead(victim, player, turns);
             }
@@ -926,7 +985,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
             victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());//setting the enemy pokemon's health to its current health minus the dmg of the active pokemons base attack
 
-            attackNormalEffective(attacker, victim, 2);
+            attackNormalEffective(attacker, victim, 2, turns);
 
             return checkIfDead(victim, player, turns);
 
@@ -938,7 +997,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 2);
+                attackSuperEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -948,7 +1007,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 2);
+                attackNotEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -958,7 +1017,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 2);
+                attackNormalEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -972,7 +1031,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 2);
+                attackNotEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -982,7 +1041,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 2);
+                attackSuperEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
             }
@@ -991,7 +1050,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 2);
+                attackNormalEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -1005,7 +1064,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 2);
+                attackNotEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
             }
@@ -1014,7 +1073,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * .5));
 
-                attackNotEffective(attacker, victim, 2);
+                attackNotEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
             }
@@ -1023,7 +1082,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
 
-                attackSuperEffective(attacker, victim, 2);
+                attackSuperEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
             }
@@ -1032,7 +1091,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
                 victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
 
-                attackNormalEffective(attacker, victim, 2);
+                attackNormalEffective(attacker, victim, 2, turns);
 
                  return checkIfDead(victim, player, turns);
 
@@ -1046,7 +1105,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
             victim.Sethp(victim.Gethp() - (attacker.Getheavy_attack_dmg() * 2));
 
-            attackSuperEffective(attacker, victim, 1);
+            attackSuperEffective(attacker, victim, 1, turns);
 
              return checkIfDead(victim, player, turns);
         }
@@ -1055,7 +1114,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
 
             victim.Sethp(victim.Gethp() - attacker.Getheavy_attack_dmg());
 
-            attackNormalEffective(attacker, victim, 1);
+            attackNormalEffective(attacker, victim, 1, turns);
 
             return checkIfDead(victim, player, turns);
         }
@@ -1165,15 +1224,22 @@ void fight(Trainer &player, int randomPokemonIndex){
 
     while(defeatOrFlee == false){
 
-        std::cout << "What will you attack " << enemyPokemon.Getname() << " with?" << std::endl << std::endl;
+
 
         int userChoice;
         int CPUchoice;
 
-        std::cout << "1)Base attack: " << player.activePokemon->Getbase_attack_name() << " " << player.activePokemon->Getbase_attack_dmg() << " dmg (Mana cost: 5)" << std::endl;
-        std::cout << "2)Heavy attack: " << player.activePokemon->Getheavy_attack_name() << " " << player.activePokemon->Getheavy_attack_dmg() << " dmg (Mana cost: 20)" << std::endl << std::endl;
+            if(player.activePokemon->Gethp() > 0){//inclines the player to heal the pokemon, rather than try to attack with no health, albeit there's error checking for this
+                std::cout << "What will you attack " << enemyPokemon.Getname() << " with?" << std::endl << std::endl;
+                std::cout << "1)Base attack: " << player.activePokemon->Getbase_attack_name() << " " << player.activePokemon->Getbase_attack_dmg() << " dmg (Mana cost: 5)" << std::endl;
+                std::cout << "2)Heavy attack: " << player.activePokemon->Getheavy_attack_name() << " " << player.activePokemon->Getheavy_attack_dmg() << " dmg (Mana cost: 20)" << std::endl << std::endl;
 
-        std::cout << "Other:" << std::endl;
+                std::cout << "Other:" << std::endl;
+            }
+
+            else{
+                std::cout << "What will you do?" << std::endl << std::endl;
+            }
 
         std::cout << "3)Consume Mana Pot (+20 Mana)" << std::endl;
         std::cout << "4)Heal Pokemon (+20 Health)" << std::endl;//heals a specific pokemon
