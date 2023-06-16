@@ -1,3 +1,9 @@
-Charmander 1 0 100 slash 5 blueball 10 5 1
-Squirtle 2  0 100 slash 5 blueball 10 5 2
-Bulbasuar 3  0 100 slash 5 blueball 10 5 3
+Charmander 1 0 100 cut 5 blueball 10 2 1
+Charmeleon 2 0 130 fireclaw 8 fireball 20 2 2
+Charizard 3 0 200 slash 12 fireblast 30 2 3
+Squirtle 1 0 100 slash 5 blueball 10 3 1
+Wartortle 2 0 130 splash 8 Water Grenade 20 3 2
+Blastoise 3 0 200 waves 12 Typhoon 30 3 3
+Bulbasuar 1 0 100 slash 5 blueball 10 5 1
+Ivysaur 2 0 130 leaf 8 amazon attack 20 5 2
+Venasaur 3 0 200 roar 12 hera's guidence 30 5 3
