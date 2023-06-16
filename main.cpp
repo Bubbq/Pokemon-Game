@@ -199,15 +199,38 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
     int counter = 0;
 
     int n;
+    int check;
     std::string w;
     while (counter < size) {
         f >> w; vec[counter].Setname(w);
         f >> n; vec[counter].SetevoStage(n);
         f >> n; vec[counter].SetPokemonXp(n);
         f >> n; vec[counter].Sethp(n);
-        f >> w; vec[counter].Setbase_attack_name(w);
+
+        // check for underscore in base attack
+        f >> w;
+        check = w.find('_');
+        if (check != std::string::npos) {
+            w[check] = ' ';
+            vec[counter].Setbase_attack_name(w);
+        }
+        else {
+            vec[counter].Setbase_attack_name(w);
+        }
+
         f >> n; vec[counter].Setbase_attack_dmg(n);
-        f >> w; vec[counter].Setheavy_attack_name(w);
+
+        // check for underscore in heavy attack
+        f >> w;
+        check = w.find('_');
+        if (check != std::string::npos) {
+            w[check] = ' ';
+            vec[counter].Setheavy_attack_name(w);
+        }
+        else {
+            vec[counter].Setheavy_attack_name(w);
+        }
+
         f >> n; vec[counter].Setheavy_attack_dmg(n);
         f >> n; vec[counter].SetType(n);
         f >> n; vec[counter].setRarity(n);
@@ -351,6 +374,7 @@ void fastTravel(Trainer &player, std::vector<Pokemon> kantoDB, std::vector<Pokem
     std::cin >> userChoice;//will either be 1 for Kanto, 2 for Johto, or 3 representing Honen
 
     while((userChoice < 1 || userChoice > 3 || player.currRegion == regions[userChoice - 1])){//error checking until the user has entered an approporate input
+        clear();
         std::cout << "Region choice is invalid or you are already at the location, please try again" << std::endl;
         std::cin >> userChoice;
     }
