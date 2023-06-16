@@ -58,6 +58,7 @@ struct Trainer{//this is the content of the current player, the linked list of p
 void showStats(Trainer &player) {//show stats for debugging
 
     std::cout << "Level: " << player.trainerLvl << std::endl;
+    std::cout << "XP: " << player.xp << std::endl;
     std::cout << "Region: " << player.currRegion << std::endl;
 
     std::cout << "Pokeballs: " << std::endl;
@@ -571,7 +572,10 @@ void choosePokemonToHeal(Trainer &player){
         std::cin >> choice;
     }
 
-    player.activePokemon = &player.pokemonCollection[--choice];//returns the info of the pokemon that the player has chosen
+    player.activePokemon = &player.pokemonCollection[choice - 1];//returns the info of the pokemon that the player has chosen
+    std::cout << "DEBUG: PLAYER CHOICE SUCCESS\n";
+    player.activePokemon->printPokemon();
+    std::cout << "DEBUG: POKEMON PRINTED\n";
 
 }
 
@@ -608,13 +612,6 @@ void useManaPot(Trainer &player){ //act of using a mana pot
 
 bool findMaxHealth(Trainer &player){
 
-    for(int i =0; i < 20; i++){
-        if(player.activePokemon->Getname() == player.currDB[i].Getname()){//if the pokemon mathced has the same health as the pokemon you chose, then your pokemon is at max health, and cannot be healed any futher
-            if(player.activePokemon->Gethp() == player.currDB[i].Gethp()){
-                return true;
-            }
-        }
-    }
 
     return false;
 
@@ -626,19 +623,36 @@ void useHealthPot(Trainer &player){//act of healing the trainers active pokemon
 
         choosePokemonToHeal(player); //choose pokemon to heal
 
-        if(findMaxHealth(player) == true){//check to see if the pokemon has max health, dont want player to overheal their pokemon
+        for(int i =0; i < 20; i++){
+            if(player.activePokemon->Getname() == player.currDB[i].Getname()){//if the pokemon mathced has the same health as the pokemon you chose, then your pokemon is at max health, and cannot be healed any futher
+                if(player.activePokemon->Gethp() == player.currDB[i].Gethp()){
+                    std::cout << "Your pokemon's hp is allready full\n";
+                    return;
+                }
+                else {
+                    std::cout << "DEBUG: Healing pokemon\n";
 
-            std::cout << "Your " << player.activePokemon->Getname() << " is at max health and cannot be healed any futher!" << std::endl;
-            return;
+                    int currentHp = player.activePokemon->Gethp() + 20;
+                    if (currentHp > 100) {
 
+                        std::cout << "DEBUG: HP " << player.activePokemon->Gethp() << " will be " << 100 << std::endl;
+                        player.activePokemon->Sethp(100);
+
+                        // standard message
+                        std::cout << "You've healed " << player.activePokemon->Getname() << " , " << player.activePokemon->Getname() << " now has " << player.activePokemon->Gethp() << " hp!" << std::endl;
+                    }
+                    else {
+
+                        std::cout << "DEBUG: HP " << player.activePokemon->Gethp() << " will be " << currentHp << std::endl;
+                        player.activePokemon->Sethp(currentHp);
+
+                        //standard message
+                        std::cout << "You've healed " << player.activePokemon->Getname() << " , " << player.activePokemon->Getname() << " now has " << player.activePokemon->Gethp() << " hp!" << std::endl;
+                    }
+                    return;
+                }
+            }
         }
-        else{
-            int currentHp = player.activePokemon->Gethp();
-            player.activePokemon->Sethp(currentHp + 20);//adds the health of the pokemon by 20
-            std::cout << "You've healed " << player.activePokemon->Getname() << " , " << player.activePokemon->Getname() << " now has " << player.activePokemon->Gethp() << " hp!" << std::endl;
-
-        }
-
     }
 
     else{
@@ -903,7 +917,7 @@ bool baseAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tur
             }
 
         }
-
+    return false;
 }
 
 bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//the heavy attack sim for a pokemon
@@ -1046,7 +1060,7 @@ bool heavyAttackSim(Pokemon &attacker, Pokemon &victim, Trainer &player, int &tu
             return checkIfDead(victim, player, turns);
         }
     }
-
+    return false;
 }
 
 bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//function used to error check the players mana, and pokemon health before commiting an attack
@@ -1080,7 +1094,7 @@ bool heavyAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns
 
     }
 
-
+    return false;
 }
 
 bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns){//function used to error check the players mana, and pokemon health before commiting an attack
@@ -1113,7 +1127,7 @@ bool baseAttack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns)
             return baseAttackSim(attacker, victim, player, turns);//commit the action, CPU pokemon does not worry about mana
 
     }
-
+    return false;
 }
 
 bool attack(Pokemon &attacker, Pokemon &victim, Trainer &player, int &turns, int choice){

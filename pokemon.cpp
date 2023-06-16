@@ -48,7 +48,7 @@ int Pokemon::GetPokemonXp() { return pokemonXp; }
 void Pokemon::SetPokemonXp(int val) { pokemonXp = val; }
 
 double Pokemon::Gethp() { return hp; }
-void Pokemon::Sethp(double val) { hp = val; }
+void Pokemon::Sethp(int val) { hp = val; }
 
 std::string Pokemon::Getbase_attack_name() { return base_attack_name; }
 void Pokemon::Setbase_attack_name(std::string val) { base_attack_name = val; }

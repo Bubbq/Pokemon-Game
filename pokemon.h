@@ -45,7 +45,7 @@ class Pokemon
     void SetPokemonXp(int val);
 
     double Gethp();
-    void Sethp(double val);
+    void Sethp(int val);
 
     std::string Getbase_attack_name();
     void Setbase_attack_name(std::string val);
