@@ -114,14 +114,12 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
     if(choice == 2){
 
         switch (caughtOrKilled.getRarity()){//you defeated a pokemon, so you and the pokemon you fought with get xp
-
         case 1: std::cout << "Earned 10XP" << std::endl; player.xp += 10; std::cout << player.activePokemon->Getname() << " earned 5XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 5); break;
         case 2: std::cout << "Earned 20XP" << std::endl; player.xp += 20; std::cout << player.activePokemon->Getname() << " earned 10XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 10); break;
         case 3: std::cout << "Earned 30XP" << std::endl; player.xp += 30; std::cout << player.activePokemon->Getname() << " earned 15XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 15); break;
         case 4: std::cout << "Earned 40XP" << std::endl; player.xp += 40; std::cout << player.activePokemon->Getname() << " earned 20XP" << std::endl << std::endl; player.activePokemon->SetPokemonXp(player.activePokemon->GetPokemonXp() + 20); break;
 
         }
-
     }
 
 
@@ -732,12 +730,12 @@ void attackNotEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, int
 
     case 2:
 
-         if(turns % 2 != 0){//the players action
-                std::cout << "Your ";
-            }
-            else{//the enemy's action
-                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
-            }
+        if(turns % 2 != 0){//the players action
+            std::cout << "Your ";
+        }
+        else{//the enemy's action
+            std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+        }
 
         std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
         std::cout << "Its not very effective..." << std::endl;
@@ -755,12 +753,12 @@ void attackNormalEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, 
 
     case 1:
 
-         if(turns % 2 != 0){//the players action
-                std::cout << "Your ";
-            }
-            else{//the enemy's action
-                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
-            }
+        if(turns % 2 != 0){//the players action
+            std::cout << "Your ";
+        }
+        else{//the enemy's action
+            std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+        }
 
         std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getbase_attack_dmg()) << " dmg and has ";
@@ -768,12 +766,12 @@ void attackNormalEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, 
 
     case 2:
 
-         if(turns % 2 != 0){//the players action
-                std::cout << "Your ";
-            }
-            else{//the enemy's action
-                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
-            }
+        if(turns % 2 != 0){//the players action
+            std::cout << "Your ";
+        }
+        else{//the enemy's action
+            std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+        }
 
         std::cout << attacker.Getname() << " used " << attacker.Getheavy_attack_name() << std::endl;
         std::cout << victim.Getname() << " took " << (attacker.Getheavy_attack_dmg()) << " dmg and has ";
@@ -790,12 +788,12 @@ void attackSuperEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, i
 
     case 1:
 
-         if(turns % 2 != 0){//the players action
-                std::cout << "Your ";
-            }
-            else{//the enemy's action
-                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
-            }
+        if(turns % 2 != 0){//the players action
+            std::cout << "Your ";
+        }
+        else{//the enemy's action
+            std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+        }
 
         std::cout << attacker.Getname() << " used " << attacker.Getbase_attack_name() << std::endl << std::endl;
         std::cout << "Its super effective!" << std::endl;
@@ -804,12 +802,12 @@ void attackSuperEffective(Pokemon &attacker, Pokemon &victim, int baseOrHeavy, i
 
     case 2:
 
-         if(turns % 2 != 0){//the players action
-                std::cout << "Your ";
-            }
-            else{//the enemy's action
-                std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
-            }
+        if(turns % 2 != 0){//the players action
+            std::cout << "Your ";
+        }
+        else{//the enemy's action
+            std::cout << "The enemy ";//helps to identify pokemon if the trainer is fighting with the same pokemon to avoid confusion
+        }
 
         std::cout << attacker.Getname() << " used " << attacker.Getheavy_attack_name() << std::endl << std::endl;
         std::cout << "Its super effective!" << std::endl;
