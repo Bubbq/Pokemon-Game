@@ -179,18 +179,6 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
 
 }
 
-int getNumberOfLines(std::string filename) {//gets the number of records each region's pokemon has in each file
-
-    std::ifstream f(filename);
-    std::string line;
-    int count = 0;
-
-    while(getline(f, line)) {
-        count++;
-    }
-    return count;
-}
-
 void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) {//reads all the info of pokemon in a region
 
     std::ifstream f(filename);
@@ -1376,13 +1364,13 @@ int main() {
         std::cin >> userChoice;
     }
 
-    std::vector<Pokemon> kantoDataBase(20);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
-    std::vector<Pokemon> johtoDataBase(20);
-    std::vector<Pokemon> honenDataBase(20);
+    std::vector<Pokemon> kantoDataBase(10);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
+    std::vector<Pokemon> johtoDataBase(10);
+    std::vector<Pokemon> honenDataBase(10);
 
-    readPokemonData(kantoPokemonFile, 20, kantoDataBase);//reads the info to the corresponding vectors of region
-    readPokemonData(johtoPokemonFile, 20, johtoDataBase);
-    readPokemonData(honenPokemonFile, 20, honenDataBase);
+    readPokemonData(kantoPokemonFile, 10, kantoDataBase);//reads the info to the corresponding vectors of region
+    readPokemonData(johtoPokemonFile, 10, johtoDataBase);
+    readPokemonData(honenPokemonFile, 10, honenDataBase);
 
     player.kantoDB = kantoDataBase;
     player.johtoDB = johtoDataBase;
