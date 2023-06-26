@@ -132,7 +132,7 @@ void giveXP(Trainer &player, Pokemon &caughtOrKilled, int choice){//rewards xp t
 
     }
 
-    if(player.activePokemon->GetPokemonXp() > 10 && player.activePokemon->GetevoStage() < 3){//checks if the pokemon evolved, cant evolve if its already a tier 3 pokemon (ex charizard)
+    if(player.activePokemon->GetPokemonXp() > 50 && player.activePokemon->GetevoStage() < 3){//checks if the pokemon evolved, cant evolve if its already a tier 3 pokemon (ex charizard)
 
         std::cout << player.activePokemon->Getname() << " has evolved ";
         player.activePokemon->SetPokemonXp(0);//sets active pokemon and matching pokemon in trainers collection back to 0, until they earn it to evolve further
@@ -221,9 +221,10 @@ void readPokemonData(std::string filename, int size, std::vector<Pokemon> &vec) 
         f >> n; vec[counter].SetType(n);
         f >> n; vec[counter].setRarity(n);
 
-        vec[counter].printPokemon();
+        //vec[counter].printPokemon();
         counter++;
     }
+    f.close();
 }
 
 void kantoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
@@ -301,7 +302,7 @@ void honenStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
     }
 }
 
-void forage(Trainer &player){//adds 3 to on of the quantitative items of trainer (either the balls (normal, great, or ultra), and health/mana pots)
+void forage(Trainer &player){//adds to on of the quantitative items of trainer (either the balls (normal, great, or ultra), and health/mana pots)
 
     int min = 1;
     int max = 100;
@@ -335,7 +336,7 @@ void forage(Trainer &player){//adds 3 to on of the quantitative items of trainer
 
     else{
         player.manaPot += 1;
-        std::cout << "While exploring the " << player.currRegion << ", you've found a mana pot, lucky!" << std::endl;
+        std::cout << "While exploring the " << player.currRegion << " Reigon, you've found a mana pot, lucky!" << std::endl;
         std::cout << std::endl;
     }
 }
@@ -832,14 +833,17 @@ void attackWhenNoHp(Pokemon & attacker, Trainer &player, int &turns, Pokemon &vi
 
         std::cin >> choice;
 
+        while(choice != 1 && choice != 2){//error checking until the user has entered an approporate input
+        std::cout << "Choice is invalid, please try again" << std::endl;
+        std::cin >> choice;
+        }
+
         switch(choice){
 
         case 1: useHealthPot(player);break;
         case 2: choosePokemon(player, turns, victim); break;
-        default: std::cout << "invalid choice, please try again" << std::endl;
-
         }
-    }
+        }
 
 }
 
@@ -1235,7 +1239,7 @@ void fight(Trainer &player, int randomPokemonIndex){
 
         std::cin >> userChoice;
 
-        while(userChoice < 0 || userChoice > 4){//error checking until the user has entered an approporate input
+        while(userChoice < 1 || userChoice > 6){//error checking until the user has entered an approporate input
             std::cout << "Choice is invalid, please try again" << std::endl;
             std::cin >> userChoice;
         }
@@ -1253,17 +1257,23 @@ void fight(Trainer &player, int randomPokemonIndex){
         switch(userChoice){
 
         case 1: defeatOrFlee = attack(*player.activePokemon, enemyPokemon, player, ++turns, 1);
+            if(defeatOrFlee == false){//to make sure the enemy dosen't attack while its dead
                 defeatOrFlee = attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
+            }
+
                 break;
 
         case 2: defeatOrFlee = attack(*player.activePokemon, enemyPokemon, player, ++turns, 2);
-                defeatOrFlee = attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
+                if(defeatOrFlee == false){
+                    defeatOrFlee = attack(enemyPokemon, *player.activePokemon, player, ++turns, CPUchoice); //the CPU attacking you
+                }
                 break;
 
         case 3: useManaPot(player); break;
         case 4: useHealthPot(player); break;
         case 5: choosePokemon(player, ++switches, enemyPokemon); break;
         case 6: flee(player); defeatOrFlee = true; break;
+
         }
 
     }
@@ -1343,14 +1353,12 @@ int main() {
 
     Trainer player;//this represents the user/player.
 
-    std::string kantoPokemonFile = "kanto_pokemon.txt";
-    std::string johtoPokemonFile = "johto_pokemon.txt";
-    std::string honenPokemonFile = "honen_pokemon.txt";
-    // std::string kantoPokemonFile =  "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\kanto_pokemon.txt";//file names and path for each of the corresponding regions
-    // std::string johtoPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\johto_pokemon.txt";
-    // std::string honenPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
+     std::string kantoPokemonFile =  "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\kanto_pokemon.txt";//file names and path for each of the corresponding regions
+     std::string johtoPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\johto_pokemon.txt";
+     std::string honenPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
 
     clear();
+
     std::cout << "Hello trainer! Welcome to world of Pokemon, to begin, which region would you like to start in?" << std::endl << std::endl;
     std::cout << "1) Kanto" << std::endl;
     std::cout << "2) Johto" << std::endl;
@@ -1364,13 +1372,13 @@ int main() {
         std::cin >> userChoice;
     }
 
-    std::vector<Pokemon> kantoDataBase(10);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
-    std::vector<Pokemon> johtoDataBase(10);
-    std::vector<Pokemon> honenDataBase(10);
+    std::vector<Pokemon> kantoDataBase(12);//intializes vectors of type pokemon with the predetermined size of how many records are in their respective files
+    std::vector<Pokemon> johtoDataBase(12);
+    std::vector<Pokemon> honenDataBase(12);
 
-    readPokemonData(kantoPokemonFile, 10, kantoDataBase);//reads the info to the corresponding vectors of region
-    readPokemonData(johtoPokemonFile, 10, johtoDataBase);
-    readPokemonData(honenPokemonFile, 10, honenDataBase);
+    readPokemonData(kantoPokemonFile, 12, kantoDataBase);//reads the info to the corresponding vectors of region
+    readPokemonData(johtoPokemonFile, 12, johtoDataBase);
+    readPokemonData(honenPokemonFile, 12, honenDataBase);
 
     player.kantoDB = kantoDataBase;
     player.johtoDB = johtoDataBase;
@@ -1395,6 +1403,7 @@ int main() {
 
     default: break;
     }
+
     menu(player, kantoDataBase, johtoDataBase, honenDataBase);//player chooses what to do
 
     return 0;
