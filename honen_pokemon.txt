@@ -1,3 +1,9 @@
-Treeko 1 0 100 slash 5 greenball 10 5 1
-Torchic 1 0 100 slash 5 greenball 10 5 1
-Mudkip 1 0 100 slash 5 greenball 10 5 1
+Treecko 1 0 40 Bullet_Seed 7 Grass_Knot 8 5 1
+Grovyle 2 0 50 Energy_Ball 9 Mega_Drain 10 5 2
+Sceptile 3 0 70 Leafage 11 Giga_Drain 12 5 3
+Torchic 1 0 45 Ember 6 Flamethrower 9 2 1
+Combusken 1 0 60 Flame_Charge 8 Blaze_Kick 11 2 2
+Blaziken 1 0 80 Close_Combat 12 Flare_Blitz 15 2 3
+Mudkip 1 0 50 Water_Gun 4 Water_Pulse 7 3 1
+Marshtomp 1 0 70 Surf 6 Muddy_Water 9 3 2
+Swampert 1 0 100 Supersonic 8 Hydro_Pump 15
