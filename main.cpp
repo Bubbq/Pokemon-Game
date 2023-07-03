@@ -246,8 +246,8 @@ void kantoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
     case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
-    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
-    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[3]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[6]); break;
     default: break;
     }
 }
@@ -272,8 +272,8 @@ void johtoStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
     // adds the starters to the pokemon collection
     switch(userPokemonChoice) {
     case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
-    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
-    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[3]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[6]); break;
     default: break;
     }
 }
@@ -296,8 +296,8 @@ void honenStarter(Trainer &player, std::vector<Pokemon>&pokemonDB){
 
     switch(userPokemonChoice) {
     case 1: player.pokemonCollection.push_back(pokemonDB[0]); break;
-    case 2: player.pokemonCollection.push_back(pokemonDB[1]); break;
-    case 3: player.pokemonCollection.push_back(pokemonDB[2]); break;
+    case 2: player.pokemonCollection.push_back(pokemonDB[3]); break;
+    case 3: player.pokemonCollection.push_back(pokemonDB[6]); break;
     default: break;
     }
 }
