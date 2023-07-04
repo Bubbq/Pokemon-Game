@@ -1353,9 +1353,9 @@ int main() {
 
     Trainer player;//this represents the user/player.
 
-     std::string kantoPokemonFile =  "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\kanto_pokemon.txt";//file names and path for each of the corresponding regions
-     std::string johtoPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\johto_pokemon.txt";
-     std::string honenPokemonFile = "C:\\Users\\nemoq\\codeblocks\\Pokemon Personal Project\\honen_pokemon.txt";
+     std::string kantoPokemonFile =  "kanto_pokemon.txt";//file names for each of the corresponding regions, will have to maniplate for your own file path
+     std::string johtoPokemonFile = "johto_pokemon.txt";
+     std::string honenPokemonFile = "honen_pokemon.txt";
 
     clear();
 
