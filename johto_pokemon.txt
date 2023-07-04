@@ -1,3 +1,3 @@
-Chikorita 1 0 100 slash 5 blueball 10 5 1
-Cyndaquil 1 0 100 slash 5 blueball 10 5 1
-Totodile 1 0 100 slash 5 blueball 10 5 1
+Chikorita 1 0 40 Bullet_Seed 7 Grass_Knot 8 5 1  
+Cyndaquil 1 0 45 Ember 6 Flamethrower 9 2 1
+Totodile 1 0 50 Water_Gun 4 Water_Pulse 7 3 1
