@@ -1,3 +1,9 @@
 Chikorita 1 0 40 Bullet_Seed 7 Grass_Knot 8 5 1  
+Bayleef 2 0 50 Energy_Ball 9 Mega_Drain 10 5 2
+Meganium 3 0 70 Leafage 11 Giga_Drain 12 5 3
 Cyndaquil 1 0 45 Ember 6 Flamethrower 9 2 1
+Quilava 1 0 60 Flame_Charge 8 Blaze_Kick 11 2 2
+Typhlosion 1 0 80 Close_Combat 12 Flare_Blitz 15 2 3
 Totodile 1 0 50 Water_Gun 4 Water_Pulse 7 3 1
+Croconaw 1 0 70 Surf 6 Muddy_Water 9 3 2
+Feraligatr 1 0 100 Supersonic 8 Hydro_Pump 15
