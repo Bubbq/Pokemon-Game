@@ -1,1 +1,1 @@
-The purpose of this project was to essentially recreate the fundamentals of every Pokémon game from evolving, collecting, and battling Pokémon. The academic thesis of this endeavor is to solidify the concepts & application(s) of C++, whether that be file reading and manipulation, menu-driven programming, memory allocation, the use of vectors, and of course, OOP.
+cool pokemon game

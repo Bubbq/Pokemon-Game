@@ -1,33 +1,41 @@
 #include "pokemon.h"
+#include <iostream>
 
+// constructor
 Pokemon::Pokemon(){
 
-    name = "";
-    base_attack_name = "";
-    heavy_attack_name = "";
+    this->name = "";
+    this->baseAttackName = "";
+    this->heavyAttackName = "";
 
-    evoStage = 1;
-    pokemonXp = 0;
-    hp = 0;
-    base_attack_dmg = 0;
-    heavy_attack_dmg = 0;
+    this->evoStage = 1;
+    this->pokemonExp = 0;
+    this->hp = 0;
+    this->baseAttackDmg = 0;
+    this->heavyAttackDmg = 0;
 
-    type = NORMAL;
+    this->type = NORMAL;
 }
 
+// destructor
 Pokemon::~Pokemon(){}
 
-void Pokemon::setRarity(int val){rarity = (RARITY)val;}
-RARITY Pokemon::getRarity(){return rarity;}
+// setters and getters
 
-std::string Pokemon::Getname() { return name; }
-void Pokemon::Setname(std::string val) { name = val; }
+// rarity
+void Pokemon::setRarity(int val){this->rarity = (RARITY)val;}
+RARITY Pokemon::getRarity(){return this->rarity;}
 
-natureType Pokemon::GetType(){return type;}
-void Pokemon::SetType(int val){type = (natureType)val;}
-std::string Pokemon::GetTypeAsString(natureType val){
+// name
+void Pokemon::setName(std::string name) {this->name = name; }
+std::string Pokemon::getName() {return this->name; }
 
-    switch(val){
+// type
+NATURE_TYPE Pokemon::getType(){return this->type;}
+void Pokemon::setType(int type){this->type = (NATURE_TYPE)type;}
+std::string Pokemon::getTypeAsString(){
+
+    switch(this->type){
     case 1: return "Normal";
         break;
     case 2: return "Fire";
@@ -41,42 +49,52 @@ std::string Pokemon::GetTypeAsString(natureType val){
     }
 }
 
-int Pokemon::GetevoStage(){return evoStage;}
-void Pokemon::SetevoStage(int val){evoStage = val;}
+// evolution stage
+void Pokemon::setEvoStage(int evoStage){this->evoStage = evoStage;}
+int Pokemon::getEvoStage(){return this->evoStage;}
 
-int Pokemon::GetPokemonXp() { return pokemonXp; }
-void Pokemon::SetPokemonXp(int val) { pokemonXp = val; }
+// exp
+void Pokemon::setPokemonExp(int pokemonExp) {this->pokemonExp = pokemonExp;}
+int Pokemon::getPokemonExp() { return this->pokemonExp; }
 
-double Pokemon::Gethp() { return hp; }
-void Pokemon::Sethp(int val) { hp = val; }
+// hp
+void Pokemon::setHp(int hp) {this->hp = hp;}
+double Pokemon::getHp() { return this->hp; }
 
-std::string Pokemon::Getbase_attack_name() { return base_attack_name; }
-void Pokemon::Setbase_attack_name(std::string val) { base_attack_name = val; }
+// base attack name
+void Pokemon::setBaseAttackName(std::string baseAttackName) {this->baseAttackName = baseAttackName;}
+std::string Pokemon::getBaseAttackName() { return this->baseAttackName;}
 
-double Pokemon::Getbase_attack_dmg() { return base_attack_dmg; }
-void Pokemon::Setbase_attack_dmg(double val) { base_attack_dmg = val; }
+// base attack dmg
+void Pokemon::setBaseAttackDmg(double baseAttackDmg) {this->baseAttackDmg = baseAttackDmg;}
+double Pokemon::getBaseAttackDmg() {return this->baseAttackDmg;}
 
-std::string Pokemon::Getheavy_attack_name() { return heavy_attack_name; }
-void Pokemon::Setheavy_attack_name(std::string val) { heavy_attack_name = val; }
+//heavy attack name
+void Pokemon::setHeavyAttackName(std::string heavyAttackName) {this->heavyAttackName = heavyAttackName;}
+std::string Pokemon::getHeavyAttackName() {return this->heavyAttackName;}
 
-double Pokemon::Getheavy_attack_dmg() { return heavy_attack_dmg; }
-void Pokemon::Setheavy_attack_dmg(double val) { heavy_attack_dmg = val; }
+// heavy attack dmg
+void Pokemon::setHeavyAttackDmg(double heavyAttackDmg) {this->heavyAttackDmg = heavyAttackDmg;}
+double Pokemon::getHeavyAttackDmg() { return this->heavyAttackDmg; }
 
-void Pokemon::printPokemon(){
-    std::cout <<name;
-    if(hp <=0){
+// to print the elements of a pokemon
+void Pokemon::toString(){
+    std::cout << name;
+
+    // dont show anything if pokemon is dead
+    if(hp <=0)
         std::cout << "(*FAINTED*)" << std::endl;
-    }
-    else{
-        std::cout << std::endl <<
-        // "\t\tEvol: " << evoStage << std::endl <<
-        "\tHP: " << hp << std::endl <<
-        "\tType: " << GetTypeAsString(type) << std::endl <<
-        "\tRarity: " << rarity << std::endl <<
-        std::endl <<
-        "\tNormal Attack: " << base_attack_name << ", " << base_attack_dmg << " dmg" << std::endl <<
-        "\tHeavy Attack: " << heavy_attack_name << ", " << heavy_attack_dmg << " dmg" << std::endl <<
-        std::endl;
-            }
+    
+    else
+        std::cout << std::endl 
+        
+        << "\t HP: " << hp << std::endl
+        << "\t Type: " << this->getTypeAsString() << std::endl
+        << "\t Rarity: " << rarity << std::endl
+        << std::endl
+        << "\t Normal Attack: " << this->baseAttackName << ", " << this->baseAttackDmg << " dmg" << std::endl <<
+        "\t Heavy Attack: " << this->heavyAttackName  << ", " << this->heavyAttackDmg << " dmg" << std::endl <<
+        std::endl;     
 
 }
+

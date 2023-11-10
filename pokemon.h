@@ -1,65 +1,85 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
-#include <iostream>
 #include <string>
 
-enum natureType {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
+// used for type effectiveness in battle
+enum NATURE_TYPE {NORMAL = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, GRASS = 5};
+
+// determining catch chance
 enum RARITY {COMMON = 1, UNCOMMON = 2, RARE = 3, LEGENDARY = 4};
 
-class Pokemon
-{
+// A single pokemon in the game
+
+class Pokemon{
+    
     private:
+    
     std::string name;
     int evoStage;
-    int pokemonXp;
+    int pokemonExp;
     int hp;
-    std::string base_attack_name;
-    int base_attack_dmg;
-    std::string heavy_attack_name;
-    int heavy_attack_dmg;
-    natureType type;
+    std::string baseAttackName;
+    int baseAttackDmg;
+    std::string heavyAttackName;
+    int heavyAttackDmg;
+    
+    NATURE_TYPE type;
     RARITY rarity;
 
     public:
 
+    // constructor
     Pokemon();
+    // destructor
     ~Pokemon();
 
 
-    void setRarity(int val);
+    // setters and getters
+
+    // rarity
+    void setRarity(int);
     RARITY getRarity();
 
+    // name
+    void setName(std::string);
+    std::string getName();
 
-    std::string Getname();
-    void Setname(std::string val);
+    // type
+    void setType(int);
+    NATURE_TYPE getType();
+    std::string getTypeAsString();
 
-    natureType GetType();
-    void SetType(int val);
-    std::string GetTypeAsString(natureType val);
+    // evolution stage
+    void setEvoStage(int);
+    int getEvoStage();
 
-    int GetevoStage();
-    void SetevoStage(int val);
+    // pokemon exp
+    void setPokemonExp(int);
+    int getPokemonExp();
 
-    int GetPokemonXp();
-    void SetPokemonXp(int val);
+    // health points
+    void setHp(int);
+    double getHp();
 
-    double Gethp();
-    void Sethp(int val);
+    // base attack name
+    void setBaseAttackName(std::string);
+    std::string getBaseAttackName();
+   
+    // base attack dmg
+    void setBaseAttackDmg(double);
+    double getBaseAttackDmg();
 
-    std::string Getbase_attack_name();
-    void Setbase_attack_name(std::string val);
+    // heavy attack name
+    void setHeavyAttackName(std::string);
+    std::string getHeavyAttackName();
 
-    double Getbase_attack_dmg();
-    void Setbase_attack_dmg(double val);
+    // heavy attack dmg
+    void setHeavyAttackDmg(double);
+    double getHeavyAttackDmg();
 
-    std::string Getheavy_attack_name();
-    void Setheavy_attack_name(std::string val);
-
-    double Getheavy_attack_dmg();
-    void Setheavy_attack_dmg(double val);
-
-    void printPokemon();
+    // prints out the elements of a pokemon
+    void toString();
 };
 
 #endif // POKEMON_H
