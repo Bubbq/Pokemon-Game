@@ -79,7 +79,7 @@ class Pokemon{
     double getHeavyAttackDmg();
 
     // prints out the elements of a pokemon
-    void toString();
+    void showStats();
 };
 
 #endif // POKEMON_H

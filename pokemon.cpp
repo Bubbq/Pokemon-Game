@@ -78,7 +78,7 @@ void Pokemon::setHeavyAttackDmg(double heavyAttackDmg) {this->heavyAttackDmg = h
 double Pokemon::getHeavyAttackDmg() { return this->heavyAttackDmg; }
 
 // to print the elements of a pokemon
-void Pokemon::toString(){
+void Pokemon::showStats(){
     std::cout << name;
 
     // dont show anything if pokemon is dead

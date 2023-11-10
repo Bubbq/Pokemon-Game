@@ -2,6 +2,7 @@
 #define TRAINER_H
 
 // for use of strings
+#include "Backpack.h"
 #include "Pokemon.h"
 #include "PokemonDB.h"
 #include <string>
@@ -10,12 +11,14 @@
 class Trainer{
     
     private:
+   
     std::string name;
     Pokemon * currentPokemon;
     int mana;
     PokemonDB reigon;
     int exp;
     int level;
+    Backpack backpack;
 
     public:
 

@@ -18,5 +18,9 @@ void clear() {
 
 
 int main() {
+    Trainer t;
+
+    t.showStats();
+
     return 0;
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Backpack.h"
 #include "Pokemon.h"
 #include "Trainer.h"
 
@@ -55,15 +56,7 @@ void Trainer::showStats(){
     // TODO: make PokemonDB have method making reigon toString
     
     std::cout << std::endl;
-    std::cout << std::endl;
 
-    std::cout << "Items: " << std::endl;
-    // TODO: make backpack output all items
-
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "Pokemon Collection: " << std::endl;
-    // TODO: make backpack output all Pokemon
-
+    // output everything the backpack has
+    this->backpack.showContent();
 }
