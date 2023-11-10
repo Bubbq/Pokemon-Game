@@ -1,4 +1,4 @@
-#include "pokemon.h"
+#include "Pokemon.h"
 #include <iostream>
 
 // constructor
@@ -82,7 +82,7 @@ void Pokemon::toString(){
     std::cout << name;
 
     // dont show anything if pokemon is dead
-    if(hp <=0)
+    if(hp <= 0)
         std::cout << "(*FAINTED*)" << std::endl;
     
     else

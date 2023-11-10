@@ -2,9 +2,11 @@
 #include <iostream>
 
 // for the pokemon class
-#include "pokemon.h"
+#include "Pokemon.h"
+#include "Trainer.h"
 
-void clear() {//clear terminal based on OS
+// to clear terminal based on OS
+void clear() {
 #if defined _WIN32
     system("cls");
 #elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
