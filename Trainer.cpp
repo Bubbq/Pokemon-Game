@@ -11,7 +11,8 @@ Trainer::Trainer(){
     this->mana = 100;
     this->exp = 0;
     this->level = 1;
-    
+    this->currentPokemon = new Pokemon();
+    this->backpack = new Backpack();
 }
 
 // destructor
@@ -44,9 +45,11 @@ int Trainer::getLevel(){return this->level;}
 void Trainer::switchPokemon(){
     std::cout << "Which Pokemon do you want to switch to?" << std::endl;
     // TODO: make Backpack class output all pokemon
-
+    
     // based on the index of the choice, setCurrentPokemon(vector<Pokemon>[userIndexChosen])
 }
+
+Backpack* Trainer::getBackpack(){return this->backpack;}
 
 // showing trainers stats
 void Trainer::showStats(){
@@ -58,5 +61,5 @@ void Trainer::showStats(){
     std::cout << std::endl;
 
     // output everything the backpack has
-    this->backpack.showContent();
+    this->backpack->showContent();
 }

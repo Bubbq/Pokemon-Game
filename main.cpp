@@ -2,7 +2,10 @@
 #include <iostream>
 
 // for the pokemon class
+#include "Backpack.h"
+#include "GameStart.h"
 #include "Pokemon.h"
+#include "PokemonDB.h"
 #include "Trainer.h"
 
 // to clear terminal based on OS
@@ -18,9 +21,10 @@ void clear() {
 
 
 int main() {
+    GameStart g;
+
+
     Trainer t;
-
-    t.showStats();
-
+    t.getReigon();
     return 0;
 }

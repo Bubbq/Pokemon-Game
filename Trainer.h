@@ -15,10 +15,10 @@ class Trainer{
     std::string name;
     Pokemon * currentPokemon;
     int mana;
-    PokemonDB reigon;
+    PokemonDB * reigon;
     int exp;
     int level;
-    Backpack backpack;
+    Backpack * backpack;
 
     public:
 
@@ -53,11 +53,14 @@ class Trainer{
     void setLevel(int);
     int getLevel();
 
+    Backpack * getBackpack();
+
     // showing trainer's stats
     void showStats();
 
     // dialouge switching a players currentPokemon
     void switchPokemon();
+
 
 };
 

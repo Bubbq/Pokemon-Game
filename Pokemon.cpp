@@ -92,8 +92,8 @@ void Pokemon::showStats(){
         << "\t Type: " << this->getTypeAsString() << std::endl
         << "\t Rarity: " << rarity << std::endl
         << std::endl
-        << "\t Normal Attack: " << this->baseAttackName << ", " << this->baseAttackDmg << " dmg" << std::endl <<
-        "\t Heavy Attack: " << this->heavyAttackName  << ", " << this->heavyAttackDmg << " dmg" << std::endl <<
+        << "\t Normal Attack: " << this->baseAttackName << ", " << this->baseAttackDmg << " damage" << std::endl <<
+        "\t Heavy Attack: " << this->heavyAttackName  << ", " << this->heavyAttackDmg << " damage" << std::endl <<
         std::endl;     
 
 }
