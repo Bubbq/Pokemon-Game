@@ -3,6 +3,7 @@
 
 // for file reading/manipulation
 #include <fstream>
+// for use of vector
 #include <vector>
 
 // constructor, filenames are passed by GameStart to fill up DB of pokemon
@@ -12,27 +13,55 @@ PokemonDB::PokemonDB(std::string honenFilename, std::string kantoFileName, std::
     this->getDBInfo(honenFilename, this->honenDB);
     this->getDBInfo(kantoFileName, this->kantoDB);
     this->getDBInfo(johtoFilename, this->johtoDB);
+    this->reigonName = "None";
 
 }
 
-//destructor
+    //destructor
 PokemonDB::~PokemonDB(){}
+
+// Setters and Getters
+
+// currentReigon
+void PokemonDB::setCurrentReigon(std::string reigonName){
+        
+    if(reigonName == "Kanto"){
+        this->currentReigon = this->kantoDB;
+        this->reigonName = "Kanto";
+    }
+
+    else if(reigonName == "Honen"){
+        this->currentReigon = this->honenDB;
+        this->reigonName = "Honen";
+    }
+
+    else if(reigonName == "Johto"){
+        this->currentReigon = this->johtoDB;
+        this->reigonName = "Johto";
+    }
+
+}
+
+// reigonName
+std::string PokemonDB::getReigonName(){return this->reigonName;}
+
+std::vector<Pokemon> PokemonDB::getCurrentReigon(){return this->currentReigon;}
 
 // fill the DB of pokemonInfo
 void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB){
 
-    // resize the DB to make it fit
+     // resize the DB to make it fit
     pokemonDB.resize(9);
 
     // for handling '_' characters, storing #s, and the iterator
     int check, num;
     // for storing string values
     std::string words;
-   
+    
     // for file reading, read the file that was passed
     std::ifstream inFile(filename);
 
-   for(int i  = 0; i < 9; i++){
+    for(int i  = 0; i < 9; i++){
 
         // read the pokemon name
         inFile >> words; 
@@ -52,7 +81,7 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
 
         // read baseAttackName
         inFile >> words;
-        
+            
         // check for underscore in attack and replace w ' '
         check = words.find('_');
         if (check != std::string::npos) {
@@ -70,7 +99,7 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
         // read heavy attack name
         inFile >> words;
 
-         check = words.find('_');
+        check = words.find('_');
         if (check != std::string::npos) {
             words[check] = ' ';
             pokemonDB[i].setHeavyAttackName(words);
@@ -78,7 +107,7 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
 
         else 
             pokemonDB[i].setHeavyAttackName(words);
-        
+            
         // read and store heavy attack dmg
         inFile >> num;
         pokemonDB[i].setHeavyAttackDmg(num);
@@ -93,24 +122,10 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
 
         // pokemonDB[i].showStats();
 
-   }
+    }
 
     // close file after use
     inFile.close();
     return;
 
 }
-
-void PokemonDB::setReigon(std::string reigonName){
-    
-    if(reigonName == "Kanto")
-        this->currentReigon = this->kantoDB;
-
-    else if(reigonName == "Honen")
-        this->currentReigon = this->honenDB;
-
-    else
-     this->currentReigon = this->johtoDB;
-
-}
-

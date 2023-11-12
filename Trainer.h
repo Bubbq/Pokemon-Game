@@ -6,6 +6,7 @@
 #include "Pokemon.h"
 #include "PokemonDB.h"
 #include <string>
+#include <vector>
 
 // representing a human as well as AI player
 class Trainer{
@@ -13,11 +14,10 @@ class Trainer{
     private:
    
     std::string name;
-    Pokemon * currentPokemon;
     int mana;
-    PokemonDB * reigon;
     int exp;
     int level;
+    Pokemon * currentPokemon;
     Backpack * backpack;
 
     public:
@@ -40,10 +40,6 @@ class Trainer{
     // mana
     void setMana(int);
     int getMana();
-
-    // current reigon
-    void setReigon(PokemonDB);
-    PokemonDB getReigon();
 
     // exp
     void setExp(int);

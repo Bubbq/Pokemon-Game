@@ -5,15 +5,16 @@
 #include "PokemonDB.h"
 #include "Trainer.h"
 #include <string>
+#include <vector>
 
 
 class GameStart{
 
     private:
 
-    // dataBase of entire pokemon
+    // dataBase of every pokemon
     PokemonDB * pokemonDB;
-    
+
     // filenames of the pokemon
     std::string kantoFilename = "/home/bubbq/Documents/Pokemon Game/kanto_pokemon.txt";
     std::string honenFilename = "/home/bubbq/Documents/Pokemon Game/honen_pokemon.txt"; 
@@ -28,6 +29,12 @@ class GameStart{
     //desctructors
     ~GameStart();
 
+    // Setters and getters
+
+    // the currentDB
+    void setCurrentDB(std::string);
+    std::vector<Pokemon>getCurrentDB();
+
     // players choosing their starting pokemon
     void chooseStarter(Trainer&);
 
@@ -40,11 +47,18 @@ class GameStart{
     // where player looks for items (pokeballs, health potions, etc)
     void forage(Trainer&);
 
-    // checks if teh user's choice is valid or not
-    bool checkChoice(int, int, int);
-
     // main hub of the game
-    void menu();
+    void menu(Trainer&);
+
+    // dialouge to start the game
+    void startGame(Trainer&);
+
+    // to clear terminal based to OS
+    void clear();
+
+    // to validate user choice
+    void choiceCheck(int, int&, int, std::string);
+
 
 };
 

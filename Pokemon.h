@@ -16,12 +16,13 @@ class Pokemon{
     private:
     
     std::string name;
+    std::string baseAttackName;
+    std::string heavyAttackName;
+    
     int evoStage;
     int pokemonExp;
     int hp;
-    std::string baseAttackName;
     int baseAttackDmg;
-    std::string heavyAttackName;
     int heavyAttackDmg;
     
     NATURE_TYPE type;

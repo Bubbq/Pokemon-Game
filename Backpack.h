@@ -9,12 +9,15 @@ class Backpack{
     
     private:
     
+    // quantifiable items
     int pokeBalls;
     int greatBalls;
     int ultraBalls;
-    std::vector<Pokemon> pokemonCollection;
     int healthPot;
     int manaPot;
+    
+    // the pokemon collection every user has
+    std::vector<Pokemon> pokemonCollection;
 
     public:
 
@@ -47,8 +50,6 @@ class Backpack{
     void showContent();
     // searches for a pokemon
     bool searchPokemon(Pokemon);
-
-
 };
 
 #endif

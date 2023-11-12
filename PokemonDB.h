@@ -14,7 +14,9 @@ class PokemonDB{
     std::vector<Pokemon> honenDB;
     std::vector<Pokemon> johtoDB;
 
+    // the current reigon a user is in
     std::vector<Pokemon> currentReigon;
+    std::string reigonName;
 
     public:
 
@@ -26,8 +28,11 @@ class PokemonDB{
     // setters and getters
 
     // currentReigon
-    void setReigon(std::string);
-    std::vector<Pokemon> getReigon();
+    void setCurrentReigon(std::string);
+    std::vector<Pokemon> getCurrentReigon();
+
+    // reigonName
+    std::string getReigonName();
 
     // getting database info
     void getDBInfo(std::string, std::vector<Pokemon>&);

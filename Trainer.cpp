@@ -1,6 +1,8 @@
 #include <iostream>
+#include <vector>
 #include "Backpack.h"
 #include "Pokemon.h"
+#include "PokemonDB.h"
 #include "Trainer.h"
 
 
@@ -63,3 +65,6 @@ void Trainer::showStats(){
     // output everything the backpack has
     this->backpack->showContent();
 }
+
+// getting the current reigon the user is in
+// std::vector<Pokemon> Trainer::getReigon(){return this->reigon->getCurrentReigon();}

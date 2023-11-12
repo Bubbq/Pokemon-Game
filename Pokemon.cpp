@@ -15,6 +15,7 @@ Pokemon::Pokemon(){
     this->heavyAttackDmg = 0;
 
     this->type = NORMAL;
+    this->rarity = COMMON;
 }
 
 // destructor

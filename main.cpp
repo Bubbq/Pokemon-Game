@@ -22,9 +22,9 @@ void clear() {
 
 int main() {
     GameStart g;
+    Trainer  t;
+    g.startGame(t);
 
-
-    Trainer t;
-    t.getReigon();
     return 0;
-}
+    
+    }
