@@ -34,6 +34,14 @@ int Backpack::getUltraBalls(){return this->ultraBalls;}
 void Backpack::addPokemon(Pokemon pokemon){this->pokemonCollection.push_back(pokemon);}
 Pokemon Backpack::getPokemon(int index){return this->pokemonCollection[index];}
 
+// health pots
+void Backpack::setHealthPot(int healthPot){this->healthPot = healthPot;}
+int Backpack::getHealthPot(){return this->healthPot;}
+
+// mana pots
+void Backpack::setManaPot(int manaPot){this->manaPot = manaPot;}
+int Backpack::getManaPot(){return this->manaPot;}
+
 // other functionality
 
 // outputs all items the bag has
@@ -55,7 +63,7 @@ void Backpack::showContent(){
 
     for(int i = 0; i < this->pokemonCollection.size(); i++){
         // print the pokemoncount and the stats
-        std::cout << i << ".)";
+        std::cout << i + 1 << ".) ";
         pokemonCollection[i].showStats();
     }
 

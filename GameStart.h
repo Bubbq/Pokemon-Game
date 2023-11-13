@@ -46,6 +46,8 @@ class GameStart{
 
     // where player looks for items (pokeballs, health potions, etc)
     void forage(Trainer&);
+    // dialouge for finding stuff while foraging
+    void forageDialouge(int, std::string);
 
     // main hub of the game
     void menu(Trainer&);

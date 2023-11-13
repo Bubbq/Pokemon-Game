@@ -87,14 +87,14 @@ void Pokemon::showStats(){
         std::cout << "(*FAINTED*)" << std::endl;
     
     else
-        std::cout << std::endl 
+        std::cout << std::endl << std::endl
         
-        << "\t HP: " << hp << std::endl
-        << "\t Type: " << this->getTypeAsString() << std::endl
-        << "\t Rarity: " << rarity << std::endl
+        << "   HP: " << hp << std::endl
+        << "   Type: " << this->getTypeAsString() << std::endl
+        << "   Rarity: " << rarity << std::endl
         << std::endl
-        << "\t Normal Attack: " << this->baseAttackName << ", " << this->baseAttackDmg << " damage" << std::endl <<
-        "\t Heavy Attack: " << this->heavyAttackName  << ", " << this->heavyAttackDmg << " damage" << std::endl <<
+        << "   Normal Attack: " << this->baseAttackName << ", DMG: " << this->baseAttackDmg << std::endl <<
+           "   Heavy Attack: " << this->heavyAttackName  << ", DMG: " << this->heavyAttackDmg << std::endl <<
         std::endl;     
 
 }

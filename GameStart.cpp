@@ -3,8 +3,14 @@
 
 // for use of strings
 #include <string>
+
 // for cout and cin
 #include <iostream>
+
+// for std::numeric_limits, helps choiceCheck function
+// for out of bound ints and invalid types
+#include <limits> 
+
 
 // constructor
 GameStart::GameStart(){
@@ -20,19 +26,152 @@ GameStart::~GameStart(){}
 void GameStart::setCurrentDB(std::string pokemonReigon){this->pokemonDB->setCurrentReigon(pokemonReigon);}
 std::vector<Pokemon> GameStart::getCurrentDB(){return this->pokemonDB->getCurrentReigon();}
 
-// travel to another reigon
-void GameStart::fastTravel(Trainer&){}
+// Other Functionality
 
-// awarding exp for the Trainer
+// awarding exp for the Trainer for catches and fight victories
 void GameStart::giveExp(Trainer&){}
 
+// main hub of the game
+void GameStart::menu(Trainer& player){
+
+    // clear terminal screen
+    clear();
+    // holding user input
+    int userChoice;
+
+    while(userChoice != 0) {
+
+        std::cout << "What would you like to do?" << std::endl << std::endl;
+
+        std::cout << "1) Forage" << std::endl;
+        std::cout << "2) Explore" << std::endl;
+        std::cout << "3) Fast Travel to another region" << std::endl;
+        std::cout << "4) View Stats" << std::endl;
+        std::cout << std::endl << "0) QUIT" << std::endl;
+
+        std::cin >> userChoice;
+
+        // valide user choice
+        this->choiceCheck(0, userChoice, 4, "Choice");
+
+        // clear after choice
+        clear();
+
+        switch(userChoice) {
+        // ending the game, DONE
+        case 0: std::cout << "Exiting menu!" << std::endl; break;
+        // where player get pokeballs and other items, DONE
+        case 1: this->forage(player); break;
+        // case 2: explore(player); break;
+        // user can move to a different pokemon reigon, DONE
+        case 3: this->fastTravel(player); break;
+        
+        // shows the stats of the player, DONE
+        case 4: std::cout << "Reigon: " << this->pokemonDB->getReigonName() << std::endl; player.showStats();
+        }
+    }
+}
+
+// travel to another reigon
+void GameStart::fastTravel(Trainer& player){
+    
+    // clear screen
+    clear();
+    // user input
+    int userChoice;
+    // list of pokemon reigon, so user cant join the reigon there already in
+    std::string reigons[] = {"Kanto", "Johto", "Honen"};
+
+    // check player level before starting fast travel menu
+    if (player.getLevel() < 5) {
+        std::cout << "(Fast Travel unlocked at Level 5)" << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << "CURRENT REGION: *" << this->pokemonDB->getReigonName() << "*" << std::endl;
+    std::cout << "Which region would you like to Travel to?" << std::endl << std::endl;
+
+    std::cout << "1) Kanto" << std::endl;
+    std::cout << "2) Johto" << std::endl;
+    std::cout << "3) Honen" << std::endl;
+
+    std::cin >> userChoice;
+
+    // validate user's choice, cannot be outside range and be the same reigon
+    while((userChoice < 1 || userChoice > 3) || (reigons[userChoice - 1] == this->pokemonDB->getReigonName())){
+        std::cout << "Region choice is invalid or you are already at the location, please try again" << std::endl;
+        std::cin >> userChoice;
+    }
+
+    switch (userChoice) {
+        case 1: 
+            clear();
+            // update current database
+            this->pokemonDB->setCurrentReigon("Kanto");
+            // dialouge for action
+            std::cout << "You have successfully traveled to the Kanto Region, New adventures and Pokemon await!" << std::endl << std::endl;
+            break;
+        case 2: 
+            clear();
+            // update current database
+            this->pokemonDB->setCurrentReigon("Johto");
+            // dialouge for action
+            std::cout << "You have successfully traveled to the Johto Region, New adventures and Pokemon await!" << std::endl << std::endl;
+            break;
+        case 3:
+            clear(); 
+            // update current database
+            this->pokemonDB->setCurrentReigon("Honen");
+            // dialouge for action
+            std::cout << "You have successfully traveled to the Honen Region, New adventures and Pokemon await!" << std::endl << std::endl;
+            break;
+    }
+
+}
+
 // where player looks for items (pokeballs, health potions, etc)
-void GameStart::forage(Trainer&){}
+// uses a random number for the chance a user gets an item
+// 40% 4 poke ball, 20% 4 great 10% 4 ultra 15% 4 mana and health pots, DONE
+void GameStart::forage(Trainer& player){
 
+    // get random number from 1 - 100 inclusive
+    std::srand(static_cast<unsigned int>(time(nullptr)));
+    int randomNumber = 1 + (std::rand() % (100 - 1 + 1));
 
+    if(randomNumber <= 40){
+        // upd8 user's backpack
+        player.getBackpack()->setPokeBalls(player.getBackpack()->getPokeBalls() + 3);
+        // dialouge for action
+        this->forageDialouge(3, "pokeballs");
+    }
 
+    else if(randomNumber > 40 && randomNumber <= 60){
+       player.getBackpack()->setGreatBalls(player.getBackpack()->getGreatBalls() + 2);
+       this->forageDialouge(2, "greatballs");
+    }
 
+    else if(randomNumber > 60 && randomNumber <= 70){
+        player.getBackpack()->setUltraBalls(player.getBackpack()->getUltraBalls() + 2);
+        this->forageDialouge(2, "ultraballs");
+    }
 
+    else if(randomNumber > 70 && randomNumber <= 85){
+        player.getBackpack()->setHealthPot(player.getBackpack()->getHealthPot() + 1);
+        this->forageDialouge(1, "health pot");
+    }
+
+    else{
+       player.getBackpack()->setManaPot(player.getBackpack()->getManaPot() + 1);
+       this->forageDialouge(1, "mana pot");
+    }
+
+}
+
+// dialouge for finding stuff while foraging
+void GameStart::forageDialouge(int itemCount, std::string itemName){
+    std::cout << "Exploring got you " << itemCount << " " << itemName << ", lucky!" << std::endl;
+    std::cout << std::endl;
+}
 
 // beginning dialouge of the game, users chooses thier reigon
 // are able to fast travel at level 5, DONE
@@ -95,48 +234,16 @@ void GameStart::chooseStarter(Trainer& player){
     this->menu(player);
 }
 
-// main hub of the game
-void GameStart::menu(Trainer& player){
-
-    // clear terminal screen
-    clear();
-    // holding user input
-    int userChoice;
-
-    while(userChoice != 0) {
-
-        std::cout << "What would you like to do?" << std::endl << std::endl;
-
-        std::cout << "1) Forage" << std::endl;
-        std::cout << "2) Explore" << std::endl;
-        std::cout << "3) Fast Travel to another region" << std::endl;
-        std::cout << "4) View Stats" << std::endl;
-        std::cout << std::endl << "0) QUIT" << std::endl;
-
-        std::cin >> userChoice;
-
-        // valide user choice
-        this->choiceCheck(0, userChoice, 4, "Choice");
-
-        // clear after choice
-        clear();
-
-        switch(userChoice) {
-        case 0: std::cout << "Exiting menu!" << std::endl; break;
-        case 1: this->forage(player); break;
-        // case 2: explore(player); break;
-        // case 3: fastTravel(player, kantoDB, johtoDB, honenDB); break;
-        // case 4: showStats(player); break;
-        }
-    }
-}
-
 // to validate user choice
 void GameStart::choiceCheck(int min, int& userChoice, int max, std::string choice){
-     while(userChoice < min || userChoice > max){
+     while (std::cin.fail() || userChoice < min || userChoice > max) {
+        // clear the fail state
+        std::cin.clear(); 
+        // discard invalid input
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << choice << " choice is invalid, please try again" << std::endl;
         std::cin >> userChoice;
-     }
+    }
 }
 
 // to clear terminal based on OS

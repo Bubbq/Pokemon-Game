@@ -12,7 +12,7 @@ Trainer::Trainer(){
     this->name = "Ash Ketchum";
     this->mana = 100;
     this->exp = 0;
-    this->level = 1;
+    this->level = 5;
     this->currentPokemon = new Pokemon();
     this->backpack = new Backpack();
 }
@@ -57,9 +57,7 @@ Backpack* Trainer::getBackpack(){return this->backpack;}
 void Trainer::showStats(){
 
     std::cout << "Name: " << this->name << std::endl;
-    std:: cout << "Level: " << this->level << std::endl;
-    // TODO: make PokemonDB have method making reigon toString
-    
+    std:: cout << "Level: " << this->level << std::endl;    
     std::cout << std::endl;
 
     // output everything the backpack has

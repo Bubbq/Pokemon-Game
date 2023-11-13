@@ -40,6 +40,14 @@ class Backpack{
     void setUltraBalls(int);
     int getUltraBalls();
 
+    // health pots
+    void setHealthPot(int);
+    int getHealthPot();
+
+    // mana pots
+    void setManaPot(int);
+    int getManaPot();
+
     // pokemonCollection
     void addPokemon(Pokemon);
     Pokemon getPokemon(int);
