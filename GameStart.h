@@ -61,6 +61,14 @@ class GameStart{
     // to validate user choice
     void choiceCheck(int, int&, int, std::string);
 
+    // to explore the world, can fight or catch a randomly encountered pokemon
+    void explore(Trainer&);
+
+    // interaction to catch a pokemon
+    void catchPokemonMenu(Trainer&, Pokemon&);
+
+    // simulates the catch chance
+    bool catchSim(Trainer&, int, int&, int, Pokemon&);
 
 };
 

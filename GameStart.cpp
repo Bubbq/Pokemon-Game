@@ -1,4 +1,5 @@
 #include "GameStart.h"
+#include "Pokemon.h"
 #include "PokemonDB.h"
 
 // for use of strings
@@ -62,13 +63,152 @@ void GameStart::menu(Trainer& player){
         case 0: std::cout << "Exiting menu!" << std::endl; break;
         // where player get pokeballs and other items, DONE
         case 1: this->forage(player); break;
-        // case 2: explore(player); break;
+        case 2: this->explore(player); break;
         // user can move to a different pokemon reigon, DONE
         case 3: this->fastTravel(player); break;
         
         // shows the stats of the player, DONE
         case 4: std::cout << "Reigon: " << this->pokemonDB->getReigonName() << std::endl; player.showStats();
         }
+    }
+}
+
+void GameStart::catchPokemonMenu(Trainer& player, Pokemon& encounteredPokemon){
+    
+    // flag indicating wether to stop the catch interaction or not
+    bool caught = false;
+    
+    // user only has 5 tries before the pokemon runs away
+    int catchAttempts = 0;
+    
+    // clear UI
+    clear();
+
+    while (caught == false){
+
+        std::cout << "Which ball would you like to use?" << std::endl << std::endl;
+        std::cout << "1.)Pokeball" << std::endl;
+        std::cout << "2.)Great Ball" << std::endl;
+        std::cout << "3.)Ultra Ball" << std::endl;
+
+        int userChoice;
+        std::cin >> userChoice;
+
+        this->choiceCheck(1, userChoice, 3, "Pokeball");
+
+        // cases based on the rarity of the pokemon
+        // normal - 50
+        // uncommon - 25
+        // rare - 15
+        // legedary - 10
+        switch (encounteredPokemon.getRarity()) {
+        case 1: caught = catchSim(player, 50, catchAttempts, userChoice, encounteredPokemon); break;
+        case 2: caught = catchSim(player, 25, catchAttempts, userChoice, encounteredPokemon); break;
+        case 3: caught = catchSim(player, 15, catchAttempts, userChoice, encounteredPokemon); break;
+        case 4: caught = catchSim(player, 10, catchAttempts, userChoice, encounteredPokemon); break;
+        }
+
+    }
+}
+
+// simulating the catch of the pokemon
+bool GameStart::catchSim(Trainer& player, int successRate, int& catchAttempts, int ballChoice, Pokemon& encounteredPokemon){
+    
+    // clear UI
+    clear();
+ 
+    switch (ballChoice) {
+        case 1: 
+            player.getBackpack()->setPokeBalls(player.getBackpack()->getPokeBalls() - 1); 
+            if(player.getBackpack()->getPokeBalls() <= 0){
+                std::cout << "You don't have enough balls to catch " << encounteredPokemon.getName() << "!" << std::endl;
+                return false;
+            }
+            break;
+        case 2: 
+            player.getBackpack()->setGreatBalls(player.getBackpack()->getGreatBalls() - 1); 
+            successRate += 10; 
+            if(player.getBackpack()->getGreatBalls() <= 0){
+                std::cout << "You don't have enough balls to catch " << encounteredPokemon.getName() << "!" << std::endl;
+                return false;
+            }
+            break;
+        case 3: 
+            player.getBackpack()->setUltraBalls(player.getBackpack()->getUltraBalls() - 1); 
+            successRate += 15; 
+            if(player.getBackpack()->getUltraBalls() <= 0){
+                std::cout << "You don't have enough balls to catch " << encounteredPokemon.getName() << "!" << std::endl;
+                return false;
+            }
+            break;
+    }
+
+    // range of random numbers to determine if the pokemon has been caught or not
+    const int min = 1;
+    const int max = 100;
+    
+    std::srand(static_cast<unsigned int>(time(nullptr)));
+    int randomNumber = min + (std::rand() % (max - min + 1));
+
+    if (randomNumber <= successRate) {
+        std::cout << "Wow! You've caught " << encounteredPokemon.getName() << std::endl;
+        // add the pokemon to the users backpack
+        player.getBackpack()->addPokemon(encounteredPokemon);
+        // award exp to the user
+        // giveXP(player, player.currDB[randomPokemonIndex], 1);
+        return true;
+    }
+
+    // user only has 5 tries before the pokemon runs away
+    if (catchAttempts == 5) {
+        std::cout << encounteredPokemon.getName() << " ran away! :(" << std::endl << std::endl;
+        return true;
+    }
+
+    // didnt catch the pokemon
+    std::cout << encounteredPokemon.getName() << " broke free!" << std::endl << std::endl;
+    catchAttempts++;  
+    return false;
+}
+
+
+void GameStart::explore(Trainer&player){
+
+    // randomly generate a number for pokemon encounter
+    std::srand(static_cast<unsigned int>(time(nullptr)));
+
+    int randomNumber = (std::rand() % (this->pokemonDB->getCurrentReigon().size()));
+    // make pokemon pointer of encountered 'mon
+    Pokemon  encounteredPokemon = this->pokemonDB->getCurrentReigon()[randomNumber];
+
+    // clear UI
+    clear();
+
+    std::cout << "After roaming for some time in the " << this->pokemonDB->getReigonName() << " Region, you've run into " << encounteredPokemon.getName() << "!" << std::endl << std::endl;
+
+    std::cout << "Here are some of " << encounteredPokemon.getName() << "'s Stats:" << std::endl << std::endl;
+
+    encounteredPokemon.showStats();
+
+    // user input
+    int userChoice;
+
+    std::cout << "What would you like to do?" << std::endl << std::endl;
+    std::cout << "1) Catch it" << std::endl;
+    std::cout << "2) Fight it" << std::endl;
+    std::cout << "3) Flee!" << std::endl;
+
+    std::cin >> userChoice;
+
+    // input validation
+    choiceCheck(1, userChoice, 3, "Choice");
+
+    clear();
+
+    switch(userChoice) {
+    case 1: this->catchPokemonMenu(player, encounteredPokemon); break;
+    // case 2: fight(player, randomNumber); break;
+    // case 3: flee(player); break;
     }
 }
 
@@ -256,6 +396,7 @@ void GameStart::clear() {
         system("clear");
     #endif
 }
+
 
 
 
