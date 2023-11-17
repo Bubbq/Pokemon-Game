@@ -14,8 +14,8 @@ Trainer::Trainer(){
     this->name = "Ash Ketchum";
     this->mana = 100;
     this->exp = 0;
-    this->level = 5;
-    // this->currentPokemon = new Pokemon();
+    this->level = 1;
+    this->currentPokemon = nullptr;
     this->backpack = new Backpack();
 }
 
@@ -48,6 +48,12 @@ int Trainer::getLevel(){return this->level;}
 void Trainer::switchPokemon(){
 
     std::cout << "Which pokemon would you like to fight with?" << std::endl;
+    // std::cout << this->currentPokemon->getHp() << "\n";
+
+    // for(int i = 0; i< backpack->getPokemonCollection().size(); i++){
+    //     if(backpack->getPokemonCollection()[i].getName() == this->currentPokemon->getName())
+    //         backpack->getPokemonCollection()[i].setHp(this->currentPokemon->getHp());
+    // }
 
     // show availible pokemon to the user
     this->backpack->showContent(0);
@@ -56,17 +62,17 @@ void Trainer::switchPokemon(){
     int choice;
     std::cin >> choice;
 
-    // validate user input
-    while(choice > this->getBackpack()->getPokemonCollection().size() && choice < 1){
-        std::cout << "Pokemon choice is invalid, please try again." << std::endl;
-        std::cin >> choice;
-    }
+    // // validate user input
+    // while(choice > this->getBackpack()->getPokemonCollection().size()){
+    //     std::cout << "Pokemon choice is invalid, please try again." << std::endl;
+    //     std::cin >> choice;
+    // }
 
     // update the users active pokemon to the one they chose
     this->currentPokemon = new Pokemon(this->backpack->getPokemonCollection()[0]);
 }
 
-Backpack* Trainer::getBackpack(){return this->backpack;}
+Backpack * Trainer::getBackpack(){return this->backpack;}
 
 // showing trainers stats
 void Trainer::showStats(int choice){
@@ -87,10 +93,8 @@ void Trainer::useManaPot(){
         std::cout << "You already have max mana!" << std::endl;
 
     // check if the player has no mana pots
-    else if(this->getBackpack()->getManaPot() == 0){
-
+    else if(this->getBackpack()->getManaPot() == 0)
         std::cout << "You don't have enough Mana pots !" << std::endl;
-    }
 
     // update the mana and decrement the mana pot
     else{

@@ -79,23 +79,30 @@ void Pokemon::setHeavyAttackDmg(double heavyAttackDmg) {this->heavyAttackDmg = h
 double Pokemon::getHeavyAttackDmg() { return this->heavyAttackDmg; }
 
 // to print the elements of a pokemon
-void Pokemon::showStats(){
-    std::cout << name;
+void Pokemon::showStats() {
+    std::cout << this->name;
 
-    // dont show anything if pokemon is dead
-    if(hp <= 0)
+    // only show fainted for dead pokemon 
+    if (hp <= 0)
         std::cout << "(*FAINTED*)" << std::endl;
-    
-    else
+    else {
         std::cout << std::endl << std::endl
-        
-        << "   HP: " << hp << std::endl
-        << "   Type: " << this->getTypeAsString() << std::endl
-        << "   Rarity: " << rarity << std::endl
-        << std::endl
-        << "   Normal Attack: " << this->baseAttackName << ", DMG: " << this->baseAttackDmg << std::endl <<
-           "   Heavy Attack: " << this->heavyAttackName  << ", DMG: " << this->heavyAttackDmg << std::endl <<
-        std::endl;     
-
+                  << "   HP: " << hp << std::endl
+                  << "   Type: " << this->getTypeAsString() << std::endl
+                  << "   Rarity: " << rarity << std::endl
+                  << std::endl
+                  << "   Normal Attack: " << this->baseAttackName << ", DMG: " << this->baseAttackDmg << std::endl
+                  << "   Heavy Attack: " << this->heavyAttackName << ", DMG: " << this->heavyAttackDmg << std::endl
+                  << std::endl;
+    }
 }
 
+
+// dialouge once a pokemon evolves
+void Pokemon::evolve(){
+    this->pokemonExp = 0;
+    std::cout << "Your pokemon has evolved into " << this->name << "!" << std::endl;
+    std::cout << "Here are some of " << this->name << "'s stats: " << std::endl;
+    this->showStats();
+
+}

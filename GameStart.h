@@ -16,9 +16,9 @@ class GameStart{
     PokemonDB * pokemonDB;
 
     // filenames of the pokemon
-    std::string kantoFilename = "/home/bubbq/Documents/Pokemon Game/kanto_pokemon.txt";
-    std::string honenFilename = "/home/bubbq/Documents/Pokemon Game/honen_pokemon.txt"; 
-    std::string johtoFilename = "/home/bubbq/Documents/Pokemon Game/johto_pokemon.txt";
+    std::string kantoFilename = "/home/bubbq/Documents/Pokemon Game Master/kanto_pokemon.txt";
+    std::string honenFilename = "/home/bubbq/Documents/Pokemon Game Master/honen_pokemon.txt"; 
+    std::string johtoFilename = "/home/bubbq/Documents/Pokemon Game Master/johto_pokemon.txt";
 
     // TODO: filename for previous players!
 
@@ -59,6 +59,8 @@ class GameStart{
     bool attackDialouge(Trainer&, Pokemon&, Pokemon&, int, int&, std::string, double);
     // error handling if user is trying to fight w no HP
     bool attackWithNoHP(Pokemon);
+    // error handiling if user is fighting with no mana
+    bool attackWithNoMana(Trainer& player, bool);
 
     // generates a random number
     // used for forage and catch simulation and  

@@ -1,19 +1,12 @@
-#include <cstdio>
 #include <iostream>
-#include <vector>
-
-// for the pokemon class
-#include "Backpack.h"
 #include "GameStart.h"
-#include "Pokemon.h"
-#include "PokemonDB.h"
-#include "Trainer.h"
-
 
 // contains the backend functionality of the game
 GameStart g;
+// represents a player in the game
+Trainer player;
 
-void fight(Trainer &player, Pokemon& encounteredPokemon){
+void fight(Pokemon& encounteredPokemon){
     // flag that will continue/end the interaction
     bool defeatOrFlee = false;
     //if odd, player interaction, even, CPU interaction
@@ -23,6 +16,7 @@ void fight(Trainer &player, Pokemon& encounteredPokemon){
     // clear UI
     g.clear();
 
+
     while(defeatOrFlee == false){
         // user action choice
         int userChoice;
@@ -31,7 +25,7 @@ void fight(Trainer &player, Pokemon& encounteredPokemon){
 
         if(player.getCurrentPokemon()->getHp() > 0){
             std::cout << "What will you attack " << encounteredPokemon.getName() << " with?" << std::endl << std::endl;
-            std::cout << "1) Base attack: " << player.getCurrentPokemon()->getBaseAttackName() << " " << player.getCurrentPokemon()->getBaseAttackDmg() << " DMG (Mana cost: 5)" << std::endl;
+            std::cout << "1) Base attack: " << player.getCurrentPokemon()->getBaseAttackName() << " " << player.getCurrentPokemon()->getBaseAttackDmg() << " DMG (Mana cost: 10)" << std::endl;
             std::cout << "2) Heavy attack: " << player.getCurrentPokemon()->getHeavyAttackName() << " " << player.getCurrentPokemon()->getHeavyAttackDmg() << " DMG (Mana cost: 20)" << std::endl << std::endl;
             std::cout << "Other:" << std::endl << std::endl;
         }
@@ -41,8 +35,10 @@ void fight(Trainer &player, Pokemon& encounteredPokemon){
             std::cout << "What will you do?" << std::endl << std::endl;
             
         std::cout << "3)Consume Mana Pot (+20 Mana)" << std::endl;
-        std::cout << "4)Heal Pokemon (+20 Health)" << std::endl;//heals a specific pokemon
-        std::cout << "5)Switch Pokemon" << std::endl;//switches the active pokemon of the trainer
+        // heals a specific pokemon
+        std::cout << "4)Heal Pokemon (+20 Health)" << std::endl;
+        // switches the active pokemon of the trainer
+        std::cout << "5)Switch Pokemon" << std::endl;
         std::cout << "6) Flee!" << std::endl << std::endl;;
 
         std::cin >> userChoice;
@@ -54,7 +50,8 @@ void fight(Trainer &player, Pokemon& encounteredPokemon){
         g.clear();
 
         if(userChoice == 1 || userChoice == 2){
-            if(!g.attackWithNoHP(*player.getCurrentPokemon())){
+            bool base = (userChoice == 1) ? true : false;
+            if(!g.attackWithNoHP(*player.getCurrentPokemon()) && !g.attackWithNoMana(player, base)){
                 // user does a base attack
                 defeatOrFlee = g.attackSim(*player.getCurrentPokemon(), encounteredPokemon, player, userChoice, ++turns);
                 //to make sure the enemy dosen't attack while its dead
@@ -73,16 +70,13 @@ void fight(Trainer &player, Pokemon& encounteredPokemon){
             case 5: g.clear(); player.switchPokemon(); g.clear(); break;
             // to leave a pokemon fighting encounter with punishment
             case 6: player.flee(); defeatOrFlee = true; break;
-
         }
 
     }
-
-
 }
 
 // interaction to catch a pokemon
-void catchPokemonMenu(Trainer& player, Pokemon& encounteredPokemon){
+void catchPokemonMenu(Pokemon& encounteredPokemon){
     
     // flag indicating wether to stop the catch interaction or not
     bool caught = false;
@@ -122,8 +116,7 @@ void catchPokemonMenu(Trainer& player, Pokemon& encounteredPokemon){
 }
 
 // to explore the world, can fight or catch a randomly encountered pokemon
-void explore(Trainer&player){
-
+void explore(){
     // make pokemon pointer of encountered 'mon
     Pokemon  encounteredPokemon = g.getCurrentDB()->getCurrentReigon()[g.randomNumber(0, g.getCurrentDB()->getCurrentReigon().size() - 1)];
     // clear UI
@@ -151,14 +144,14 @@ void explore(Trainer&player){
     g.clear();
 
     switch(userChoice) {
-    case 1: catchPokemonMenu(player, encounteredPokemon); break;
-    case 2: fight(player,encounteredPokemon); break;
-    // case 3: flee(player); break;
+    case 1: catchPokemonMenu(encounteredPokemon); break;
+    case 2: fight(encounteredPokemon); break;
+    case 3: player.flee(); break;
     }
 }
 
 // to travel to another reigon
-void fastTravel(Trainer& player){
+void fastTravel(){
     
     // clear screen
     g.clear();
@@ -212,7 +205,7 @@ void fastTravel(Trainer& player){
 }
 
 // main hub of the game
-void menu(Trainer& player){
+void menu(){
 
     // clear terminal screen
     g.clear();
@@ -242,9 +235,9 @@ void menu(Trainer& player){
             case 0: std::cout << "Exiting menu!" << std::endl; break;
             // where player get pokeballs and other items
             case 1: g.forageSim(player); break;
-            case 2: explore(player); break;
+            case 2: explore(); break;
             // user can move to a different pokemon reigon
-            case 3: fastTravel(player); break;
+            case 3: fastTravel(); break;
             // shows the stats of the player
             case 4: std::cout << "Reigon: " << g.getCurrentDB()->getReigonName() << std::endl; player.showStats(1);
         }
@@ -252,7 +245,7 @@ void menu(Trainer& player){
 }
 
 // players choosing their starting pokemon
-void chooseStarter(Trainer& player){
+void chooseStarter(){
 
     // clear terminal 
     g.clear();
@@ -279,11 +272,11 @@ void chooseStarter(Trainer& player){
     }
 
     // send user to menu
-    menu(player);
+    menu();
 }
 
 // beginning dialouge for starting the game, where a user chooses his/her reigon
-void startGame(Trainer& player){
+void startGame(){
    
     std::cout << "Hello trainer! Welcome to world of Pokemon, to begin, which region would you like to start in?" << std::endl << std::endl;
     
@@ -308,15 +301,12 @@ void startGame(Trainer& player){
     }
 
     // send Trainer to choose starting pokemon
-    chooseStarter(player);
+    chooseStarter();
 }
 
 int main() {
-    
-   Trainer T;
-
-   startGame(T);
-
-    return 0;
-    
+    // clear UI
+    g.clear();
+    startGame();
+    return 0; 
 }

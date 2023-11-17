@@ -81,6 +81,8 @@ class Pokemon{
 
     // prints out the elements of a pokemon
     void showStats();
+
+    void evolve();
 };
 
 #endif // POKEMON_H

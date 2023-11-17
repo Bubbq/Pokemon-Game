@@ -21,16 +21,47 @@ GameStart::GameStart(){
 // destructor
 GameStart::~GameStart(){}   
 
-// Setters and getters
-
 // the currentDB
 void GameStart::setCurrentDB(std::string pokemonReigon){this->pokemonDB->setCurrentReigon(pokemonReigon);}
 PokemonDB * GameStart::getCurrentDB(){return this->pokemonDB;}
 
 // Other Functionality
 
-// awarding exp for the Trainer for catches and fight victories
-void GameStart::giveExp(Trainer& player, int exp){player.setExp(player.getExp() + exp);}
+// awarding exp for the Trainer and pokemon for fight victories
+void GameStart::giveExp(Trainer& player, int exp){
+    // giving the player and pokemon exp
+    player.setExp(player.getExp() + exp);
+    player.getCurrentPokemon()->setPokemonExp(player.getCurrentPokemon()->getPokemonExp() + exp);
+
+    // checking if the player has leveled up
+    // will level up after every 500 exp
+    if(player.getExp() >= 500){
+        //reset it back to 0
+        player.setExp(0);
+        // update players level
+        player.setLevel(player.getLevel() + 1);
+        // give dialouge
+        std::cout << std::endl <<  "Congrats, you leveled up!" << std::endl;
+        std::cout << "You're now level " << player.getLevel() << "\n\n";
+    }
+
+    // representing the players 'old' pokemon if they are able to evolve
+    Pokemon oldPokemon = *player.getCurrentPokemon();
+
+    // for checking if the currentPokemon has leveled up
+    for(int i = 0; i < this->pokemonDB->getCurrentReigon().size(); i++){
+        if(oldPokemon.getName() == this->pokemonDB->getCurrentReigon()[i].getName()){
+            if(oldPokemon.getPokemonExp() >= 1000 && oldPokemon.getEvoStage() < 3){
+                // update the old pokemon with the next pokemon in the database
+                oldPokemon = this->pokemonDB->getCurrentReigon()[i+1];
+                // update the players currentPokemon with the new one
+                player.setCurrentPokemon(&oldPokemon);
+                // dialouge of pokemon evolution
+                player.getCurrentPokemon()->evolve();
+            } 
+        }
+    }
+}
 
 // simulating the catch of the pokemon
 bool GameStart::catchSim(Trainer& player, int successRate, int& catchAttempts, int ballChoice, Pokemon& encounteredPokemon){
@@ -168,12 +199,14 @@ int GameStart::randomNumber(int min, int max){
 
 // simulating the attacking interation 
 bool GameStart::attackSim(Pokemon& attacker, Pokemon& victim, Trainer& player, int attackType, int& turns){
+      
+    int manaCost = (attackType == 1) ? 10 : 20;
+    player.setMana(player.getMana() - manaCost);
 
     // the multiplier of the attacking pokemons damage based its and the victims types
     double effectiveness = 1.0;
 
     switch (attacker.getType()) {
-        
         // strong to grass, weak to water
         case FIRE:
             if (victim.getType() == GRASS) 
@@ -250,7 +283,7 @@ bool GameStart::attackDialouge(Trainer& player, Pokemon& attacker, Pokemon& vict
             std::cout << "The enemy " << victim.getName() << " has been defeated!" << std::endl;
             // generate random xp number from 1-100
             int exp = this->randomNumber(1, 100);
-            std::cout << "Defeating " << victim.getName() << " gave you " << exp << "XP!" << std::endl; 
+            std::cout << "Defeating " << victim.getName() << " gave you and " << attacker.getName() << " " << exp << "XP!" << std::endl; 
             // award exp to the user
             this->giveExp(player, exp);
             return true;
@@ -272,8 +305,7 @@ bool GameStart::attackDialouge(Trainer& player, Pokemon& attacker, Pokemon& vict
 
 
 // error handling if user is trying to fight w no HP
-bool GameStart::attackWithNoHP(Pokemon pokemon){
-    
+bool GameStart::attackWithNoHP(Pokemon pokemon){  
     if(pokemon.getHp() <= 0){
         std::cout << pokemon.getName() << " has no health!" << std::endl << std::endl;
         return true;
@@ -282,7 +314,15 @@ bool GameStart::attackWithNoHP(Pokemon pokemon){
     return false;
 }
     
-
+// error handiling if user is fighting with no mana
+bool GameStart::attackWithNoMana(Trainer& player, bool base){
+    int manaThreshold = (base == true) ? 10 : 20; 
+    if(player.getMana() < manaThreshold){
+        std::cout << "your dont have a enough mana for " << player.getCurrentPokemon()->getName() << " to fight!\n\n";
+        return true;
+    }
+    return false;
+}
 
 
 
