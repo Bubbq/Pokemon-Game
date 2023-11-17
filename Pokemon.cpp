@@ -59,7 +59,7 @@ void Pokemon::setPokemonExp(int pokemonExp) {this->pokemonExp = pokemonExp;}
 int Pokemon::getPokemonExp() { return this->pokemonExp; }
 
 // hp
-void Pokemon::setHp(int hp) {this->hp = hp;}
+void Pokemon::setHp(double hp) {this->hp = hp;}
 double Pokemon::getHp() { return this->hp; }
 
 // base attack name

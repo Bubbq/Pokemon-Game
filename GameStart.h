@@ -33,27 +33,11 @@ class GameStart{
 
     // the currentDB
     void setCurrentDB(std::string);
-    std::vector<Pokemon>getCurrentDB();
-
-    // players choosing their starting pokemon
-    void chooseStarter(Trainer&);
-
-    // travel to another reigon
-    void fastTravel(Trainer&);
+    PokemonDB * getCurrentDB();
 
     // awarding exp for the Trainer
-    void giveExp(Trainer&);
+    void giveExp(Trainer&, int);
 
-    // where player looks for items (pokeballs, health potions, etc)
-    void forage(Trainer&);
-    // dialouge for finding stuff while foraging
-    void forageDialouge(int, std::string);
-
-    // main hub of the game
-    void menu(Trainer&);
-
-    // dialouge to start the game
-    void startGame(Trainer&);
 
     // to clear terminal based to OS
     void clear();
@@ -61,14 +45,24 @@ class GameStart{
     // to validate user choice
     void choiceCheck(int, int&, int, std::string);
 
-    // to explore the world, can fight or catch a randomly encountered pokemon
-    void explore(Trainer&);
-
-    // interaction to catch a pokemon
-    void catchPokemonMenu(Trainer&, Pokemon&);
-
+    // where player looks for items (pokeballs, health potions, etc)
+    void forageSim(Trainer&);
+    // dialouge for finding stuff while foraging
+    void forageDialouge(int, std::string);
+   
     // simulates the catch chance
     bool catchSim(Trainer&, int, int&, int, Pokemon&);
+
+    // simulating the attacking interation 
+    bool attackSim(Pokemon&, Pokemon&, Trainer&, int, int&);
+    // dialouge of the fight interaction
+    bool attackDialouge(Trainer&, Pokemon&, Pokemon&, int, int&, std::string, double);
+    // error handling if user is trying to fight w no HP
+    bool attackWithNoHP(Pokemon);
+
+    // generates a random number
+    // used for forage and catch simulation and  
+    int randomNumber(int, int);
 
 };
 

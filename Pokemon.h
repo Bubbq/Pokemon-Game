@@ -60,7 +60,7 @@ class Pokemon{
     int getPokemonExp();
 
     // health points
-    void setHp(int);
+    void setHp(double);
     double getHp();
 
     // base attack name

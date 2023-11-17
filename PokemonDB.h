@@ -14,7 +14,7 @@ class PokemonDB{
     std::vector<Pokemon> honenDB;
     std::vector<Pokemon> johtoDB;
 
-    // the current reigon a user is in
+    // the current reigon (with its name) a user is in
     std::vector<Pokemon> currentReigon;
     std::string reigonName;
 

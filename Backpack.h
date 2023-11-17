@@ -50,12 +50,14 @@ class Backpack{
 
     // pokemonCollection
     void addPokemon(Pokemon);
+    std::vector<Pokemon> getPokemonCollection();
+
     Pokemon getPokemon(int);
 
     // other functionality
 
     // outputs all items the bag has
-    void showContent();
+    void showContent(int);
     // searches for a pokemon
     bool searchPokemon(Pokemon);
 };

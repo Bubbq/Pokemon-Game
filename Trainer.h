@@ -52,11 +52,19 @@ class Trainer{
     Backpack * getBackpack();
 
     // showing trainer's stats
-    void showStats();
+    void showStats(int);
 
     // dialouge switching a players currentPokemon
     void switchPokemon();
 
+    // to use a mana
+    void useManaPot();
+
+    // to use health pot, healing a pokemon
+    void useHealthPot(std::vector<Pokemon>);
+
+    // to run away from a pokemon fighting encounter, will lose random item in a random amout
+    void flee();
 
 };
 

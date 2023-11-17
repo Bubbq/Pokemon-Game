@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iterator>
 #include <ostream>
+#include <vector>
     
 // constructor
 Backpack::Backpack(){
@@ -32,7 +33,7 @@ int Backpack::getUltraBalls(){return this->ultraBalls;}
 
 // pokemonCollection
 void Backpack::addPokemon(Pokemon pokemon){this->pokemonCollection.push_back(pokemon);}
-Pokemon Backpack::getPokemon(int index){return this->pokemonCollection[index];}
+std::vector<Pokemon> Backpack::getPokemonCollection(){return this->pokemonCollection;}
 
 // health pots
 void Backpack::setHealthPot(int healthPot){this->healthPot = healthPot;}
@@ -45,26 +46,25 @@ int Backpack::getManaPot(){return this->manaPot;}
 // other functionality
 
 // outputs all items the bag has
-void Backpack::showContent(){
+void Backpack::showContent(int choice){
 
-    // output all the items
-    std::cout << "Items: " << std::endl << std::endl;
+    if(choice == 1){
+        // output all the items
+        std::cout << "Items: " << std::endl << std::endl;
+        std::cout << "Pokeballs: " << this->pokeBalls << std::endl;
+        std::cout << "Greatballs: " << this->greatBalls << std::endl;
+        std::cout << "Ultraballs: " << this->ultraBalls << std::endl << std::endl;
+        std::cout << "Health Pots: " << this->healthPot << std::endl;
+        std::cout << "Mana Pots: " << this->manaPot << std::endl << std::endl;
+        //output all the users pokemon
+        std::cout << "Pokemon Collection:" << std::endl << std::endl;
+    }
 
-    std::cout << "Pokeballs: " << this->pokeBalls << std::endl;
-    std::cout << "Greatballs: " << this->greatBalls << std::endl;
-    std::cout << "Ultraballs: " << this->ultraBalls << std::endl << std::endl;
-
-    std::cout << "Health Pots: " << this->healthPot << std::endl;
-    std:: cout << "Mana Pots: " << this->manaPot << std::endl << std::endl;
-
-    //output all the users pokemon
-
-    std::cout << "Pokemon Collection:" << std::endl << std::endl;
-
+    // only output pokemon based on int passed
     for(int i = 0; i < this->pokemonCollection.size(); i++){
         // print the pokemoncount and the stats
         std::cout << i + 1 << ".) ";
-        pokemonCollection[i].showStats();
+        this->pokemonCollection[i].showStats();
     }
 
 
