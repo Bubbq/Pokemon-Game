@@ -18,9 +18,10 @@ class Trainer{
     int exp;
     int level;
     Pokemon * currentPokemon;
-    Backpack * backpack;
 
     public:
+    int pokemonIndex = 0;
+    Backpack * backpack;
 
     // construtor
     Trainer();

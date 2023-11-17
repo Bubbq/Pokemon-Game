@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/bubbq/Documents/Pokemon Game",
-      "program": "/home/bubbq/Documents/Pokemon Game/build/Debug/outDebug",
+      "cwd": "/home/bubbq/Documents/Pokemon Game Master",
+      "program": "/home/bubbq/Documents/Pokemon Game Master/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

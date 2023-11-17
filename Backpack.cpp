@@ -34,6 +34,14 @@ int Backpack::getUltraBalls(){return this->ultraBalls;}
 // pokemonCollection
 void Backpack::addPokemon(Pokemon pokemon){this->pokemonCollection.push_back(pokemon);}
 std::vector<Pokemon> Backpack::getPokemonCollection(){return this->pokemonCollection;}
+// to return the index of where the pokemon is located in the backpack
+int Backpack::getPokemon(std::string pokemonName){
+    for(int i = 0; i < this->pokemonCollection.size(); i++){
+        if(this->pokemonCollection[i].getName() == pokemonName)
+            return i;
+    }
+    return -1;
+}
 
 // health pots
 void Backpack::setHealthPot(int healthPot){this->healthPot = healthPot;}

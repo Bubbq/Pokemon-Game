@@ -8,7 +8,6 @@
 class Backpack{
     
     private:
-    
     // quantifiable items
     int pokeBalls;
     int greatBalls;
@@ -16,10 +15,11 @@ class Backpack{
     int healthPot;
     int manaPot;
     
-    // the pokemon collection every user has
-    std::vector<Pokemon> pokemonCollection;
 
     public:
+    // the pokemon collection every user has
+    std::vector<Pokemon> pokemonCollection;
+    
 
     // constructor
     Backpack();
@@ -52,7 +52,7 @@ class Backpack{
     void addPokemon(Pokemon);
     std::vector<Pokemon> getPokemonCollection();
 
-    Pokemon getPokemon(int);
+    int getPokemon(std::string);
 
     // other functionality
 

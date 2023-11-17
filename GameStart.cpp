@@ -51,13 +51,15 @@ void GameStart::giveExp(Trainer& player, int exp){
     // for checking if the currentPokemon has leveled up
     for(int i = 0; i < this->pokemonDB->getCurrentReigon().size(); i++){
         if(oldPokemon.getName() == this->pokemonDB->getCurrentReigon()[i].getName()){
-            if(oldPokemon.getPokemonExp() >= 1000 && oldPokemon.getEvoStage() < 3){
+            if(oldPokemon.getPokemonExp() >= 1 && oldPokemon.getEvoStage() < 3){
                 // update the old pokemon with the next pokemon in the database
                 oldPokemon = this->pokemonDB->getCurrentReigon()[i+1];
                 // update the players currentPokemon with the new one
                 player.setCurrentPokemon(&oldPokemon);
                 // dialouge of pokemon evolution
                 player.getCurrentPokemon()->evolve();
+                // updating the backpack of the user to replace the pokemon
+                player.backpack->pokemonCollection[player.pokemonIndex] = this->pokemonDB->getCurrentReigon()[i+1];
             } 
         }
     }

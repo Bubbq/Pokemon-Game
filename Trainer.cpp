@@ -10,13 +10,13 @@
 
 // constructor
 Trainer::Trainer(){
-    
     this->name = "Ash Ketchum";
     this->mana = 100;
     this->exp = 0;
     this->level = 1;
     this->currentPokemon = nullptr;
     this->backpack = new Backpack();
+    this->pokemonIndex = 0;
 }
 
 // destructor
@@ -47,13 +47,11 @@ int Trainer::getLevel(){return this->level;}
 // dialouge to switch a players pokemon
 void Trainer::switchPokemon(){
 
-    std::cout << "Which pokemon would you like to fight with?" << std::endl;
-    // std::cout << this->currentPokemon->getHp() << "\n";
-
-    // for(int i = 0; i< backpack->getPokemonCollection().size(); i++){
-    //     if(backpack->getPokemonCollection()[i].getName() == this->currentPokemon->getName())
-    //         backpack->getPokemonCollection()[i].setHp(this->currentPokemon->getHp());
-    // }
+    std::cout << "Which pokemon would you like to fight with?\n" << std::endl;
+   
+    // update the pokemon in the pokemon collection with the health of the current pokemon
+    if(this->currentPokemon != nullptr)
+        this->backpack->pokemonCollection[this->pokemonIndex].setHp(this->currentPokemon->getHp());
 
     // show availible pokemon to the user
     this->backpack->showContent(0);
@@ -62,14 +60,16 @@ void Trainer::switchPokemon(){
     int choice;
     std::cin >> choice;
 
-    // // validate user input
-    // while(choice > this->getBackpack()->getPokemonCollection().size()){
-    //     std::cout << "Pokemon choice is invalid, please try again." << std::endl;
-    //     std::cin >> choice;
-    // }
+    // validate user input
+    while(choice > this->getBackpack()->getPokemonCollection().size() || choice < 1){
+        std::cout << "Pokemon choice is invalid, please try again." << std::endl;
+        std::cin >> choice;
+    }
 
     // update the users active pokemon to the one they chose
-    this->currentPokemon = new Pokemon(this->backpack->getPokemonCollection()[0]);
+    this->currentPokemon = new Pokemon(this->backpack->getPokemonCollection()[choice - 1]);
+    this->pokemonIndex = choice - 1;
+
 }
 
 Backpack * Trainer::getBackpack(){return this->backpack;}
