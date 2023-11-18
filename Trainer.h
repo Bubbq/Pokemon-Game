@@ -1,72 +1,68 @@
 #ifndef TRAINER_H
 #define TRAINER_H
 
-// for use of strings
 #include "Backpack.h"
-#include "Pokemon.h"
-#include "PokemonDB.h"
-#include <string>
-#include <vector>
 
-// representing a human as well as AI player
+// representing a human
 class Trainer{
     
     private:
    
-    std::string name;
-    int mana;
-    int exp;
-    int level;
-    Pokemon * currentPokemon;
+        std::string name;
+        int mana;
+        int exp;
+        int level;
 
     public:
-    int pokemonIndex = 0;
-    Backpack * backpack;
 
-    // construtor
-    Trainer();
-    //destructor
-    ~Trainer();
+        int pokemonIndex = 0;
+        Backpack * backpack;
+        Pokemon * currentPokemon;
 
-    // Setters and Getters
+        // construtor
+        Trainer();
+        //destructor
+        ~Trainer();
 
-    // trainer name
-    void setName(std::string);
-    std::string getName();
+        // Setters and Getters
 
-    // current pokemon
-    void setCurrentPokemon(Pokemon*);
-    Pokemon * getCurrentPokemon();
+        // trainer name
+        void setName(std::string);
+        std::string getName();
 
-    // mana
-    void setMana(int);
-    int getMana();
+        // current pokemon
+        void setCurrentPokemon(Pokemon*);
+        Pokemon * getCurrentPokemon();
 
-    // exp
-    void setExp(int);
-    int getExp();
+        // mana
+        void setMana(int);
+        int getMana();
 
-    // level
-    void setLevel(int);
-    int getLevel();
+        // exp
+        void setExp(int);
+        int getExp();
 
-    Backpack * getBackpack();
+        // level
+        void setLevel(int);
+        int getLevel();
 
-    // showing trainer's stats
-    void showStats(int);
+        // showing trainer's stats
+        void showStats(std::string);
 
-    // dialouge switching a players currentPokemon
-    void switchPokemon();
+        // dialouge switching a players currentPokemon
+        void switchPokemon();
 
-    // to use a mana
-    void useManaPot();
+        // to use a mana
+        void useManaPot();
 
-    // to use health pot, healing a pokemon
-    void useHealthPot(std::vector<Pokemon>);
+        // to use health pot, healing a pokemon
+        void useHealthPot(std::vector<Pokemon>);
 
-    // to run away from a pokemon fighting encounter, will lose random item in a random amout
-    void flee();
+        // to run away from a pokemon fighting encounter, will lose random item in a random amout
+        void flee();
 
+        // validate user input
+        void choiceCheck(int, int&, int, std::string);
 };
 
 #endif

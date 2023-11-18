@@ -6,4 +6,4 @@ Quilava 1 0 60 Flame_Charge 8 Blaze_Kick 11 2 2
 Typhlosion 1 0 80 Close_Combat 12 Flare_Blitz 15 2 3
 Totodile 1 0 50 Water_Gun 4 Water_Pulse 7 3 1
 Croconaw 1 0 70 Surf 6 Muddy_Water 9 3 2
-Feraligatr 1 0 100 Supersonic 8 Hydro_Pump 15
+Feraligatr 1 0 100 Supersonic 8 Hydro_Pump 15 3 3

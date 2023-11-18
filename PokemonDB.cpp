@@ -8,48 +8,38 @@
 
 // constructor, filenames are passed by GameStart to fill up DB of pokemon
 PokemonDB::PokemonDB(std::string honenFilename, std::string kantoFileName, std::string johtoFilename){
-
     // getDB info of all pokemon
     this->getDBInfo(honenFilename, this->honenDB);
     this->getDBInfo(kantoFileName, this->kantoDB);
     this->getDBInfo(johtoFilename, this->johtoDB);
     this->reigonName = "None";
-
 }
 
-    //destructor
+//destructor
 PokemonDB::~PokemonDB(){}
-
-// Setters and Getters
 
 // currentReigon
 void PokemonDB::setCurrentReigon(std::string reigonName){
-        
-    if(reigonName == "Kanto"){
+
+    if(reigonName == "Kanto")
         this->currentReigon = this->kantoDB;
-        this->reigonName = "Kanto";
-    }
 
-    else if(reigonName == "Honen"){
+    else if(reigonName == "Honen")
         this->currentReigon = this->honenDB;
-        this->reigonName = "Honen";
-    }
-
-    else if(reigonName == "Johto"){
+    
+    else if(reigonName == "Johto")
         this->currentReigon = this->johtoDB;
-        this->reigonName = "Johto";
-    }
-
+    
+    this->reigonName = reigonName;
 }
+
+std::vector<Pokemon> PokemonDB::getCurrentReigon(){return this->currentReigon;}
 
 // reigonName
 std::string PokemonDB::getReigonName(){return this->reigonName;}
 
-std::vector<Pokemon> PokemonDB::getCurrentReigon(){return this->currentReigon;}
-
 // fill the DB of pokemonInfo
 void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB){
-
      // resize the DB to make it fit
     pokemonDB.resize(9);
 
@@ -66,23 +56,19 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
         // read the pokemon name
         inFile >> words; 
         pokemonDB[i].setName(words);
-
         // read the evolution stage
         inFile >> num;
         pokemonDB[i].setEvoStage(num);
-
         // read and store pokemonExp
         inFile >> num;
         pokemonDB[i].setPokemonExp(num);
-
         // read and store HP
         inFile >> num;
         pokemonDB[i].setHp(num);
-
         // read baseAttackName
-        inFile >> words;
-            
-        // check for underscore in attack and replace w ' '
+        inFile >> words; 
+       
+        // check for underscore in attack and replace with ' '
         check = words.find('_');
         if (check != std::string::npos) {
             words[check] = ' ';
@@ -98,34 +84,24 @@ void PokemonDB::getDBInfo(std::string filename, std::vector<Pokemon>& pokemonDB)
 
         // read heavy attack name
         inFile >> words;
-
         check = words.find('_');
         if (check != std::string::npos) {
             words[check] = ' ';
             pokemonDB[i].setHeavyAttackName(words);
         }
-
         else 
             pokemonDB[i].setHeavyAttackName(words);
-            
+    
         // read and store heavy attack dmg
         inFile >> num;
         pokemonDB[i].setHeavyAttackDmg(num);
-
         // read and set type
         inFile >> num;
         pokemonDB[i].setType(num);
-
         // read and store rarity
         inFile >> num;
         pokemonDB[i].setRarity(num);
-
-        // pokemonDB[i].showStats();
-
     }
-
     // close file after use
     inFile.close();
-    return;
-
 }

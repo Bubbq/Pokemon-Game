@@ -1,22 +1,16 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include "Backpack.h"
-#include "GameStart.h"
-#include "Pokemon.h"
-#include "PokemonDB.h"
-#include "Trainer.h"
-
+#include <limits>
+#include "GameFunction.h"
 
 // constructor
 Trainer::Trainer(){
     this->name = "Ash Ketchum";
+    this->level = 1;
     this->mana = 100;
     this->exp = 0;
-    this->level = 1;
+    this->pokemonIndex = 0;
     this->currentPokemon = nullptr;
     this->backpack = new Backpack();
-    this->pokemonIndex = 0;
 }
 
 // destructor
@@ -36,7 +30,7 @@ Pokemon * Trainer::getCurrentPokemon(){return this->currentPokemon;}
 void Trainer::setMana(int mana){this->mana = mana;}
 int Trainer::getMana(){return this->mana;}
 
-//exp
+// exp
 void Trainer::setExp(int exp){this->exp = exp;}
 int Trainer::getExp(){return this->exp;}
 
@@ -44,56 +38,52 @@ int Trainer::getExp(){return this->exp;}
 void Trainer::setLevel(int level){this->level = level;}
 int Trainer::getLevel(){return this->level;}
 
+// Other Functionality
+
 // dialouge to switch a players pokemon
 void Trainer::switchPokemon(){
 
-    std::cout << "Which pokemon would you like to fight with?\n" << std::endl;
+    std::cout << "Which pokemon would you like to fight with?\n\n";
    
-    // update the pokemon in the pokemon collection with the health of the current pokemon
+    // update the pokemon in the trainer's backpack to the health of the current pokemon
     if(this->currentPokemon != nullptr)
         this->backpack->pokemonCollection[this->pokemonIndex].setHp(this->currentPokemon->getHp());
 
     // show availible pokemon to the user
-    this->backpack->showContent(0);
+    this->backpack->showContent(false);
 
     // user input
     int choice;
     std::cin >> choice;
 
     // validate user input
-    while(choice > this->getBackpack()->getPokemonCollection().size() || choice < 1){
-        std::cout << "Pokemon choice is invalid, please try again." << std::endl;
-        std::cin >> choice;
-    }
+    this->choiceCheck(1, choice, this->backpack->pokemonCollection.size(), "Pokemon");
 
     // update the users active pokemon to the one they chose
-    this->currentPokemon = new Pokemon(this->backpack->getPokemonCollection()[choice - 1]);
-    this->pokemonIndex = choice - 1;
+    this->pokemonIndex = --choice;
+    this->currentPokemon = new Pokemon(this->backpack->getPokemonCollection()[pokemonIndex]);
 
 }
-
-Backpack * Trainer::getBackpack(){return this->backpack;}
 
 // showing trainers stats
-void Trainer::showStats(int choice){
-
-    std::cout << "Name: " << this->name << std::endl;
-    std:: cout << "Level: " << this->level << std::endl;    
-    std::cout << std::endl;
-
+void Trainer::showStats(std::string reigonName){
+    std::cout << "PLAYER \n";
+    std::cout << "\t Reigon: " << reigonName << std::endl;
+    std::cout << "\t Name: " << this->name << std::endl;
+    std:: cout << "\t Level: " << this->level << std::endl << std::endl;;    
     // output everything the backpack has
-    this->backpack->showContent(choice);
+    this->backpack->showContent(true);
 }
 
+// to use a mana pot
 void Trainer::useManaPot(){
-    //  clear();
 
     // check if the player has max mana
     if(this->mana == 100)
         std::cout << "You already have max mana!" << std::endl;
 
     // check if the player has no mana pots
-    else if(this->getBackpack()->getManaPot() == 0)
+    else if(this->backpack->getManaPot() == 0)
         std::cout << "You don't have enough Mana pots !" << std::endl;
 
     // update the mana and decrement the mana pot
@@ -108,10 +98,9 @@ void Trainer::useManaPot(){
         if(this->mana > 100)
             this->mana = 100;
 
-        std::cout << "Using Mana Pot, you've gained " << (this->mana - oldMana) << " mana!" << std::endl;
-        std::cout << "You now have " << this->mana << " Mana and " << this->backpack->getManaPot() << " pots left" << std::endl;
+        std::cout << "Using a mana pot, you've gained " << (this->mana - oldMana) << " mana!\n";
+        std::cout << "You now have " << this->mana << " mana and " << this->backpack->getManaPot() << " pots left\n";
     }
-    return;
 }
 
 // to use health pot, healing a pokemon
@@ -122,17 +111,17 @@ void Trainer::useHealthPot(std::vector<Pokemon> DB){
 
     // check if the user has enough healthpots
     if(this->backpack->getHealthPot() == 0){
-        std::cout << "You don't have enough health pots to heal" << this->currentPokemon->getName() << "!" << std::endl;
+        std::cout << "You don't have enough health pots to heal" << pokemonName << "!" << std::endl;
         return;
     }
 
     // heal the currentPokemon
-    // check if the pokemon has more than its normal health
     for(int i = 0; i < DB.size(); i++){
+    // check if the pokemon has more than its normal health
         if(pokemonName == DB[i].getName()){
             // check if the poke is already at max health
             if(pokemonHealth == DB[i].getHp()){
-                std::cout << pokemonName << " already has max health!" << std::endl << std::endl;
+                std::cout << pokemonName << " already has max health! \n\n";
                 return;
             }
             // actually add the health and decrement a mana pot
@@ -143,7 +132,8 @@ void Trainer::useHealthPot(std::vector<Pokemon> DB){
                 if(currentPokemon->getHp() > DB[i].getHp())
                     this->currentPokemon->setHp(DB[i].getHp());
                     
-                std::cout << this->currentPokemon->getName() << " now has " << this->currentPokemon->getHp() << " health!" << std::endl << std::endl;
+                std::cout << this->currentPokemon->getName() << " now has " << this->currentPokemon->getHp() << " health! \n";
+                std::cout << "You now have " << this->backpack->getHealthPot() << " health pots left! \n\n";
             }
         }
     }
@@ -153,11 +143,12 @@ void Trainer::useHealthPot(std::vector<Pokemon> DB){
 // to run away from a pokemon fighting encounter, will lose random item in a random amout
 void Trainer::flee(){
 
-    GameStart g;
+    GameFunction g;
 
     // will be used to randomly lose a type of item
     int arr[] = {this->backpack->getPokeBalls(),this->backpack->getGreatBalls(), this->backpack->getUltraBalls(), this->backpack->getHealthPot(), this->backpack->getManaPot()};
 
+    // one of the 5 quantifiable items will be lost
     int randomItem = g.randomNumber(0, 4);
 
     // check if the trainer has the item to lose
@@ -200,11 +191,24 @@ void Trainer::flee(){
         // clear UI
         g.clear();
         std::cout << "You begin to question your skills as a trainer, nonetheless, you successfully ran away" << std::endl;
-        std::cout << "Lost 10 XP" << std::endl << std::endl;
-        this->exp -= 10;
+        // user will lose a random amount of exp
+        int exp = g.randomNumber(1, 100);
+        std::cout << "Lost " << exp << " XP" << std::endl << std::endl;
+        this->exp -= exp;
     }
 }
 
+// to validate user choice
+void Trainer::choiceCheck(int min, int& userChoice, int max, std::string choice){
+     while (std::cin.fail() || userChoice < min || userChoice > max) {
+        // clear the fail state
+        std::cin.clear(); 
+        // discard invalid input
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << choice << " choice is invalid, please try again" << std::endl;
+        std::cin >> userChoice;
+    }
+}
 
 
 

@@ -54,24 +54,24 @@ int Backpack::getManaPot(){return this->manaPot;}
 // other functionality
 
 // outputs all items the bag has
-void Backpack::showContent(int choice){
+void Backpack::showContent(bool showEverything){
 
-    if(choice == 1){
+    if(showEverything){
         // output all the items
-        std::cout << "Items: " << std::endl << std::endl;
-        std::cout << "Pokeballs: " << this->pokeBalls << std::endl;
-        std::cout << "Greatballs: " << this->greatBalls << std::endl;
-        std::cout << "Ultraballs: " << this->ultraBalls << std::endl << std::endl;
-        std::cout << "Health Pots: " << this->healthPot << std::endl;
-        std::cout << "Mana Pots: " << this->manaPot << std::endl << std::endl;
+        std::cout << "ITEMS \n";
+        std::cout << "\t Pokeballs: " << this->pokeBalls << std::endl;
+        std::cout << "\t Greatballs: " << this->greatBalls << std::endl;
+        std::cout << "\t Ultraballs: " << this->ultraBalls << std::endl << std::endl;
+        std::cout << "\t Health Pots: " << this->healthPot << std::endl;
+        std::cout << "\t Mana Pots: " << this->manaPot << std::endl << std::endl;
         //output all the users pokemon
-        std::cout << "Pokemon Collection:" << std::endl << std::endl;
+        std::cout << "POKEMON \n\n";
     }
 
     // only output pokemon based on int passed
     for(int i = 0; i < this->pokemonCollection.size(); i++){
         // print the pokemoncount and the stats
-        std::cout << i + 1 << ".) ";
+        std::cout  << i + 1 << ".) ";
         this->pokemonCollection[i].showStats();
     }
 

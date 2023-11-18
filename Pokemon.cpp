@@ -21,11 +21,17 @@ Pokemon::Pokemon(){
 // destructor
 Pokemon::~Pokemon(){}
 
-// setters and getters
-
 // rarity
 void Pokemon::setRarity(int val){this->rarity = (RARITY)val;}
 RARITY Pokemon::getRarity(){return this->rarity;}
+std::string Pokemon::getRarityAsString(){
+    switch (this->rarity) {
+        case 1: return "Common"; break;
+        case 2: return "Uncommon"; break;
+        case 3: return "Rare"; break;
+        case 4: return "Legendary"; break;
+    }
+}
 
 // name
 void Pokemon::setName(std::string name) {this->name = name; }
@@ -35,18 +41,12 @@ std::string Pokemon::getName() {return this->name; }
 NATURE_TYPE Pokemon::getType(){return this->type;}
 void Pokemon::setType(int type){this->type = (NATURE_TYPE)type;}
 std::string Pokemon::getTypeAsString(){
-
     switch(this->type){
-    case 1: return "Normal";
-        break;
-    case 2: return "Fire";
-        break;
-    case 3: return "Water";
-        break;
-    case 4: return "Electric";
-        break;
-    default: return "Grass";
-        break;
+    case 1: return "Normal"; break;
+    case 2: return "Fire"; break;
+    case 3: return "Water"; break;
+    case 4: return "Electric"; break;
+    default: return "Grass"; break;
     }
 }
 
@@ -64,7 +64,7 @@ double Pokemon::getHp() { return this->hp; }
 
 // base attack name
 void Pokemon::setBaseAttackName(std::string baseAttackName) {this->baseAttackName = baseAttackName;}
-std::string Pokemon::getBaseAttackName() { return this->baseAttackName;}
+std::string Pokemon::getBaseAttackName() {return this->baseAttackName;}
 
 // base attack dmg
 void Pokemon::setBaseAttackDmg(double baseAttackDmg) {this->baseAttackDmg = baseAttackDmg;}
@@ -82,27 +82,24 @@ double Pokemon::getHeavyAttackDmg() { return this->heavyAttackDmg; }
 void Pokemon::showStats() {
     std::cout << this->name;
 
-    // only show fainted for dead pokemon 
+    // dont show stats for dead pokemon 
     if (hp <= 0)
-        std::cout << "(*FAINTED*)" << std::endl;
+        std::cout << "(*FAINTED*) \n\n";
     else {
-        std::cout << std::endl << std::endl
-                  << "   HP: " << hp << std::endl
-                  << "   Type: " << this->getTypeAsString() << std::endl
-                  << "   Rarity: " << rarity << std::endl
-                  << std::endl
-                  << "   Normal Attack: " << this->baseAttackName << ", DMG: " << this->baseAttackDmg << std::endl
-                  << "   Heavy Attack: " << this->heavyAttackName << ", DMG: " << this->heavyAttackDmg << std::endl
-                  << std::endl;
+        std::cout << "\n\t HP: " << hp << std::endl
+                  << "\t Type: " << this->getTypeAsString() << std::endl
+                  << "\t Rarity: " << this->getRarityAsString() << std::endl
+                  << "\t Normal Attack: " << this->baseAttackName << " DMG: " << this->baseAttackDmg << std::endl
+                  << "\t Heavy Attack: " << this->heavyAttackName << " DMG: " << this->heavyAttackDmg << std::endl << std::endl;
     }
 }
 
-
 // dialouge once a pokemon evolves
 void Pokemon::evolve(){
+    // reset the pokemon's exp
     this->pokemonExp = 0;
     std::cout << "Your pokemon has evolved into " << this->name << "!" << std::endl;
     std::cout << "Here are some of " << this->name << "'s stats: " << std::endl;
+    // show the stats of the newly evolved pokemon
     this->showStats();
-
 }

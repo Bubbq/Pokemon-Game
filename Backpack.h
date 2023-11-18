@@ -8,58 +8,55 @@
 class Backpack{
     
     private:
-    // quantifiable items
-    int pokeBalls;
-    int greatBalls;
-    int ultraBalls;
-    int healthPot;
-    int manaPot;
+        // quantifiable items
+        int pokeBalls;
+        int greatBalls;
+        int ultraBalls;
+        int healthPot;
+        int manaPot;
     
 
     public:
-    // the pokemon collection every user has
-    std::vector<Pokemon> pokemonCollection;
-    
+        // the pokemon collection every user has
+        std::vector<Pokemon> pokemonCollection;
 
-    // constructor
-    Backpack();
-    // destructor
-    ~Backpack();
+        // constructor
+        Backpack();
+        // destructor
+        ~Backpack();
 
-    // Setters and Getters
+        // Setters and Getters
 
-    //pokeball
-    void setPokeBalls(int);
-    int getPokeBalls();
+        //pokeball
+        void setPokeBalls(int);
+        int getPokeBalls();
 
-    // greatball
-    void setGreatBalls(int);
-    int getGreatBalls();
+        // greatball
+        void setGreatBalls(int);
+        int getGreatBalls();
 
-    // ultraball
-    void setUltraBalls(int);
-    int getUltraBalls();
+        // ultraball
+        void setUltraBalls(int);
+        int getUltraBalls();
 
-    // health pots
-    void setHealthPot(int);
-    int getHealthPot();
+        // health pots
+        void setHealthPot(int);
+        int getHealthPot();
 
-    // mana pots
-    void setManaPot(int);
-    int getManaPot();
+        // mana pots
+        void setManaPot(int);
+        int getManaPot();
 
-    // pokemonCollection
-    void addPokemon(Pokemon);
-    std::vector<Pokemon> getPokemonCollection();
+        // pokemonCollection
+        void addPokemon(Pokemon);
+        std::vector<Pokemon> getPokemonCollection();
 
-    int getPokemon(std::string);
+        int getPokemon(std::string);
 
-    // other functionality
-
-    // outputs all items the bag has
-    void showContent(int);
-    // searches for a pokemon
-    bool searchPokemon(Pokemon);
+        // outputs all items the bag has
+        void showContent(bool);
+        // searches for a pokemon
+        bool searchPokemon(Pokemon);
 };
 
 #endif
