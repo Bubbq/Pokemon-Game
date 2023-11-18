@@ -5,5 +5,6 @@ How to run:
     Enjoy!
 
 What you can do:
-    fight, catch, and evolve pokemon
+    fight, catch, evolve pokemon
+    
     forage around for pokeballs and other quantifiable items
